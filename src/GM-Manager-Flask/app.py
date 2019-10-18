@@ -1,4 +1,5 @@
 from flask import Flask
+from modes.survrim import survrun_goal_location_calculator
 
 app = Flask(__name__)
 
@@ -10,7 +11,9 @@ def hello_world():
 
 @app.route('/survrim')
 def survrim_route():
-    return 'Survivalrim'
+    survrun_goals = survrun_goal_location_calculator.SurvrunGoalLocationCalculator()
+    a, b = survrun_goals.calc_goal_locations()
+    return 'Survrun target locations: ' + a + " " + b
 
 
 @app.route('/shc')
