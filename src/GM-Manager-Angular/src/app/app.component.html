@@ -1,16 +1,22 @@
-<div style="text-align:center">
-  <h1>{{title}}</h1>
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to {{ title }}</h1>
+    <h2>Survrim section</h2>
+  </div>
+  <div class="panel panel-primary">
+      <div class="panel-heading">Survrun target location generator</div>
+      <div class="panel-body">
+        <button (click)="fetchSurvrunData()">Get Survrun locations</button>
+        <ul>
+            <!-- <pre >Data: {{ survrunData | json }}</pre> --> <!-- display full json structure like this-->
+            <li>Target A: {{ survrunData.survrunData[0].target_location_one }}</li>
+            <li>Target B: {{ survrunData.survrunData[0].target_location_two }}</li>
+          </ul>
+      </div>
+    </div>
 </div>
 
-<button (click)="fetchSurvrunData()">Get Survrun locations</button>
 
-<hr />
-
-<ul>
-  <!-- <pre >Data: {{ survrunData | json }}</pre> -->
-  <li>Target A: {{ survrunData.survrunData[0].target_location_one }}</li>
-  <li>Target B: {{ survrunData.survrunData[0].target_location_two }}</li>
-</ul>
 
 
 
