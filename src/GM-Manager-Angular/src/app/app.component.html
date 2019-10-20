@@ -7,7 +7,9 @@
 <hr />
 
 <ul>
-  <pre >Data: {{ survrunData | json }}</pre>
+  <!-- <pre >Data: {{ survrunData | json }}</pre> -->
+  <li>Target A: {{ survrunData.survrunData[0].target_location_one }}</li>
+  <li>Target B: {{ survrunData.survrunData[0].target_location_two }}</li>
 </ul>
 
 

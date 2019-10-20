@@ -9,7 +9,7 @@ import { API_URL } from './env';
 })
 export class AppComponent {
   survrunData: JSON;
-  title = 'GM-Manager-Angular';
+  title = 'GM-Manager-Frontend';
   SURVRIM_API_URL = `${API_URL}` + '/api/survrim';
 
   constructor(private httpClient: HttpClient) {}

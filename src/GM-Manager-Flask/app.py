@@ -1,18 +1,18 @@
-from flask import Flask, jsonify, abort, make_response
-from flask_cors import CORS, cross_origin
+from flask import Flask, jsonify, make_response
+from flask_cors import CORS
 from flask_restful import Resource, Api
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 
 app = Flask(__name__)
 api = Api(app)
-CORS(app)
-survrun_targets = SurvrunGoalLocationCalculator()
-target_a, target_b = survrun_targets.calc_goal_locations()
+CORS(app)  # required for cross origin error (temp fix)
 
 
 class SurvrunApi(Resource):
     def get(self):
+        survrun_targets = SurvrunGoalLocationCalculator()
+        target_a, target_b = survrun_targets.calc_goal_locations()
         return {'survrunData': [{'id': 1, 'target_location_one': target_a, 'target_location_two': target_b}]}
 
 
