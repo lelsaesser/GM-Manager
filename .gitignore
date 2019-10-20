@@ -103,5 +103,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# VSC workspaces
+# VSC workspaces and debug/launch configs
 *.code-workspace
+/.vscode
