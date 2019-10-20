@@ -8,7 +8,7 @@ import { API_URL } from './env';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  survrunData: JSON;
+  survrunJson: JSON;
   title = 'GM-Manager-Frontend';
   SURVRIM_API_URL = `${API_URL}` + '/api/survrim';
 
@@ -16,7 +16,7 @@ export class AppComponent {
 
   fetchSurvrunData() {
     this.httpClient.get(this.SURVRIM_API_URL).subscribe(data => {
-      this.survrunData = data as JSON;
+      this.survrunJson = data as JSON;
     })
   }
 }

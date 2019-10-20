@@ -1,19 +1,46 @@
 <div class="container">
+
+  <!--Header with title-->
   <div class="jumbotron">
     <h1>Welcome to {{ title }}</h1>
-    <h2>Survrim section</h2>
   </div>
+
+  <!--Navigation bar with different tabs-->
+  <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">SurvivalRim</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">Stronghold</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link active" href="#">Poke Nuzlocke</a>
+      </li>
+    </ul>
+
+  <!--Survrun target location panel-->
   <div class="panel panel-primary">
       <div class="panel-heading">Survrun target location generator</div>
       <div class="panel-body">
         <button (click)="fetchSurvrunData()">Get Survrun locations</button>
         <ul>
-            <!-- <pre >Data: {{ survrunData | json }}</pre> --> <!-- display full json structure like this-->
-            <li>Target A: {{ survrunData.survrunData[0].target_location_one }}</li>
-            <li>Target B: {{ survrunData.survrunData[0].target_location_two }}</li>
-          </ul>
-      </div>
+          <!-- <pre >Data: {{ survrunData | json }}</pre> --> <!-- display full json structure like this-->
+          <li>Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
+          <li>Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
+        </ul>
     </div>
+  </div>
+
+  <!--Dummy data-->
+  <div class="panel panel-primary">
+      <div class="panel-heading">Placeholder</div>
+      <div class="panel-body">
+        <ul>
+          <p>Lorem ipsum...</p>
+        </ul>
+    </div>
+  </div>
+
 </div>
 
 
