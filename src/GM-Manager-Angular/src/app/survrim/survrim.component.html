@@ -1,0 +1,13 @@
+<!--Survrun target location panel-->
+<div class="panel panel-primary">
+    <div class="panel-heading">Survrun target location generator</div>
+    <div class="panel-body">
+        <button (click)="fetchSurvrunData()">Get Survrun locations</button>
+        <ul>
+            <!-- <pre >Data: {{ survrunData | json }}</pre> -->
+            <!-- display full json structure like this-->
+            <li>Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
+            <li>Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
+        </ul>
+    </div>
+</div>
