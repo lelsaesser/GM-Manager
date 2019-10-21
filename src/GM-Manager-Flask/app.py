@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_restful import Resource, Api
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
+import constants
 
 app = Flask(__name__)
 api = Api(app)
@@ -18,19 +19,24 @@ class SurvrunApi(Resource):
         return {'survrunData': [{'id': 1, 'target_location_one': target_a, 'target_location_two': target_b}]}
 
 
-api.add_resource(SurvrunApi, '/api/survrim')
+api.add_resource(SurvrunApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
+
+
+class StrongholdApi(Resource):
+    def get(self):
+        ai_list = StrongholdAiPicker.pick_random_ai(8)
+        ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
+        if not ai_list_str:
+            abort(404)
+        return {'shcData': [{'ai_battle': ai_list_str}]}
+
+
+api.add_resource(StrongholdApi, constants.API_STRONGHOLD_GET_AI_BATTLE)
 
 
 @app.route('/')
 def hello_world():
     return 'GM-Manager'
-
-
-@app.route('/api/shc')
-def stronghold_route():
-    ai_list = StrongholdAiPicker.pick_random_ai(8)
-    ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
-    return 'Stronghold random game: ' + ai_list_str
 
 
 @app.errorhandler(404)
