@@ -1,10 +1,40 @@
-<!--Dummy data-->
+<!--ShC AI battle generator panel-->
 <div class="panel panel-primary">
-    <div class="panel-heading">Stronghold AI battle generator</div>
-    <div class="panel-body">
-      <button (click)="fetchShcBattleData()">Generate AI battle</button>
-      <ul>
-        <p>{{ shcJson.shcData[0].ai_battle }}</p>
-      </ul>
+  <div class="panel-heading">Stronghold AI battle generator</div>
+  <div class="panel-body">
+
+    <!--Player count selection input group-->
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players2" autocomplete="off"> 2
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players3" autocomplete="off"> 3
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players4" autocomplete="off"> 4
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players5" autocomplete="off"> 5
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players6" autocomplete="off"> 6
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="options" id="players7" autocomplete="off"> 7
+      </label>
+      <label class="btn btn-secondary active">
+        <input type="radio" name="options" id="players8" autocomplete="off" checked> 8
+      </label>
+    </div>
+
+    <!--Button for get request-->
+    <button (click)="fetchShcBattleData()" type="button" class="btn btn-dark">Generate AI battle</button>
+
+    <!--Paragraph displaying the result string-->
+    <ul>
+      <p>{{ shcJson.shcData[0].ai_battle }}</p>
+    </ul>
+
   </div>
 </div>

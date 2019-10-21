@@ -2,12 +2,17 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Survrun target location generator</div>
     <div class="panel-body">
-        <button (click)="fetchSurvrunData()">Get Survrun locations</button>
+
+        <!--Button for get request-->
+        <button (click)="fetchSurvrunData()" type="button" class="btn btn-dark">Get Survrun locations</button>
+
+        <!--List elements containing json results-->
         <ul>
             <!-- <pre >Data: {{ survrunData | json }}</pre> -->
             <!-- display full json structure like this-->
             <li>Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
             <li>Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
         </ul>
+        
     </div>
 </div>
