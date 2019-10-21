@@ -44,13 +44,13 @@ class StrongholdAiPicker:
                 raise ValueError
             result_str += ai_list[i]
             if i is not half - 1:
-                result_str += ", "
+                result_str += " | "
         result_str += " vs. "
         for i in range(len(ai_list) - half):
             if type(ai_list[i + half]) is not str:
                 raise ValueError
             result_str += ai_list[i + half]
             if i is not len(ai_list) - half - 1:
-                result_str += ", "
+                result_str += " | "
 
         return result_str
