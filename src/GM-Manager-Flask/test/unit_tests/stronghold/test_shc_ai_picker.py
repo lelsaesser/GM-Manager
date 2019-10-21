@@ -26,7 +26,7 @@ class TestShcAiPicker:
 
         test_list = ['Emperor Frederick', 'Abbot of Sterling', 'Richard Lionheart', 'Nizar the Silent', 'Sultan Abdul',
                      'King Phillip', 'Sheriff of Nottingham', 'Snake, Lord Python']
-        test_result_string = "Emperor Frederick, Abbot of Sterling, Richard Lionheart, Nizar the Silent vs. " \
-                             "Sultan Abdul, King Phillip, Sheriff of Nottingham, Snake, Lord Python"
+        test_result_string = "Emperor Frederick | Abbot of Sterling | Richard Lionheart | Nizar the Silent vs. " \
+                             "Sultan Abdul | King Phillip | Sheriff of Nottingham | Snake, Lord Python"
         assert StrongholdAiPicker.format_ai_list(test_list) is not None
         assert StrongholdAiPicker.format_ai_list(test_list) == test_result_string
