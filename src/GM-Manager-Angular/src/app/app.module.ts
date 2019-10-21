@@ -4,18 +4,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SurvrimComponent } from './survrim/survrim.component';
-import { StrongholdComponent } from './stronghold/stronghold.component'
+import { StrongholdComponent } from './stronghold/stronghold.component';
+import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-not-found.component'
 
 const appRoutes: Routes = [
-  { path: 'survrim', component: SurvrimComponent},
-  { path: 'stronghold', component: StrongholdComponent},
+  { path: '', redirectTo: '/survrim', pathMatch: 'full' },
+  { path: 'survrim', component: SurvrimComponent },
+  { path: 'stronghold', component: StrongholdComponent },
+  { path: '**', component: ErrorPageNotFoundComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     SurvrimComponent,
-    StrongholdComponent
+    StrongholdComponent,
+    ErrorPageNotFoundComponent
   ],
   imports: [
     BrowserModule,
