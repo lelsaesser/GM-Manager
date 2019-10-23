@@ -4,33 +4,18 @@
   <div class="panel-body">
 
     <!--Player count selection input group-->
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="2" autocomplete="off"> 2
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="3" autocomplete="off">  3
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="4" autocomplete="off"> 4
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="5" autocomplete="off"> 5
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="6" autocomplete="off"> 6
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="7" autocomplete="off"> 7
-      </label>
-      <label class="btn btn-secondary active">
-        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="8" autocomplete="off"> 8
-      </label>
+    <p>Select the number of AIs in this battle:</p>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(2)">2</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(3)">3</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(4)">4</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(5)">5</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(6)">6</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(7)">7</button>
+        <button type="button" class="btn btn-primary" (click)="fetchShcBattleDataWithPlayerCount(8)">8</button>
+      </div>
     </div>
-
-    <!--Button for get request-->
-    <button (click)="fetchShcBattleData()" type="button" class="btn btn-primary btn-sm">Generate AI battle</button>
-    <button (click)="fetchShcBattleDataWithPlayerCount()" type="button" class="btn btn-primary btn-sm">Generate AI battle</button>
 
     <!--Paragraph displaying the result string-->
     <ul>
