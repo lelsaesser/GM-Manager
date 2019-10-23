@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, make_response, abort
+from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 import constants
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +26,16 @@ api.add_resource(SurvrunApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
 class StrongholdApi(Resource):
     def get(self):
         ai_list = StrongholdAiPicker.pick_random_ai(8)
+        ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
+        if not ai_list_str:
+            abort(404)
+        return {'shcData': [{'ai_battle': ai_list_str}]}
+
+    def post(self):
+        ai_count = json.loads(request.data)["shc_ai_battle_player_count"]
+        if not ai_count:
+            abort(404)
+        ai_list = StrongholdAiPicker.pick_random_ai(ai_count)
         ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
         if not ai_list_str:
             abort(404)

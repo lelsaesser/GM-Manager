@@ -6,30 +6,31 @@
     <!--Player count selection input group-->
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players2" autocomplete="off"> 2
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="2" autocomplete="off"> 2
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players3" autocomplete="off"> 3
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="3" autocomplete="off">  3
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players4" autocomplete="off"> 4
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="4" autocomplete="off"> 4
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players5" autocomplete="off"> 5
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="5" autocomplete="off"> 5
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players6" autocomplete="off"> 6
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="6" autocomplete="off"> 6
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" name="options" id="players7" autocomplete="off"> 7
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="7" autocomplete="off"> 7
       </label>
       <label class="btn btn-secondary active">
-        <input type="radio" name="options" id="players8" autocomplete="off" checked> 8
+        <input type="radio" [(ngModel)]="ai_count" name="ai_count" value="8" autocomplete="off"> 8
       </label>
     </div>
 
     <!--Button for get request-->
-    <button (click)="fetchShcBattleData()" type="button" class="btn btn-dark">Generate AI battle</button>
+    <button (click)="fetchShcBattleData()" type="button" class="btn btn-primary btn-sm">Generate AI battle</button>
+    <button (click)="fetchShcBattleDataWithPlayerCount()" type="button" class="btn btn-primary btn-sm">Generate AI battle</button>
 
     <!--Paragraph displaying the result string-->
     <ul>

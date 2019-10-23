@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SurvrimComponent } from './survrim/survrim.component';
 import { StrongholdComponent } from './stronghold/stronghold.component';
 import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-not-found.component'
+import { FormsModule } from '@angular/forms'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/survrim', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // for debugging
