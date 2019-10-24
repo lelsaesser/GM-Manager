@@ -14,19 +14,6 @@ export class StrongholdComponent {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchShcBattleData() {
-    this.httpClient.get(this.SHC_API_URL).subscribe(data => {
-      this.shcJson = data as JSON;
-      console.log("GET call successful value returned in body", data);
-    },
-      response => {
-        console.log("GET call in error", response);
-      },
-      () => {
-        console.log("The GET observable is now completed.");
-      });
-  }
-
   fetchShcBattleDataWithPlayerCount(ai_count) {
     this.httpClient.post(this.SHC_API_URL,
       {
