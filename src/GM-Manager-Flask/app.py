@@ -13,11 +13,23 @@ CORS(app)  # required for cross origin resource sharing error (temp fix)
 
 class SurvrunApi(Resource):
     def get(self):
-        survrun_targets = SurvrunGoalLocationCalculator()
-        target_a, target_b = survrun_targets.calc_goal_locations()
-        if not target_a or not target_b:
+        survrun = SurvrunGoalLocationCalculator()
+        target_a, target_b = survrun.calc_goal_locations()
+        timebox = survrun.calc_time_limit(target_a, target_b)
+        if not target_a or not target_b or not timebox:
             abort(404)
-        return {'survrunData': [{'id': 1, 'target_location_one': target_a, 'target_location_two': target_b}]}
+
+        json_model = {
+            'survrunData': [
+                {
+                    'id': 1,
+                    'target_location_one': target_a,
+                    'target_location_two': target_b,
+                    'timebox': timebox
+                }
+            ]
+        }
+        return json_model
 
 
 api.add_resource(SurvrunApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
