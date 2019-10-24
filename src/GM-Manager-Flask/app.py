@@ -11,6 +11,11 @@ api = Api(app)
 CORS(app)  # required for cross origin resource sharing error (temp fix)
 
 
+class SurvrimApi(Resource):
+    def post(self):
+        pass
+
+
 class SurvrunApi(Resource):
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
