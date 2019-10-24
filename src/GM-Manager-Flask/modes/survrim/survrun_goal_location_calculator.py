@@ -82,3 +82,12 @@ class SurvrunGoalLocationCalculator:
             return constants.TIME_SURVRUN_MAX_TIMEBOX
         else:
             raise Exception("time_factor is expected to be in range(0, 5). Actual: ", time_factor)
+
+    def calc_time_limit_with_randomness(self, location_a: str, location_b: str) -> int:
+        """
+        Calculate survrun timebox with some randomness (+- 10min)
+        :param location_a: first target location (expects a CITY_* constant)
+        :param location_b: second target location (expects a CITY_* constant)
+        :return: integer which represents the time in minutes
+        """
+        return self.calc_time_limit(location_a, location_b) + random.randint(-10, 10)

@@ -15,7 +15,7 @@ class SurvrunApi(Resource):
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
-        timebox = survrun.calc_time_limit(target_a, target_b)
+        timebox = survrun.calc_time_limit_with_randomness(target_a, target_b)
         if not target_a or not target_b or not timebox:
             abort(404)
 
