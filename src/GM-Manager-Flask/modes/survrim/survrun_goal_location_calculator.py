@@ -1,3 +1,5 @@
+from typing import Union, Tuple, Any
+
 from modes.survrim import constants
 import random
 
@@ -70,24 +72,40 @@ class SurvrunGoalLocationCalculator:
         else:
             raise Exception("len(sectors) is expected to be 1 or 2. Actual: ", len(sectors))
 
-        if time_factor == 0:
-            return 20
-        elif time_factor == 1:
-            return 30
+        if time_factor == 1:
+            return constants.TIME_SURVRUN_MIN_TIMEBOX + 10
         elif time_factor == 2:
-            return 40
+            return constants.TIME_SURVRUN_MIN_TIMEBOX + 20
         elif time_factor == 3:
-            return 50
+            return constants.TIME_SURVRUN_MIN_TIMEBOX + 30
         elif time_factor == 4:
             return constants.TIME_SURVRUN_MAX_TIMEBOX
         else:
             raise Exception("time_factor is expected to be in range(0, 5). Actual: ", time_factor)
 
-    def calc_time_limit_with_randomness(self, location_a: str, location_b: str) -> int:
+    def calc_time_limit_with_randomness(self, location_a: str, location_b: str) -> Tuple[Union[int, Any], str]:
         """
         Calculate survrun timebox with some randomness (+- 10min)
         :param location_a: first target location (expects a CITY_* constant)
         :param location_b: second target location (expects a CITY_* constant)
-        :return: integer which represents the time in minutes
+        :return: integer which represents the time in minutes, string containing the difficulty rating
         """
-        return self.calc_time_limit(location_a, location_b) + random.randint(-10, 10)
+        time_mod = random.randint(-15, 25)
+        if time_mod < -10:
+            difficulty_rating = "Hardcore Extreme"
+        elif -10 <= time_mod < -5:
+            difficulty_rating = "Extreme"
+        elif -5 <= time_mod < 0:
+            difficulty_rating = "Difficult"
+        elif 0 <= time_mod < 6:
+            difficulty_rating = "Harsh"
+        elif 6 <= time_mod < 15:
+            difficulty_rating = "Normal"
+        elif 15 <= time_mod < 21:
+            difficulty_rating = "Promising"
+        elif 21 <= time_mod <= 25:
+            difficulty_rating = "Easy"
+        else:
+            raise Exception("Error: time_mod is expected to be in range(-15, 26). Actual: ", time_mod)
+
+        return self.calc_time_limit(location_a, location_b) + time_mod, difficulty_rating

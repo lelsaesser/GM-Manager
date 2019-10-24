@@ -5,22 +5,31 @@ from modes.survrim import constants
 class TestSurvrunGoalLocationCalculator:
 
     def test_calc_goal_locations(self):
-        obj = SurvrunGoalLocationCalculator()
-        test_locations = obj.calc_goal_locations()
+        mock = SurvrunGoalLocationCalculator()
+        test_locations = mock.calc_goal_locations()
 
         assert test_locations is not None
         assert len(test_locations) == 2
         assert type(test_locations[0]) == str
         assert type(test_locations[1]) == str
 
-    def test_calc_time(self):
-        obj = SurvrunGoalLocationCalculator()
-        test_time = obj.calc_time_limit(constants.CITY_RIFTEN, constants.CITY_MARKARTH)
+    def test_calc_time_limit(self):
+        mock = SurvrunGoalLocationCalculator()
+        test_time = mock.calc_time_limit(constants.CITY_RIFTEN, constants.CITY_MARKARTH)
 
         assert test_time is not None
-        assert test_time == 60
+        assert test_time == constants.TIME_SURVRUN_MAX_TIMEBOX
 
-        test_time = obj.calc_time_limit(constants.CITY_WINTERHOLD, constants.CITY_WINDHELM)
+        test_time = mock.calc_time_limit(constants.CITY_WINTERHOLD, constants.CITY_WINDHELM)
 
         assert test_time is not None
-        assert test_time == 20
+        assert test_time == constants.TIME_SURVRUN_MIN_TIMEBOX
+
+    def test_calc_time_limit_with_randomness(self):
+        mock = SurvrunGoalLocationCalculator()
+        test_time, test_rating = mock.calc_time_limit_with_randomness(constants.CITY_RIFTEN, constants.CITY_MARKARTH)
+
+        assert test_time is not None
+        assert test_rating is not None
+        assert type(test_time) == int
+        assert type(test_rating) == str

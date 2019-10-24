@@ -15,7 +15,7 @@ class SurvrunApi(Resource):
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
-        timebox = survrun.calc_time_limit_with_randomness(target_a, target_b)
+        timebox, rating = survrun.calc_time_limit_with_randomness(target_a, target_b)
         if not target_a or not target_b or not timebox:
             abort(404)
 
@@ -25,7 +25,8 @@ class SurvrunApi(Resource):
                     'id': 1,
                     'target_location_one': target_a,
                     'target_location_two': target_b,
-                    'timebox': timebox
+                    'timebox': timebox,
+                    'rating': rating
                 }
             ]
         }
