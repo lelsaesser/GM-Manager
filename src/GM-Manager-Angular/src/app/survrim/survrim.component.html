@@ -7,13 +7,26 @@
         <button (click)="fetchSurvrunData()" type="button" class="btn btn-dark btn-sm">Get Survrun locations</button>
 
         <!--List elements containing json results-->
-        <ul>
+        <ul class="list-unstyled padding-default">
             <!-- <pre >Data: {{ survrunData | json }}</pre> -->
             <!-- display full json structure like this-->
-            <li>Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
-            <li>Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
-            <li>Timebox: {{ survrunJson.survrunData[0].timebox }}</li>
+            <li class="font-weight-normal">Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
+            <li class="font-weight-normal">Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
+            <li class="font-weight-normal">Timebox: {{ survrunJson.survrunData[0].timebox }} minutes</li>
         </ul>
 
+    </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
+
+<!--Placeholder-->
+<div class="card card-primary">
+    <div class="card-header">Placeholder</div>
+    <div class="card-body">
+
+        <!--Map selection button-->
+        <p>Lorem ipsum...</p>
     </div>
 </div>

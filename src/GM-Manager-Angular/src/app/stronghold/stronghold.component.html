@@ -4,7 +4,7 @@
   <div class="card-body">
 
     <!--Player count selection input group-->
-    <p>Select the number of AIs in this battle:</p>
+    <p class="font-weight-normal">Select the number of AIs in this battle:</p>
     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
       <div class="btn-group mr-2" role="group" aria-label="First group">
         <button type="button" class="btn btn-dark" (click)="fetchShcBattleDataWithPlayerCount(2)">2</button>
@@ -18,9 +18,20 @@
     </div>
 
     <!--Paragraph displaying the result string-->
-    <ul>
-      <p>{{ shcJson.shcData[0].ai_battle }}</p>
-    </ul>
+    <p class="font-weight-normal padding-default">{{ shcJson.shcData[0].ai_battle }}</p>
 
+  </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
+
+<!--ShC map selector card-->
+<div class="card card-primary">
+  <div class="card-header">Stronghold map selector</div>
+  <div class="card-body">
+
+    <!--Map selection button-->
+    <p>Lorem ipsum...</p>
   </div>
 </div>

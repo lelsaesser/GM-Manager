@@ -1,0 +1,19 @@
+/* build-ins */
+
+body {
+    background-color: #282828;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* classes */
+
+.blank-space-default {
+    padding: 20px;
+}
+
+.padding-default {
+    padding: 10px
+}

@@ -1,22 +1,25 @@
-<div class="container">
+<body>
+  <div class="container">
 
-  <!--Header with title-->
-  <div class="jumbotron">
-    <h1>Welcome to {{ title }}</h1>
+    <!--Header with title-->
+    <div class="jumbotron">
+      <h1 class="display-3">{{ title }}</h1>
+    </div>
+
+    <!--Navigation bar with different tabs-->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link bg-dark text-white" routerLink="/survrim">SurvivalRim</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link bg-dark text-white" routerLink="/stronghold">Stronghold</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link bg-dark text-white" href="#">Poke Nuzlocke</a>
+      </li>
+    </ul>
+    <router-outlet></router-outlet>
+
   </div>
-
-  <!--Navigation bar with different tabs-->
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" routerLink="/survrim">SurvivalRim</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" routerLink="/stronghold">Stronghold</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Poke Nuzlocke</a>
-    </li>
-  </ul>
-  <router-outlet></router-outlet>
-
-</div>
+  <div class="blank-space-default"></div>
+</body>
