@@ -6,9 +6,6 @@ import random
 
 class SurvrimRuleGenerator:
 
-    def calculate_ruleset(self, apply_item_restricts, apply_class_restricts):
-        pass
-
     @staticmethod
     def pick_class() -> str:
         """
@@ -82,6 +79,10 @@ class SurvrimRuleGenerator:
             if roll == 1:
                 class_randomancer_skills.append(skill)
 
-        if len(class_randomancer_skills) == 0:  # worst case: only daggers available
+        if constants.SKILL_COMBAT_ONE_HANDED in class_randomancer_skills and \
+                constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY in class_randomancer_skills:
+            class_randomancer_skills.remove(constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY)
+
+        elif len(class_randomancer_skills) == 0:  # worst case: only daggers available
             class_randomancer_skills.append(constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY)
         return class_randomancer_skills

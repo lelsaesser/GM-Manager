@@ -4,9 +4,6 @@ from modes.survrim import constants
 
 class TestSurvrimRuleGenerator:
 
-    def test_calculate_ruleset(self):
-        pass
-
     def test_pick_class(self):
         test_class = SurvrimRuleGenerator.pick_class()
 
