@@ -4,6 +4,7 @@ import requests
 
 import constants
 import modes.survrim.constants as survrim_constants
+from database.table_schemas import SurvrunTable
 
 
 class TestSurvrunApi:
@@ -27,3 +28,10 @@ class TestSurvrunApi:
         assert type(data["survrunData"][0]["target_location_two"]) == str
         assert data["survrunData"][0]["timebox"] is not None
         assert type(data["survrunData"][0]["timebox"]) == int
+
+    def test_query_db_get_all_data(self):
+        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
+
+        print(response.text)
+        assert response is not None
+        assert response.status_code == 200

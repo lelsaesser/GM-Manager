@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
+
+from database.querys_survrun_table import SurvrunTableQuerys
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim.survrim_rule_generator import SurvrimRuleGenerator
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
@@ -39,7 +41,39 @@ class SurvrimApi(Resource):
 api.add_resource(SurvrimApi, constants.API_SURVRIM_GET_CLASS_DATA)
 
 
-class SurvrunApi(Resource):
+# todo: 404 error if database is empty
+# todo: needs integration test
+class SurvrunQueryDatabaseApi(Resource):
+    def get(self):
+        db_query = SurvrunTableQuerys()
+        db_data = db_query.survrun_select_query()
+        if not db_data:
+            abort(404)
+
+        json_components = []
+        for row in db_data:
+            json_components.append(
+                {
+                    'id': row.id,
+                    'player_class': row.player_class,
+                    'target_a': row.target_a,
+                    'target_b': row.target_b,
+                    'timebox': row.timebox,
+                    'completed': row.completed,
+                    'time_needed': row.time_needed,
+                    'r_count': row.r_count
+                }
+            )
+
+        return jsonify({
+            'queryResult': json_components
+        })
+
+
+api.add_resource(SurvrunQueryDatabaseApi, constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
+
+
+class SurvrunTargetLocationApi(Resource):
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
@@ -62,7 +96,7 @@ class SurvrunApi(Resource):
         return json_model
 
 
-api.add_resource(SurvrunApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
+api.add_resource(SurvrunTargetLocationApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
 
 
 class StrongholdApi(Resource):
@@ -82,7 +116,7 @@ api.add_resource(StrongholdApi, constants.API_STRONGHOLD_GET_AI_BATTLE)
 
 
 @app.route('/')
-def hello_world():
+def landing_page():
     return 'GM-Manager'
 
 
