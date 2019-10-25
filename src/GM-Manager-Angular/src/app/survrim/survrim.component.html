@@ -7,13 +7,17 @@
         <button (click)="fetchSurvrunData()" type="button" class="btn btn-dark btn-sm">Get Survrun locations</button>
 
         <!--List elements containing json results-->
-        <ul class="list-unstyled padding-default">
+        <ul class="list-unstyled padding-default" *ngIf="show_targets">
             <!-- <pre >Data: {{ survrunData | json }}</pre> -->
             <!-- display full json structure like this-->
-            <li class="font-weight-normal">Target A: {{ survrunJson.survrunData[0].target_location_one }}</li>
-            <li class="font-weight-normal">Target B: {{ survrunJson.survrunData[0].target_location_two }}</li>
-            <li class="font-weight-normal">Timebox: {{ survrunJson.survrunData[0].timebox }} minutes</li>
-            <li class="font-weight-normal">Expected difficulty: {{ survrunJson.survrunData[0].rating }}</li>
+            <li class="font-weight-normal" *ngIf="survrunJson.survrunData[0].target_location_one as value">Target A:
+                {{ value }}</li>
+            <li class="font-weight-normal" *ngIf="survrunJson.survrunData[0].target_location_two as value">Target B:
+                {{ value }}</li>
+            <li class="font-weight-normal" *ngIf="survrunJson.survrunData[0].timebox as value">Timebox: {{ value }}
+                minutes</li>
+            <li class="font-weight-normal" *ngIf="survrunJson.survrunData[0].rating as value">Expected difficulty:
+                {{ value }}</li>
         </ul>
 
     </div>
@@ -24,10 +28,17 @@
 
 <!--Placeholder-->
 <div class="card card-primary">
-    <div class="card-header">Placeholder</div>
+    <div class="card-header">Class picker</div>
     <div class="card-body">
 
-        <!--Map selection button-->
-        <p>Lorem ipsum...</p>
+        <!--get class button-->
+        <button (click)="fetchSurvrimClass()" type="button" class="btn btn-dark btn-sm">Get your class</button>
+
+        <!--display response data-->
+        <ul class="list-unstyled padding-default" *ngIf="show_class">
+            <li *ngIf="survrimClassData.survrimData[0].class_info[0].player_class as value">Class: {{ value }}</li>
+            <li *ngIf="survrimClassData.survrimData[0].class_info[0].player_class_skills as value">Skills: {{ value }}
+            </li>
+        </ul>
     </div>
 </div>

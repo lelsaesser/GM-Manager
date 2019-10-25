@@ -9,6 +9,7 @@ import { API_URL, SHC_API } from './../env';
 })
 export class StrongholdComponent {
 
+  show_ai_battle: boolean = false;
   shcJson: JSON;
   SHC_API_URL = `${API_URL}` + `${SHC_API}`;
 
@@ -20,6 +21,7 @@ export class StrongholdComponent {
         "shc_ai_battle_player_count": ai_count
       }).subscribe(data => {
         this.shcJson = data as JSON
+        this.show_ai_battle = true
         console.log("POST call successful value returned in body", data);
       },
         response => {

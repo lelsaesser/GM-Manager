@@ -18,7 +18,7 @@
     </div>
 
     <!--Paragraph displaying the result string-->
-    <p class="font-weight-normal padding-default">{{ shcJson.shcData[0].ai_battle }}</p>
+    <p class="font-weight-normal padding-default" *ngIf="show_ai_battle">{{ shcJson.shcData[0].ai_battle }}</p>
 
   </div>
 </div>
