@@ -2,6 +2,7 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
+from modes.survrim.survrim_rule_generator import SurvrimRuleGenerator
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 import constants
 import json
@@ -12,8 +13,30 @@ CORS(app)  # required for cross origin resource sharing error (temp fix)
 
 
 class SurvrimApi(Resource):
-    def post(self):
-        pass
+    def get(self):
+        player_class = SurvrimRuleGenerator.pick_class()
+        player_class_skills = SurvrimRuleGenerator.get_skills_for_class(player_class)
+
+        if not player_class or not player_class_skills:
+            abort(404)
+
+        json_model = {
+            'survrimData': [
+                {
+                    'class_info': [
+                        {
+                            'player_class': player_class,
+                            'player_class_skills': player_class_skills
+                        }
+                    ]
+                }
+            ]
+        }
+
+        return json_model
+
+
+api.add_resource(SurvrimApi, constants.API_SURVRIM_GET_CLASS_DATA)
 
 
 class SurvrunApi(Resource):
@@ -35,6 +58,7 @@ class SurvrunApi(Resource):
                 }
             ]
         }
+
         return json_model
 
 
@@ -50,6 +74,7 @@ class StrongholdApi(Resource):
         ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
         if not ai_list_str:
             abort(404)
+
         return {'shcData': [{'ai_battle': ai_list_str}]}
 
 
