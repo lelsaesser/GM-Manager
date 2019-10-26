@@ -26,7 +26,7 @@
 <!--Space bar between cards-->
 <div class="blank-space-default"></div>
 
-<!--Placeholder-->
+<!--Survrun class picker card-->
 <div class="card card-primary">
     <div class="card-header">Class picker</div>
     <div class="card-body">
@@ -40,5 +40,43 @@
             <li *ngIf="survrimClassData.survrimData[0].class_info[0].player_class_skills as value">Skills: {{ value }}
             </li>
         </ul>
+    </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
+
+<div class="card card-primary">
+    <div class="card-header">Show recorded Survruns:</div>
+    <div class="card-body">
+
+        <!--query flask backend button-->
+        <button (click)="querySurvrunTableGetAllRuns()" type="button" class="btn btn-dark btn-sm">Query Postgre</button>
+
+        <!--display query results in table-->
+        <table class="table table-hover" *ngIf="show_queryResultSurvrunData">
+            <thead>
+                <th scope="col">id</th>
+                <th scope="col">completed</th>
+                <th scope="col">class</th>
+                <th scope="col">Target A</th>
+                <th scope="col">Target B</th>
+                <th scope="col">Timebox</th>
+                <th scope="col">Time needed</th>
+                <th scope="col">R count</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of queryResultSurvrunData.queryResult">
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.completed }}</td>
+                    <td>{{ row.player_class }}</td>
+                    <td>{{ row.target_a }}</td>
+                    <td>{{ row.target_b }}</td>
+                    <td>{{ row.timebox }}</td>
+                    <td>{{ row.time_needed }}</td>
+                    <td>{{ row.r_count }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
