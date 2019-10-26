@@ -32,7 +32,6 @@ LOC_HEXENFELSENSCHANZE = "Hexenfelsenschanze"
 
 # Complete Survrun possible target location list
 LIST_SURVRUN_TARGET_LOCATIONS = locations = [
-    ERROR_LOCATION_MISSING,
     CITY_WINDHELM,
     CITY_FALKREATH,
     CITY_SOLITUDE,

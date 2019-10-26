@@ -20,8 +20,8 @@ class SurvrunGoalLocationCalculator:
         :return: string tuple of length 2, which contains the full names of both chosen locations
         """
         while self._loc_idx_a == self._loc_idx_b:
-            self._loc_idx_a = random.randint(1, len(self._locations) - 1)
-            self._loc_idx_b = random.randint(1, len(self._locations) - 1)
+            self._loc_idx_a = random.randint(0, len(self._locations) - 1)
+            self._loc_idx_b = random.randint(0, len(self._locations) - 1)
 
         return self._locations[self._loc_idx_a], self._locations[self._loc_idx_b]
 

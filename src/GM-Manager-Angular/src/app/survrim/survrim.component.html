@@ -80,3 +80,54 @@
         </table>
     </div>
 </div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
+
+<div class="card card-primary">
+    <div class="card-header">Submit new run</div>
+    <div class="card-body">
+        <form *ngIf="survrimConstants_set" [formGroup]="formSubmitRun" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="0" max="100" placeholder="Timebox"
+                        formControlName="formTimebox">
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="0" max="100" placeholder="Time needed"
+                        formControlName="formTimeNeeded">
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="0" max="100" placeholder="R count"
+                        formControlName="formRcount">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formPlayerClass">
+                        <option *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES">
+                            {{ class_name }}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formTargetA">
+                        <option
+                            *ngFor="let location of survrunConstants.survrim_constants[0].LIST_SURVRUN_TARGET_LOCATIONS">
+                            {{ location }}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formTargetB">
+                        <option
+                            *ngFor="let location of survrunConstants.survrim_constants[0].LIST_SURVRUN_TARGET_LOCATIONS">
+                            {{ location }}</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <!--submit form button (send post)-->
+        <button (click)="postSurvrunToDatabase()" type="button" class="btn btn-dark btn-sm">Send to DB</button>
+    </div>
+</div>
