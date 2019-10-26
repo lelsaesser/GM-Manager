@@ -55,7 +55,7 @@ api.add_resource(SurvrunGetConstants, constants.API_SURVRUN_GET_CONSTANTS)
 
 
 # todo: needs integration test
-class SurvrunQueryGetSubmitRuns(Resource):
+class SurvrunQueryGetRuns(Resource):
     def get(self):
         db_query = SurvrunTableQuerys()
         db_data = db_query.survrun_select_query()
@@ -64,18 +64,21 @@ class SurvrunQueryGetSubmitRuns(Resource):
 
         json_components = []
         for row in db_data:
-            json_components.append(
-                {
-                    'id': row.id,
-                    'player_class': row.player_class,
-                    'target_a': row.target_a,
-                    'target_b': row.target_b,
-                    'timebox': row.timebox,
-                    'completed': row.completed,
-                    'time_needed': row.time_needed,
-                    'r_count': row.r_count
-                }
-            )
+            try:
+                json_components.append(
+                    {
+                        'id': row.id,
+                        'player_class': row.player_class,
+                        'target_a': row.target_a,
+                        'target_b': row.target_b,
+                        'timebox': row.timebox,
+                        'completed': row.completed,
+                        'time_needed': row.time_needed,
+                        'r_count': row.r_count
+                    }
+                )
+            except AttributeError:
+                abort(500)
         if not json_components[0]:
             return jsonify({'Info': 'No data to fetch, table is empty'})
 
@@ -84,11 +87,11 @@ class SurvrunQueryGetSubmitRuns(Resource):
         })
 
 
-api.add_resource(SurvrunQueryGetSubmitRuns, constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
+api.add_resource(SurvrunQueryGetRuns, constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
 
 
 class SurvrunQueryPostRun(Resource):
-    def post(self) -> int:
+    def post(self):
         a = json.loads(request.data)
         run_data = json.loads(request.data)["submitRunFormData"]
         if not run_data or not run_data[0]:
@@ -105,11 +108,14 @@ class SurvrunQueryPostRun(Resource):
         else:
             completed = "no"
 
+        if not player_class or not target_a or not target_b or not timebox or not time_needed or not r_count:
+            abort(400)
+
         db_query = SurvrunTableQuerys()
-        status = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
-                                               target_b=target_b, timebox=timebox, time_needed=time_needed,
-                                               r_count=r_count, completed=completed)
-        return status
+        status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
+                                                    target_b=target_b, timebox=timebox, time_needed=time_needed,
+                                                    r_count=r_count, completed=completed)
+        return status, msg
 
 
 api.add_resource(SurvrunQueryPostRun, constants.API_SURVRUN_POST_RUN)
@@ -162,14 +168,20 @@ def landing_page():
     return 'GM-Manager'
 
 
+@app.errorhandler(400)
+def error_not_found(error):
+    return make_response(jsonify({'Bad request': error}), 400)
+
+
 @app.errorhandler(404)
 def error_not_found(error):
     return make_response(jsonify({'error': '404: Not found'}), 404)
 
 
-@app.errorhandler(400)
+@app.errorhandler(500)
 def error_not_found(error):
-    return make_response(jsonify({'Bad request': error}), 400)
+    return make_response(jsonify({'Backend error': 'an internal error occured in backend while processing data: ' +
+                                                   error}), 500)
 
 
 if __name__ == '__main__':

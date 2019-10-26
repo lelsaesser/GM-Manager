@@ -19,7 +19,7 @@ class SurvrunTableQuerys:
         self._session = sessionmaker(self._db)
 
     def survrun_insert_query(self, player_class: str, target_a: str, target_b: str, timebox: int, completed: str,
-                             time_needed: int, r_count: int) -> int:
+                             time_needed: int, r_count: int):
         """
         Insert a new run in survrun_runs table
         :param player_class: valid survrun class name
@@ -29,15 +29,22 @@ class SurvrunTableQuerys:
         :param completed: "yes" or "no"
         :param time_needed: integer, time in minutes
         :param r_count: integer, r_count
-        :return:
+        :return: HTTP request status code (int) and string containing detailed explanation
         """
+        msg = ""
         if player_class not in survrim_constants.LIST_SURVRIM_CLASSES:
-            raise Exception("Error:", player_class, " is not a valid class name")
+            msg = "Bad request:" + player_class + " is not a valid class name"
+            return 400, msg
         elif target_a not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS \
                 or target_b not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS:
-            raise Exception("Error:", target_a, target_b, ": one or more are no valid target location names")
+            msg = "Bad request:" + target_a + target_b + ": one or more are no valid target location names"
+            return 400, msg
         elif completed is not "yes" and completed is not "no":
-            raise Exception("Error:", "completed must be either \"yes\" or \"no\"")
+            msg = "Bad request: completed must be either \"yes\" or \"no\""
+            return 400, msg
+        elif target_a == target_b:
+            msg = "Bad request: target locations cannot be equal"
+            return 400, msg
 
         run_query = SurvrunTable(player_class=player_class, target_a=target_a, target_b=target_b, timebox=timebox,
                                  completed=completed, time_needed=time_needed, r_count=r_count)
@@ -46,10 +53,11 @@ class SurvrunTableQuerys:
         try:
             sess.add(run_query)
             sess.commit()
-            return 200
+            msg = "query completed"
+            return 200, msg
         except IntegrityError:  # thrown if duplicate PK (id)
-            print("PK already exists, skipping")
-            return 400
+            msg = "PK already exists, skipping"
+            return 400, msg
 
     def survrun_select_query(self) -> List[List]:
         """
