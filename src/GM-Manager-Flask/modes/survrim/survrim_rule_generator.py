@@ -79,10 +79,24 @@ class SurvrimRuleGenerator:
             if roll == 1:
                 class_randomancer_skills.append(skill)
 
+        # prevent that both 1H and 1H only dagger is in skill list
         if constants.SKILL_COMBAT_ONE_HANDED in class_randomancer_skills and \
                 constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY in class_randomancer_skills:
             class_randomancer_skills.remove(constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY)
 
+        # prevent that offhand casting, but no magic talent is in skill list
+        if constants.SKILL_COMBAT_OFFHAND_CAST in class_randomancer_skills and \
+                constants.SKILL_MAGIC_DESTRUCTION not in class_randomancer_skills and \
+                constants.SKILL_MAGIC_RESTORATION not in class_randomancer_skills:
+            class_randomancer_skills.remove(constants.SKILL_COMBAT_OFFHAND_CAST)
+
+        # prevent that dual wield, but no 1H talent is in skill list
+        if constants.SKILL_COMBAT_DUAL_WIELD in class_randomancer_skills and \
+                constants.SKILL_COMBAT_ONE_HANDED not in class_randomancer_skills and \
+                constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY not in class_randomancer_skills:
+            class_randomancer_skills.remove(constants.SKILL_COMBAT_DUAL_WIELD)
+
+        # prevent that a randomancer can have 0 skills
         elif len(class_randomancer_skills) == 0:  # worst case: only daggers available
             class_randomancer_skills.append(constants.SKILL_COMBAT_ONE_HANDED_DAGGER_ONLY)
         return class_randomancer_skills
