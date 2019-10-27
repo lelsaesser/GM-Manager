@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 
-from database.querys_survrun_table import SurvrunTableQuerys
+from database.query_survrun_table import QuerySurvrunTable
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim.survrim_rule_generator import SurvrimRuleGenerator
 from modes.survrim.survrim_return_constants import SurvrimReturnConstants
@@ -54,10 +54,9 @@ class SurvrunGetConstants(Resource):
 api.add_resource(SurvrunGetConstants, constants.API_SURVRUN_GET_CONSTANTS)
 
 
-# todo: needs integration test
 class SurvrunQueryGetRuns(Resource):
     def get(self):
-        db_query = SurvrunTableQuerys()
+        db_query = QuerySurvrunTable()
         db_data = db_query.survrun_select_query()
         if not db_data:
             abort(400)
@@ -92,7 +91,6 @@ api.add_resource(SurvrunQueryGetRuns, constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
 
 class SurvrunQueryPostRun(Resource):
     def post(self):
-        a = json.loads(request.data)
         run_data = json.loads(request.data)["submitRunFormData"]
         if not run_data or not run_data[0]:
             abort(400)
@@ -111,10 +109,12 @@ class SurvrunQueryPostRun(Resource):
         if not player_class or not target_a or not target_b or not timebox or not time_needed or not r_count:
             abort(400)
 
-        db_query = SurvrunTableQuerys()
+        db_query = QuerySurvrunTable()
         status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
                                                     target_b=target_b, timebox=timebox, time_needed=time_needed,
                                                     r_count=r_count, completed=completed)
+        if status == 400:
+            abort(400)
         return status, msg
 
 

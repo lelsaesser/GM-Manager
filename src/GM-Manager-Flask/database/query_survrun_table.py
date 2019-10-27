@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
@@ -9,7 +9,7 @@ from database.table_schemas import SurvrunTable
 from modes.survrim import constants as survrim_constants
 
 
-class SurvrunTableQuerys:
+class QuerySurvrunTable:
 
     def __init__(self):
         self._db_string = "postgres://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
@@ -33,17 +33,17 @@ class SurvrunTableQuerys:
         """
         msg = ""
         if player_class not in survrim_constants.LIST_SURVRIM_CLASSES:
-            msg = "Bad request:" + player_class + " is not a valid class name"
+            msg = db_constants.BAD_REQUEST_INVALID_CLASS_NAME
             return 400, msg
-        elif target_a not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS \
+        if target_a not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS \
                 or target_b not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS:
-            msg = "Bad request:" + target_a + target_b + ": one or more are no valid target location names"
+            msg = db_constants.BAD_REQUEST_INVALID_LOCATION_NAME
             return 400, msg
-        elif completed is not "yes" and completed is not "no":
-            msg = "Bad request: completed must be either \"yes\" or \"no\""
+        if completed is not "yes" and completed is not "no":
+            msg = db_constants.BAD_REQUEST_INVALID_ATTRIBUTE_COMPLETED
             return 400, msg
-        elif target_a == target_b:
-            msg = "Bad request: target locations cannot be equal"
+        if target_a == target_b:
+            msg = db_constants.BAD_REQUEST_TARGET_LOCATIONS_EQUAL
             return 400, msg
 
         run_query = SurvrunTable(player_class=player_class, target_a=target_a, target_b=target_b, timebox=timebox,
@@ -53,10 +53,10 @@ class SurvrunTableQuerys:
         try:
             sess.add(run_query)
             sess.commit()
-            msg = "query completed"
+            msg = db_constants.SUCCESS_QUERY_COMPLETED
             return 200, msg
         except IntegrityError:  # thrown if duplicate PK (id)
-            msg = "PK already exists, skipping"
+            msg = db_constants.BAD_REQUEST_DUPLICATE_PRIMARY_KEY
             return 400, msg
 
     def survrun_select_query(self) -> List[List]:
@@ -68,3 +68,13 @@ class SurvrunTableQuerys:
         data = sess.query(SurvrunTable)
 
         return data
+
+    def survrun_delete_last_added_record_query(self):
+        sess = self._session()
+        data = sess.query(SurvrunTable).order_by(desc(SurvrunTable.id)).limit(1)
+
+        for row in data:
+            sess.delete(row)
+            sess.commit()
+            return 200, db_constants.SUCCESS_QUERY_COMPLETED
+        return 400, db_constants.BAD_REQUEST_TABLE_IS_EMPTY
