@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms'
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION, API_SURVRIM_GET_CLASS_DATA, API_SURVRUN_GET_ALL_DB_RUN_DATA,
-  API_SURVRUN_GET_CONSTANTS, API_SURVRUN_POST_RUN
+  API_SURVRUN_GET_CONSTANTS, API_SURVRUN_POST_RUN, API_SURVRUN_DELETE_RUN
 } from './../env';
 
 @Component({
@@ -24,6 +24,7 @@ export class SurvrimComponent {
   survrunConstants: JSON;
 
   formSubmitRunData: any;
+  formSubmitDeleteId: any;
 
   formSubmitRun = new FormGroup({
     formTimebox: new FormControl(''),
@@ -32,6 +33,10 @@ export class SurvrimComponent {
     formPlayerClass: new FormControl(''),
     formTargetA: new FormControl(''),
     formTargetB: new FormControl(''),
+  });
+
+  formDeleteRun = new FormGroup({
+    formIdToDelete: new FormControl('')
   });
 
 
@@ -90,11 +95,34 @@ export class SurvrimComponent {
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.querySurvrunTableGetAllRuns()
         });
+  }
+
+  deleteSurvruninDatabase() {
+    this.httpClient.post(API_URL + API_SURVRUN_DELETE_RUN,
+      {
+        'delete_row_id': this.formSubmitDeleteId.formIdToDelete
+      }).subscribe(data => {
+        console.log("POST call successful value returned in body", data);
+      },
+        response => {
+          console.log("POST call in error", response);
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+          this.querySurvrunTableGetAllRuns()
+        });
+  }
+
+  onSubmitDelete() {
+    this.formSubmitDeleteId = this.formDeleteRun.value as JSON;
+    this.deleteSurvruninDatabase()
   }
 
   onSubmit() {
     this.formSubmitRunData = this.formSubmitRun.value as JSON;
+    this.postSurvrunToDatabase()
   }
 
   ngOnInit() {

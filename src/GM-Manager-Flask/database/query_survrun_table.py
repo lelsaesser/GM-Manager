@@ -70,6 +70,12 @@ class QuerySurvrunTable:
         return data
 
     def survrun_delete_last_added_record_query(self):
+        """
+        Delete the last added table record. This is handy for unit/integration tests that create a record to test
+        the insert functionality or for undo/revert functionality in frontend.
+        Important: this is id based. The record with the highest id is interpreted as last added record. Only works
+        with autoincrement.
+        """
         sess = self._session()
         data = sess.query(SurvrunTable).order_by(desc(SurvrunTable.id)).limit(1)
 
@@ -78,3 +84,14 @@ class QuerySurvrunTable:
             sess.commit()
             return 200, db_constants.SUCCESS_QUERY_COMPLETED
         return 400, db_constants.BAD_REQUEST_TABLE_IS_EMPTY
+
+    def survrun_delete_record_by_id_query(self, run_id):
+        sess = self._session()
+        row = sess.query(SurvrunTable).filter(SurvrunTable.id == run_id).first()
+
+        if not row:
+            return 400, db_constants.BAD_REQUEST_ID_NOT_FOUND
+
+        sess.delete(row)
+        sess.commit()
+        return 200, db_constants.SUCCESS_QUERY_COMPLETED

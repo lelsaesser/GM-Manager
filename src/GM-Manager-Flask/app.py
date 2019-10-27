@@ -106,16 +106,16 @@ class SurvrunQueryPostRun(Resource):
         else:
             completed = "no"
 
-        if not player_class or not target_a or not target_b or not timebox or not time_needed or not r_count:
+        if not player_class or not target_a or not target_b or not timebox or not time_needed:
             abort(400)
 
         db_query = QuerySurvrunTable()
         status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
                                                     target_b=target_b, timebox=timebox, time_needed=time_needed,
                                                     r_count=r_count, completed=completed)
-        if status == 400:
-            abort(400)
-        return status, msg
+        if status is not 200:
+            abort(status)
+        return make_response(jsonify({'status': status, 'message': msg}))
 
 
 api.add_resource(SurvrunQueryPostRun, constants.API_SURVRUN_POST_RUN)
@@ -145,6 +145,25 @@ class SurvrunTargetLocationApi(Resource):
 
 
 api.add_resource(SurvrunTargetLocationApi, constants.API_SURVRUN_GET_TARGET_LOCATION)
+
+
+class SurvrunDeleteRunApi(Resource):
+    def post(self):
+        try:
+            run_id = json.loads(request.data)["delete_row_id"]
+        except KeyError:
+            abort(400)
+        if not run_id:
+            abort(400)
+
+        db_query = QuerySurvrunTable()
+        status, msg = db_query.survrun_delete_record_by_id_query(run_id)
+        if status is not 200:
+            abort(status)
+        return jsonify({'status': status, 'message': msg})
+
+
+api.add_resource(SurvrunDeleteRunApi, constants.API_SURVRUN_DELETE_RUN)
 
 
 class StrongholdApi(Resource):
