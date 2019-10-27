@@ -122,6 +122,18 @@ export class SurvrimComponent {
 
   onSubmit() {
     this.formSubmitRunData = this.formSubmitRun.value as JSON;
+    
+    //set default values for selectors, like they are displayed in ui
+    if(this.formSubmitRunData.formPlayerClass == "") {
+      this.formSubmitRunData.formPlayerClass = this.survrunConstants["survrim_constants"][0]["LIST_SURVRIM_CLASSES"][0]
+    }
+    if(this.formSubmitRunData.formTargetA == "") {
+      this.formSubmitRunData.formTargetA = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_TARGET_LOCATIONS"][0]
+    }
+    if(this.formSubmitRunData.formTargetB == "") {
+      this.formSubmitRunData.formTargetB = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_TARGET_LOCATIONS"][0]
+    }
+    console.log(this.formSubmitRunData)
     this.postSurvrunToDatabase()
   }
 
