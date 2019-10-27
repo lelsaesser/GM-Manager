@@ -86,7 +86,13 @@
                     <button type="submit" class="btn btn-dark">Delete</button>
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="number" class="form-control" min="1" placeholder="id" formControlName="formIdToDelete">
+                    <input type="number" class="form-control" min="1" placeholder="id" formControlName="formIdToDelete"
+                        [ngClass]="{ 'is-invalid': formDeleteRunSubmitted && formDeleteRun.controls.formIdToDelete.errors }">
+                    <div *ngIf="formDeleteRunSubmitted && formDeleteRun.controls.formIdToDelete.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formDeleteRun.controls.formIdToDelete.errors.required">Please enter a valid id</div>
+                        <div *ngIf="formDeleteRun.controls.formIdToDelete.errors.min">Must be a positive number</div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -104,15 +110,36 @@
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <input type="number" class="form-control" min="0" max="100" placeholder="Timebox"
-                        formControlName="formTimebox">
+                        formControlName="formTimebox"
+                        [ngClass]="{ 'is-invalid': formSubmitRunSubmitted && formSubmitRun.controls.formTimebox.errors }">
+                    <div *ngIf="formSubmitRunSubmitted && formSubmitRun.controls.formTimebox.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitRun.controls.formTimebox.errors.required">Please enter timebox in minutes
+                        </div>
+                        <div *ngIf="formSubmitRun.controls.formTimebox.errors.min">Please enter a positive number</div>
+                    </div>
                 </div>
                 <div class="form-group col-md-2">
                     <input type="number" class="form-control" min="0" max="100" placeholder="Time needed"
-                        formControlName="formTimeNeeded">
+                        formControlName="formTimeNeeded"
+                        [ngClass]="{ 'is-invalid': formSubmitRunSubmitted && formSubmitRun.controls.formTimeNeeded.errors }">
+                    <div *ngIf="formSubmitRunSubmitted && formSubmitRun.controls.formTimeNeeded.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitRun.controls.formTimeNeeded.errors.required">Please enter time needed in
+                            minutes</div>
+                        <div *ngIf="formSubmitRun.controls.formTimeNeeded.errors.min">Please enter a positive number
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group col-md-2">
                     <input type="number" class="form-control" min="0" max="100" placeholder="R count"
-                        formControlName="formRcount">
+                        formControlName="formRcount"
+                        [ngClass]="{ 'is-invalid': formSubmitRunSubmitted && formSubmitRun.controls.formRcount.errors }">
+                    <div *ngIf="formSubmitRunSubmitted && formSubmitRun.controls.formRcount.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitRun.controls.formRcount.errors.required">Please enter the R count</div>
+                        <div *ngIf="formSubmitRun.controls.formRcount.errors.min">R count cannot be negative</div>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
@@ -130,11 +157,15 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
-                    <select class="form-control" formControlName="formTargetB">
+                    <select class="form-control" formControlName="formTargetB"
+                        [ngClass]="{ 'is-invalid': targetLocationsMatch }">
                         <option
                             *ngFor="let location of survrunConstants.survrim_constants[0].LIST_SURVRUN_TARGET_LOCATIONS">
                             {{ location }}</option>
                     </select>
+                    <div *ngIf="targetLocationsMatch" class="invalid-feedback">
+                        <div>Please choose different locations</div>
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-dark">Submit</button>

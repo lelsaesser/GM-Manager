@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION, API_SURVRIM_GET_CLASS_DATA, API_SURVRUN_GET_ALL_DB_RUN_DATA,
   API_SURVRUN_GET_CONSTANTS, API_SURVRUN_POST_RUN, API_SURVRUN_DELETE_RUN
@@ -17,6 +17,9 @@ export class SurvrimComponent {
   show_class: boolean = false;
   show_queryResultSurvrunData: boolean = false;
   survrimConstants_set: boolean = false;
+  formDeleteRunSubmitted: boolean = false;
+  formSubmitRunSubmitted: boolean = false;
+  targetLocationsMatch: boolean = false;
 
   survrunJson: JSON;
   survrimClassData: JSON;
@@ -27,16 +30,16 @@ export class SurvrimComponent {
   formSubmitDeleteId: any;
 
   formSubmitRun = new FormGroup({
-    formTimebox: new FormControl(''),
-    formTimeNeeded: new FormControl(''),
-    formRcount: new FormControl(''),
+    formTimebox: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
+    formTimeNeeded: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
+    formRcount: new FormControl('', Validators.compose([Validators.required, Validators.min(0)])),
     formPlayerClass: new FormControl(''),
     formTargetA: new FormControl(''),
     formTargetB: new FormControl(''),
   });
 
   formDeleteRun = new FormGroup({
-    formIdToDelete: new FormControl('')
+    formIdToDelete: new FormControl('', Validators.compose([Validators.required, Validators.min(1)]))
   });
 
 
@@ -116,24 +119,40 @@ export class SurvrimComponent {
   }
 
   onSubmitDelete() {
+    this.formDeleteRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formDeleteRun.invalid) {
+      return;
+    }
     this.formSubmitDeleteId = this.formDeleteRun.value as JSON;
     this.deleteSurvruninDatabase()
   }
 
   onSubmit() {
+    this.formSubmitRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formSubmitRun.invalid) {
+      return;
+    }
     this.formSubmitRunData = this.formSubmitRun.value as JSON;
-    
+
     //set default values for selectors, like they are displayed in ui
-    if(this.formSubmitRunData.formPlayerClass == "") {
+    if (this.formSubmitRunData.formPlayerClass == "") {
       this.formSubmitRunData.formPlayerClass = this.survrunConstants["survrim_constants"][0]["LIST_SURVRIM_CLASSES"][0]
     }
-    if(this.formSubmitRunData.formTargetA == "") {
+    if (this.formSubmitRunData.formTargetA == "") {
       this.formSubmitRunData.formTargetA = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_TARGET_LOCATIONS"][0]
     }
-    if(this.formSubmitRunData.formTargetB == "") {
+    if (this.formSubmitRunData.formTargetB == "") {
       this.formSubmitRunData.formTargetB = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_TARGET_LOCATIONS"][0]
     }
-    console.log(this.formSubmitRunData)
+
+    //target A and B cant be equal
+    if (this.formSubmitRunData.formTargetA == this.formSubmitRunData.formTargetB) {
+      this.targetLocationsMatch = true;
+      return;
+    }
+    this.targetLocationsMatch = false;
     this.postSurvrunToDatabase()
   }
 
