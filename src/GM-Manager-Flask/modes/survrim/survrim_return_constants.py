@@ -11,10 +11,11 @@ class SurvrimReturnConstants:
         Used to expose these constants to frontend and other services.
         :return: Json structure containing constants
         """
+        target_location_list_sorted = sorted(survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS)
         json_model = {
             'survrim_constants': [
                 {
-                    'LIST_SURVRUN_TARGET_LOCATIONS': survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS,
+                    'LIST_SURVRUN_TARGET_LOCATIONS': target_location_list_sorted,
                     'LIST_SURVRIM_SKILLS': survrim_constants.LIST_SURVRIM_SKILLS,
                     'LIST_SURVRIM_CLASSES': survrim_constants.LIST_SURVRIM_CLASSES,
                 }
