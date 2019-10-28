@@ -1,25 +1,30 @@
-<body>
-  <div class="container">
+<body ng-style="brightmode">
+  <div class="container-fluid">
+    <div class="container">
+      <!--Header with title-->
+      <div class="jumbotron">
 
-    <!--Header with title-->
-    <div class="jumbotron">
-      <h1 class="display-3">{{ title }}</h1>
+        <h1 class="display-3">{{ title }}</h1>
+      </div>
+
+      <!--button to toggle darkmode-->
+      <button type="button" class="btn btn-dark btn-sm" ng-click="brightmode={'background-color': '#fffafa';}">Toogle darkmode</button>
+
+      <!--Navigation bar with different tabs-->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link bg-dark text-white" routerLink="/survrim">SurvivalRim</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link bg-dark text-white" routerLink="/stronghold">Stronghold</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link bg-dark text-white" href="#">Poke Nuzlocke</a>
+        </li>
+      </ul>
+      <router-outlet></router-outlet>
+
     </div>
-
-    <!--Navigation bar with different tabs-->
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link bg-dark text-white" routerLink="/survrim">SurvivalRim</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link bg-dark text-white" routerLink="/stronghold">Stronghold</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link bg-dark text-white" href="#">Poke Nuzlocke</a>
-      </li>
-    </ul>
-    <router-outlet></router-outlet>
-
+    <div class="blank-space-default"></div>
   </div>
-  <div class="blank-space-default"></div>
 </body>
