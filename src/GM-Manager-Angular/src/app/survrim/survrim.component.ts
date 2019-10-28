@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { NotificationService } from '../../utils/notification.service'
+
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION, API_SURVRIM_GET_CLASS_DATA, API_SURVRUN_GET_ALL_DB_RUN_DATA,
   API_SURVRUN_GET_CONSTANTS, API_SURVRUN_POST_RUN, API_SURVRUN_DELETE_RUN
@@ -43,7 +45,7 @@ export class SurvrimComponent {
   });
 
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
 
   fetchSurvrunData() {
     this.httpClient.get(API_URL + API_SURVRUN_GET_TARGET_LOCATION).subscribe(data => {
@@ -95,9 +97,11 @@ export class SurvrimComponent {
       },
         response => {
           console.log("POST call in error", response);
+          this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run submitted!", "Success")
           this.querySurvrunTableGetAllRuns()
         });
   }
@@ -111,9 +115,11 @@ export class SurvrimComponent {
       },
         response => {
           console.log("POST call in error", response);
+          this.notifyService.showFailure("Given Id does not exist.", "Failure")
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run deleted!", "Success")
           this.querySurvrunTableGetAllRuns()
         });
   }

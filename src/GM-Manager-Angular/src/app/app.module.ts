@@ -7,6 +7,8 @@ import { SurvrimComponent } from './survrim/survrim.component';
 import { StrongholdComponent } from './stronghold/stronghold.component';
 import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-not-found.component'
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/survrim', pathMatch: 'full' },
@@ -24,6 +26,8 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot(
