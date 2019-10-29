@@ -184,3 +184,17 @@
 
 <!--Space bar between cards-->
 <div class="blank-space-default"></div>
+
+<!--Statistics panel-->
+<div class="card card-primary">
+    <div class="card-header">Run statistics</div>
+    <div class="card-body">
+        <ul class="list-unstyled padding-default" *ngIf="survrunStatisticsFetched">
+            <li>Runs completed: {{ survrunStatistics.total_runs_completed }} out of {{ survrunStatistics.total_runs }}</li>
+            <li>Total R count: {{ survrunStatistics.total_r_count }}</li>
+            <li>Total time played: {{ survrunStatistics.total_time_played }}</li>
+            <li>Total class uses: {{ survrunStatistics.total_class_uses | json }} </li>
+            <li>Difficulties: {{ survrunStatistics.total_runs_with_difficulty | json }}</li>
+        </ul>
+    </div>
+</div>
