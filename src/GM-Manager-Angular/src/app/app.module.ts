@@ -9,6 +9,7 @@ import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-no
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { GlobalsService } from '../utils/globals.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/survrim', pathMatch: 'full' },
@@ -35,7 +36,7 @@ const appRoutes: Routes = [
       { enableTracing: true } // for debugging
     )
   ],
-  providers: [],
+  providers: [GlobalsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

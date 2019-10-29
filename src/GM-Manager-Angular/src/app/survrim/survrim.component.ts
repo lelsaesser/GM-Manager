@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { NotificationService } from '../../utils/notification.service'
+import { GlobalsService } from '../../utils/globals.service'
 
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION, API_SURVRIM_GET_CLASS_DATA, API_SURVRUN_GET_ALL_DB_RUN_DATA,
@@ -22,6 +23,7 @@ export class SurvrimComponent {
   formDeleteRunSubmitted: boolean = false;
   formSubmitRunSubmitted: boolean = false;
   targetLocationsMatch: boolean = false;
+  darkmodeEnabled: boolean = true;
 
   survrunJson: JSON;
   survrimClassData: JSON;
@@ -45,7 +47,7 @@ export class SurvrimComponent {
   });
 
 
-  constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
+  constructor(private httpClient: HttpClient, private notifyService: NotificationService, private globals: GlobalsService) { }
 
   fetchSurvrunData() {
     this.httpClient.get(API_URL + API_SURVRUN_GET_TARGET_LOCATION).subscribe(data => {
@@ -172,6 +174,19 @@ export class SurvrimComponent {
     }
     this.targetLocationsMatch = false;
     this.postSurvrunToDatabase()
+  }
+
+  toggleDarkmodeSurvrun() {
+    if(this.darkmodeEnabled) {
+      this.darkmodeEnabled = false;
+      this.globals.darkmodeEnabled = false;
+      console.log("here")
+    } else {
+      this.darkmodeEnabled = true;
+      this.globals.darkmodeEnabled = true;
+      console.log("else")
+    }
+    console.log("darkmode:", this.darkmodeEnabled)
   }
 
   ngOnInit() {

@@ -1,14 +1,18 @@
 /* build-ins */
 
-body {
-    background-color: #282828;
-}
-
 h1 {
     text-align: center;
 }
 
 /* classes */
+
+.backgroundDarkmode {
+    background-color: #282828;
+}
+
+.backgroundBrightmode {
+    background-color: white;
+}
 
 .blank-space-default {
     padding: 20px;
