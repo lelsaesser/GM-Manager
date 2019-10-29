@@ -18,6 +18,7 @@ class SurvrimReturnConstants:
                     'LIST_SURVRUN_TARGET_LOCATIONS': target_location_list_sorted,
                     'LIST_SURVRIM_SKILLS': survrim_constants.LIST_SURVRIM_SKILLS,
                     'LIST_SURVRIM_CLASSES': survrim_constants.LIST_SURVRIM_CLASSES,
+                    'LIST_SURVRUN_DIFFICULTIES': survrim_constants.LIST_SURVRUN_DIFFICULTIES
                 }
             ]
         }

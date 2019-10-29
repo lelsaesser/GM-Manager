@@ -56,14 +56,15 @@
         <!--display query results in table-->
         <table class="table table-hover" *ngIf="show_queryResultSurvrunData">
             <thead>
-                <th scope="col">id</th>
-                <th scope="col">completed</th>
-                <th scope="col">class</th>
+                <th scope="col">Id</th>
+                <th scope="col">Completed</th>
+                <th scope="col">Class</th>
                 <th scope="col">Target A</th>
                 <th scope="col">Target B</th>
                 <th scope="col">Timebox</th>
                 <th scope="col">Time needed</th>
                 <th scope="col">R count</th>
+                <th scope="col">Difficulty</th>
             </thead>
             <tbody>
                 <tr *ngFor="let row of queryResultSurvrunData.queryResult">
@@ -75,6 +76,7 @@
                     <td>{{ row.timebox }}</td>
                     <td>{{ row.time_needed }}</td>
                     <td>{{ row.r_count }}</td>
+                    <td>{{ row.difficulty }}</td>
                 </tr>
             </tbody>
         </table>
@@ -166,6 +168,13 @@
                     <div *ngIf="targetLocationsMatch" class="invalid-feedback">
                         <div>Please choose different locations</div>
                     </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formExpectedDifficulty">
+                        <option
+                            *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
+                            {{ difficulty }}</option>
+                    </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-dark">Submit</button>

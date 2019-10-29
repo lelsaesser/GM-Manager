@@ -20,6 +20,7 @@ class SurvrunTable(_base):
     completed = Column(String)
     time_needed = Column(Integer)
     r_count = Column(Integer)
+    difficulty = Column(String)
 
 
 _base.metadata.create_all(_db)

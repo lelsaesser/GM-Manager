@@ -38,6 +38,7 @@ export class SurvrimComponent {
     formPlayerClass: new FormControl(''),
     formTargetA: new FormControl(''),
     formTargetB: new FormControl(''),
+    formExpectedDifficulty: new FormControl(''),
   });
 
   formDeleteRun = new FormGroup({
@@ -102,6 +103,7 @@ export class SurvrimComponent {
             'timebox': this.formSubmitRunData.formTimebox,
             'time_needed': this.formSubmitRunData.formTimeNeeded,
             'r_count': this.formSubmitRunData.formRcount,
+            'difficulty': this.formSubmitRunData.formExpectedDifficulty
           }
         ]
       }).subscribe(data => {
@@ -163,6 +165,9 @@ export class SurvrimComponent {
     }
     if (this.formSubmitRunData.formTargetB == "") {
       this.formSubmitRunData.formTargetB = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_TARGET_LOCATIONS"][0]
+    }
+    if (this.formSubmitRunData.formExpectedDifficulty == "") {
+      this.formSubmitRunData.formExpectedDifficulty = this.survrunConstants["survrim_constants"][0]["LIST_SURVRUN_DIFFICULTIES"][0]
     }
 
     //target A and B cant be equal

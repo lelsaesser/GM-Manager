@@ -19,7 +19,7 @@ class QuerySurvrunTable:
         self._session = sessionmaker(self._db)
 
     def survrun_insert_query(self, player_class: str, target_a: str, target_b: str, timebox: int, completed: str,
-                             time_needed: int, r_count: int):
+                             time_needed: int, r_count: int, difficulty: str):
         """
         Insert a new run in survrun_runs table
         :param player_class: valid survrun class name
@@ -31,7 +31,6 @@ class QuerySurvrunTable:
         :param r_count: integer, r_count
         :return: HTTP request status code (int) and string containing detailed explanation
         """
-        msg = ""
         if player_class not in survrim_constants.LIST_SURVRIM_CLASSES:
             msg = db_constants.BAD_REQUEST_INVALID_CLASS_NAME
             return 400, msg
@@ -45,9 +44,12 @@ class QuerySurvrunTable:
         if target_a == target_b:
             msg = db_constants.BAD_REQUEST_TARGET_LOCATIONS_EQUAL
             return 400, msg
+        if difficulty not in survrim_constants.LIST_SURVRUN_DIFFICULTIES:
+            msg = db_constants.BAD_REQUEST_INVALID_DIFFICULTY
+            return 400, msg
 
         run_query = SurvrunTable(player_class=player_class, target_a=target_a, target_b=target_b, timebox=timebox,
-                                 completed=completed, time_needed=time_needed, r_count=r_count)
+                                 completed=completed, time_needed=time_needed, r_count=r_count, difficulty=difficulty)
 
         sess = self._session()
         try:

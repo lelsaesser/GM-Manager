@@ -8,7 +8,8 @@ class TestQuerySurvrunTable:
     def test_survrun_insert_query(self):
         query_db = QuerySurvrunTable()
         status, msg = query_db.survrun_insert_query(survrim_constants.CLASS_WARRIOR, survrim_constants.CITY_WINDHELM,
-                                                    survrim_constants.CITY_WHITERUN, 40, "yes", 32, 3)
+                                                    survrim_constants.CITY_WHITERUN, 40, "yes", 32, 3,
+                                                    survrim_constants.DIFFICULTY_HARDCORE)
 
         assert status == 200
         assert msg == db_constants.SUCCESS_QUERY_COMPLETED
