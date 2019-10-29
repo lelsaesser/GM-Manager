@@ -73,7 +73,8 @@ class SurvrunQueryGetRuns(Resource):
                         'timebox': row.timebox,
                         'completed': row.completed,
                         'time_needed': row.time_needed,
-                        'r_count': row.r_count
+                        'r_count': row.r_count,
+                        'difficulty': row.difficulty
                     }
                 )
             except AttributeError:
@@ -101,18 +102,19 @@ class SurvrunQueryPostRun(Resource):
         timebox = run_data[0]["timebox"]
         time_needed = run_data[0]["time_needed"]
         r_count = run_data[0]["r_count"]
+        difficulty = run_data[0]["difficulty"]
         if 0 < time_needed < timebox:
             completed = "yes"
         else:
             completed = "no"
 
-        if not player_class or not target_a or not target_b or not timebox or not time_needed:
+        if not player_class or not target_a or not target_b or not timebox or not time_needed or not difficulty:
             abort(400)
 
         db_query = QuerySurvrunTable()
         status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
                                                     target_b=target_b, timebox=timebox, time_needed=time_needed,
-                                                    r_count=r_count, completed=completed)
+                                                    r_count=r_count, completed=completed, difficulty=difficulty)
         if status is not 200:
             abort(status)
         return make_response(jsonify({'status': status, 'message': msg}))
