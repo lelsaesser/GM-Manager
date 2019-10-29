@@ -37,7 +37,7 @@ class SurvrunCalculateStatistics:
         })
         db_data = self._db_cursor.survrun_select_query()
         if not db_data:
-            raise Exception(constants.ERROR_GEN_DB_TABLE_EMPTY)
+            raise ConnectionError(constants.ERROR_GEN_DB_TABLE_EMPTY)
 
         for row in db_data:
             total_runs += 1
