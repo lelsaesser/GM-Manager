@@ -4,7 +4,7 @@ from flask_restful import Resource, Api
 
 from database.query_survrun_table import QuerySurvrunTable
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
-from modes.survrim.survrim_rule_generator import SurvrimRuleGenerator
+from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
 from modes.survrim.survrim_return_constants import SurvrimReturnConstants
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 import constants
