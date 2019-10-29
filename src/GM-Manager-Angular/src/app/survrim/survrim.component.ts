@@ -52,7 +52,10 @@ export class SurvrimComponent {
       this.survrunJson = data as JSON;
       this.show_targets = true;
       console.log("GET call fetchSurvrunData() successful. Value returned in body: ", data);
-    })
+    }, 
+      response => {
+        this.notifyService.showFailure("Backend is not reachable.", "Error")
+      })
   }
 
   fetchSurvrimClass() {
@@ -60,7 +63,10 @@ export class SurvrimComponent {
       this.survrimClassData = data as JSON;
       this.show_class = true;
       console.log("GET call fetchSurvrimClass() successful. Value returned in body: ", data);
-    })
+    },
+      response => {
+        this.notifyService.showFailure("Backend is not reachable.", "Error")
+      })
   }
 
   querySurvrunTableGetAllRuns() {
@@ -68,7 +74,10 @@ export class SurvrimComponent {
       this.queryResultSurvrunData = data as JSON;
       this.show_queryResultSurvrunData = true;
       console.log("GET call querySurvrunTableGetAllRuns() successfull. Value returned in body: ", data)
-    })
+    },
+      response => {
+        this.notifyService.showFailure("Backend is not reachable.", "Error")
+      })
   }
 
   fetchSurvrunConstants() {
@@ -76,7 +85,10 @@ export class SurvrimComponent {
       this.survrunConstants = data as JSON;
       this.survrimConstants_set = true;
       console.log("GET call fetchSurvrunConstants() successfull. Value returned in body: ", data)
-    })
+    },
+      response => {
+        this.notifyService.showFailure("Backend is not reachable.", "Error")
+      })
   }
 
   postSurvrunToDatabase() {
