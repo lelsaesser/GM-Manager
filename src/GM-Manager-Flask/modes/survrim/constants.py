@@ -214,7 +214,7 @@ DIFFICULTY_NORMAL = "Normal"
 DIFFICULTY_HARSH = "Harsh"
 DIFFICULTY_DIFFICULT = "Difficult"
 DIFFICULTY_EXTREME = "Extreme"
-DIFFICULTY_HARDCORE = "Hardcore Extreme"
+DIFFICULTY_HARDCORE = "Hardcore"
 
 # List of survrun difficulties
 LIST_SURVRUN_DIFFICULTIES = [

@@ -188,13 +188,70 @@
 <!--Statistics panel-->
 <div class="card card-primary">
     <div class="card-header">Run statistics</div>
-    <div class="card-body">
-        <ul class="list-unstyled padding-default" *ngIf="survrunStatisticsFetched">
-            <li>Runs completed: {{ survrunStatistics.total_runs_completed }} out of {{ survrunStatistics.total_runs }}</li>
-            <li>Total R count: {{ survrunStatistics.total_r_count }}</li>
-            <li>Total time played: {{ survrunStatistics.total_time_played }}</li>
-            <li>Total class uses: {{ survrunStatistics.total_class_uses | json }} </li>
-            <li>Difficulties: {{ survrunStatistics.total_runs_with_difficulty | json }}</li>
-        </ul>
+    <div class="card-body" *ngIf="survrunStatisticsFetched && survrimConstants_set">
+
+        <!--general statistics-->
+        <p class="lead">General:</p>
+        <table class="table table-sm">
+            <thead>
+                <th scope="col">Total runs</th>
+                <th scope="col">Runs completed</th>
+                <th scope="col">Total time played</th>
+                <th scope="col">Total R count</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ survrunStatistics.total_runs }}</td>
+                    <td>{{ survrunStatistics.total_runs_completed }} (
+                        {{ survrunStatistics.total_runs_completed / survrunStatistics.total_runs * 100 | number: '1.0-2' }}
+                        %)</td>
+                    <td>{{ survrunStatistics.total_time_played }} minutes</td>
+                    <td>{{ survrunStatistics.total_r_count }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--class statistics-->
+        <p class="lead">Class usage:</p>
+        <table class="table table-sm">
+            <thead>
+                <th *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES" scope="col">
+                    {{ class_name }}</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ survrunStatistics.total_class_uses.Warrior }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Cleric }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Warlord }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Slayer }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Ranger }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Nymph }}</td>
+                    <td>{{ survrunStatistics.total_class_uses.Randomancer }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--run difficulty statistics-->
+        <p class="lead">Difficulties:</p>
+        <table class="table table-sm">
+            <thead>
+                <th *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
+                    {{ difficulty }}</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Easy }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Promising }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Normal }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Harsh }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Difficult }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Extreme }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty.Hardcore }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
