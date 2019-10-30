@@ -28,6 +28,9 @@ export class SurvrimComponent {
   formSubmitRunSubmitted: boolean = false;
   targetLocationsMatch: boolean = false;
   survrunStatisticsFetched: boolean = false;
+  show_statistic_general: boolean = true;
+  show_statistic_class: boolean = false;
+  show_statistic_difficulty: boolean = false;
 
   survrunJson: JSON;
   survrimClassData: JSON;
@@ -37,6 +40,8 @@ export class SurvrimComponent {
 
   formSubmitRunData: any;
   formSubmitDeleteId: any;
+
+  statisticsDropdownValues = ["General", "Class", "Difficulty"];
 
   formSubmitRun = new FormGroup({
     formTimebox: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
@@ -51,6 +56,10 @@ export class SurvrimComponent {
   formDeleteRun = new FormGroup({
     formIdToDelete: new FormControl('', Validators.compose([Validators.required, Validators.min(1)]))
   });
+
+  formChangeDisplayedStatistics = new FormGroup({
+    formStatSelectDropdown: new FormControl('')
+  })
 
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
@@ -194,6 +203,25 @@ export class SurvrimComponent {
     }
     this.targetLocationsMatch = false;
     this.postSurvrunToDatabase()
+  }
+
+  statisticsDropdownChanged(dropdownValue: string) {
+    this.show_statistic_general = false;
+    this.show_statistic_class = false;
+    this.show_statistic_difficulty = false;
+
+    if(dropdownValue == this.statisticsDropdownValues[0]) {
+      this.show_statistic_general = true;
+    }
+    else if(dropdownValue == this.statisticsDropdownValues[1]) {
+      this.show_statistic_class = true;
+    }
+    else if(dropdownValue == this.statisticsDropdownValues[2]) {
+      this.show_statistic_difficulty = true;
+    }
+    else {
+      console.log("Error: value of statisticDropdown dont match with anything in statisticsDropdownValues list.")
+    }
   }
 
   ngOnInit() {

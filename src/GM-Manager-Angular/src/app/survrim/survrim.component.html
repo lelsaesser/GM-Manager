@@ -190,64 +190,78 @@
     <div class="card-header">Run statistics</div>
     <div class="card-body" *ngIf="survrunStatisticsFetched && survrimConstants_set">
 
+        <!--stats selection dropdown-->
+        <form [formGroup]="formChangeDisplayedStatistics">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <select (change)="statisticsDropdownChanged($event.target.value)" class="form-control" formControlName="formStatSelectDropdown">
+                        <option *ngFor="let value of statisticsDropdownValues">{{ value }}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
         <!--general statistics-->
-        <p class="lead">General:</p>
-        <table class="table table-sm">
-            <thead>
-                <th scope="col">Statistics</th>
-                <th scope="col">Data</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Total_runs:</td>
-                    <td>{{ survrunStatistics.total_runs }}</td>
-                </tr>
-                <tr>
-                    <td>Completed runs</td>
-                    <td>{{ survrunStatistics.total_runs_completed }} (
-                        {{ survrunStatistics.total_runs_completed / survrunStatistics.total_runs * 100 | number: '1.0-2' }}
-                        %)</td>
-                </tr>
-                <tr>
-                    <td>Total time played</td>
-                    <td>{{ survrunStatistics.total_time_played }} minutes</td>
-                </tr>
-                <tr>
-                    <td>R count</td>
-                    <td>{{ survrunStatistics.total_r_count }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngIf="show_statistic_general">
+            <table class="table table-sm">
+                <thead>
+                    <th scope="col">Statistics</th>
+                    <th scope="col">Data</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total_runs:</td>
+                        <td>{{ survrunStatistics.total_runs }}</td>
+                    </tr>
+                    <tr>
+                        <td>Completed runs</td>
+                        <td>{{ survrunStatistics.total_runs_completed }} (
+                            {{ survrunStatistics.total_runs_completed / survrunStatistics.total_runs * 100 | number: '1.0-2' }}
+                            %)</td>
+                    </tr>
+                    <tr>
+                        <td>Total time played</td>
+                        <td>{{ survrunStatistics.total_time_played }} minutes</td>
+                    </tr>
+                    <tr>
+                        <td>R count</td>
+                        <td>{{ survrunStatistics.total_r_count }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!--class statistics-->
-        <p class="lead">Class usage:</p>
-        <table class="table table-sm">
-            <thead>
-                <th scope="col">Class</th>
-                <th scope="col">Uses</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES">
-                    <td>{{ class_name }}</td>
-                    <td>{{ survrunStatistics.total_class_uses[class_name] }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngIf="show_statistic_class">
+            <table class="table table-sm">
+                <thead>
+                    <th scope="col">Class</th>
+                    <th scope="col">Uses</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES">
+                        <td>{{ class_name }}</td>
+                        <td>{{ survrunStatistics.total_class_uses[class_name] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!--run difficulty statistics-->
-        <p class="lead">Difficulties:</p>
-        <table class="table table-sm">
-            <thead>
-                <th scope="col">Difficulty</th>
-                <th scope="col">Runs</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
-                    <td>{{ difficulty }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty[difficulty] }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngIf="show_statistic_difficulty">
+            <table class="table table-sm">
+                <thead>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Runs</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
+                        <td>{{ difficulty }}</td>
+                        <td>{{ survrunStatistics.total_runs_with_difficulty[difficulty] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
