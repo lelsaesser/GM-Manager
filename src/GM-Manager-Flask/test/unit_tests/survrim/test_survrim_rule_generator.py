@@ -1,4 +1,4 @@
-from modes.survrim.survrim_rule_generator import SurvrimRuleGenerator
+from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
 from modes.survrim import constants
 
 

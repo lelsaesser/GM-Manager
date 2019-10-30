@@ -4,8 +4,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { NotificationService } from '../../utils/notification.service'
 
 import {
-  API_URL, API_SURVRUN_GET_TARGET_LOCATION, API_SURVRIM_GET_CLASS_DATA, API_SURVRUN_GET_ALL_DB_RUN_DATA,
-  API_SURVRUN_GET_CONSTANTS, API_SURVRUN_POST_RUN, API_SURVRUN_DELETE_RUN
+  API_URL, API_SURVRUN_GET_TARGET_LOCATION,
+  API_SURVRIM_GET_CLASS_DATA,
+  API_SURVRUN_GET_ALL_DB_RUN_DATA,
+  API_SURVRUN_GET_CONSTANTS,
+  API_SURVRUN_POST_RUN,
+  API_SURVRUN_DELETE_RUN,
+  API_SURVRUN_GET_STATISTICS
 } from './../env';
 
 @Component({
@@ -22,11 +27,13 @@ export class SurvrimComponent {
   formDeleteRunSubmitted: boolean = false;
   formSubmitRunSubmitted: boolean = false;
   targetLocationsMatch: boolean = false;
+  survrunStatisticsFetched: boolean = false;
 
   survrunJson: JSON;
   survrimClassData: JSON;
   queryResultSurvrunData: JSON;
   survrunConstants: JSON;
+  survrunStatistics: JSON;
 
   formSubmitRunData: any;
   formSubmitDeleteId: any;
@@ -92,6 +99,14 @@ export class SurvrimComponent {
       })
   }
 
+  fetchSurvrunStatistics() {
+    this.httpClient.get(API_URL + API_SURVRUN_GET_STATISTICS).subscribe(data => {
+      this.survrunStatistics = data as JSON;
+      this.survrunStatisticsFetched = true;
+      console.log("GET call fetchSurvrunStatistics() successfull. Value returned in body: ", data)
+    })
+  }
+
   postSurvrunToDatabase() {
     this.httpClient.post(API_URL + API_SURVRUN_POST_RUN,
       {
@@ -116,7 +131,8 @@ export class SurvrimComponent {
         () => {
           console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run submitted!", "Success")
-          this.querySurvrunTableGetAllRuns()
+          this.querySurvrunTableGetAllRuns();
+          this.fetchSurvrunStatistics();
         });
   }
 
@@ -134,7 +150,8 @@ export class SurvrimComponent {
         () => {
           console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run deleted!", "Success")
-          this.querySurvrunTableGetAllRuns()
+          this.querySurvrunTableGetAllRuns();
+          this.fetchSurvrunStatistics();
         });
   }
 
@@ -181,5 +198,6 @@ export class SurvrimComponent {
 
   ngOnInit() {
     this.fetchSurvrunConstants();
+    this.fetchSurvrunStatistics();
   }
 }

@@ -1,6 +1,3 @@
-# Error
-ERROR_LOCATION_MISSING = "Error: invalid location name."
-
 # Survrun times
 TIME_SURVRUN_MIN_TIMEBOX = 30
 TIME_SURVRUN_MAX_TIMEBOX = 70
@@ -129,7 +126,7 @@ CLASS_WARLORD = "Warlord"
 CLASS_SLAYER = "Slayer"
 CLASS_RANGER = "Ranger"
 CLASS_NYMPH = "Nymph"
-CLASS_RANDOMANCER = "Randomancer" # special class which is created in survrim_rule_generator.py
+CLASS_RANDOMANCER = "Randomancer" # special class which is created in survrun_rule_generator.py
 
 # Survrim class list, contains all classes available in survrim / survrun
 LIST_SURVRIM_CLASSES = [
@@ -190,7 +187,7 @@ CLASS_NYMPH_SKILLS = [
     SKILL_MAGIC_RESTORATION
 ]
 
-# Class pick percentage chance, used in survrim_rule_generator.py. Need to add up to 100.0
+# Class pick percentage chance, used in survrun_rule_generator.py. Need to add up to 100.0
 PICK_PERCENT_WARRIOR = 15
 PICK_PERCENT_CLERIC = 15
 PICK_PERCENT_WARLORD = 15
@@ -217,7 +214,7 @@ DIFFICULTY_NORMAL = "Normal"
 DIFFICULTY_HARSH = "Harsh"
 DIFFICULTY_DIFFICULT = "Difficult"
 DIFFICULTY_EXTREME = "Extreme"
-DIFFICULTY_HARDCORE = "Hardcore Extreme"
+DIFFICULTY_HARDCORE = "Hardcore"
 
 # List of survrun difficulties
 LIST_SURVRUN_DIFFICULTIES = [
