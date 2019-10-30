@@ -194,18 +194,26 @@
         <p class="lead">General:</p>
         <table class="table table-sm">
             <thead>
-                <th scope="col">Total runs</th>
-                <th scope="col">Runs completed</th>
-                <th scope="col">Total time played</th>
-                <th scope="col">Total R count</th>
+                <th scope="col">Statistics</th>
+                <th scope="col">Data</th>
             </thead>
             <tbody>
                 <tr>
+                    <td>Total_runs:</td>
                     <td>{{ survrunStatistics.total_runs }}</td>
+                </tr>
+                <tr>
+                    <td>Completed runs</td>
                     <td>{{ survrunStatistics.total_runs_completed }} (
                         {{ survrunStatistics.total_runs_completed / survrunStatistics.total_runs * 100 | number: '1.0-2' }}
                         %)</td>
+                </tr>
+                <tr>
+                    <td>Total time played</td>
                     <td>{{ survrunStatistics.total_time_played }} minutes</td>
+                </tr>
+                <tr>
+                    <td>R count</td>
                     <td>{{ survrunStatistics.total_r_count }}</td>
                 </tr>
             </tbody>
@@ -215,18 +223,13 @@
         <p class="lead">Class usage:</p>
         <table class="table table-sm">
             <thead>
-                <th *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES" scope="col">
-                    {{ class_name }}</th>
+                <th scope="col">Class</th>
+                <th scope="col">Uses</th>
             </thead>
             <tbody>
-                <tr>
-                    <td>{{ survrunStatistics.total_class_uses.Warrior }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Cleric }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Warlord }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Slayer }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Ranger }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Nymph }}</td>
-                    <td>{{ survrunStatistics.total_class_uses.Randomancer }}</td>
+                <tr *ngFor="let class_name of survrunConstants.survrim_constants[0].LIST_SURVRIM_CLASSES">
+                    <td>{{ class_name }}</td>
+                    <td>{{ survrunStatistics.total_class_uses[class_name] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -235,18 +238,13 @@
         <p class="lead">Difficulties:</p>
         <table class="table table-sm">
             <thead>
-                <th *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
-                    {{ difficulty }}</th>
+                <th scope="col">Difficulty</th>
+                <th scope="col">Runs</th>
             </thead>
             <tbody>
-                <tr>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Easy }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Promising }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Normal }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Harsh }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Difficult }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Extreme }}</td>
-                    <td>{{ survrunStatistics.total_runs_with_difficulty.Hardcore }}</td>
+                <tr *ngFor="let difficulty of survrunConstants.survrim_constants[0].LIST_SURVRUN_DIFFICULTIES">
+                    <td>{{ difficulty }}</td>
+                    <td>{{ survrunStatistics.total_runs_with_difficulty[difficulty] }}</td>
                 </tr>
             </tbody>
         </table>
