@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { NotificationService } from '../../utils/notification.service'
-
+import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md'
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION,
   API_SURVRIM_GET_CLASS_DATA,
@@ -18,7 +18,10 @@ import {
   templateUrl: './survrim.component.html',
   styleUrls: ['./survrim.component.css']
 })
-export class SurvrimComponent {
+export class SurvrimComponent implements OnInit, AfterViewInit {
+  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
+  @ViewChild('row', { static: true }) row: ElementRef;
 
   show_targets: boolean = false;
   show_class: boolean = false;
@@ -40,8 +43,22 @@ export class SurvrimComponent {
 
   formSubmitRunData: any;
   formSubmitDeleteId: any;
+  elements: any = [];
+
+  maxVisibleItems: number = 8;
 
   statisticsDropdownValues = ["General", "Class", "Difficulty"];
+  survrunTableHeaders = [
+    "Id",
+    "Completed",
+    "Class",
+    "Target A",
+    "Target B",
+    "Timebox",
+    "Time needed",
+    "R count",
+    "Difficulty"
+  ];
 
   formSubmitRun = new FormGroup({
     formTimebox: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
@@ -227,5 +244,9 @@ export class SurvrimComponent {
   ngOnInit() {
     this.fetchSurvrunConstants();
     this.fetchSurvrunStatistics();
+  }
+
+  ngAfterViewInit() {
+    // this.mdbTablePagination.setMaxVisibleItemsNumberTo(this.maxVisibleItems);
   }
 }

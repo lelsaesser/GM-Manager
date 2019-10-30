@@ -9,6 +9,7 @@ import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-no
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/survrim', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
+    MDBBootstrapModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // for debugging

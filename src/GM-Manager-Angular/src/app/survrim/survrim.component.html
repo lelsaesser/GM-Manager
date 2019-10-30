@@ -54,20 +54,14 @@
         <button (click)="querySurvrunTableGetAllRuns()" type="button" class="btn btn-dark btn-sm">Query Postgre</button>
 
         <!--display query results in table-->
-        <table class="table table-hover" *ngIf="show_queryResultSurvrunData">
-            <thead>
-                <th scope="col">Id</th>
-                <th scope="col">Completed</th>
-                <th scope="col">Class</th>
-                <th scope="col">Target A</th>
-                <th scope="col">Target B</th>
-                <th scope="col">Timebox</th>
-                <th scope="col">Time needed</th>
-                <th scope="col">R count</th>
-                <th scope="col">Difficulty</th>
+        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" *ngIf="show_queryResultSurvrunData">
+            <thead class="sticky-top">
+                <th *ngFor="let value of survrunTableHeaders, let i = index" [mdbTableSort]="elements"
+                    [sortBy]="survrunTableHeaders[i]" scope="col">{{ value }}<mdb-icon fas icon="sort"></mdb-icon>
+                </th>
             </thead>
-            <tbody>
-                <tr *ngFor="let row of queryResultSurvrunData.queryResult">
+            <tbody #row>
+                <tr mdbTableCol *ngFor="let row of queryResultSurvrunData.queryResult, let i = index">
                     <td>{{ row.id }}</td>
                     <td>{{ row.completed }}</td>
                     <td>{{ row.player_class }}</td>
@@ -79,6 +73,14 @@
                     <td>{{ row.difficulty }}</td>
                 </tr>
             </tbody>
+            <tfoot class="grey lighten-5 w-100">
+                <tr>
+                    <td colspan="4">
+                        <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements">
+                        </mdb-table-pagination>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
 
         <!--delete run submit button-->
@@ -194,7 +196,8 @@
         <form [formGroup]="formChangeDisplayedStatistics">
             <div class="form-row">
                 <div class="form-group col-md-2">
-                    <select (change)="statisticsDropdownChanged($event.target.value)" class="form-control" formControlName="formStatSelectDropdown">
+                    <select (change)="statisticsDropdownChanged($event.target.value)" class="form-control"
+                        formControlName="formStatSelectDropdown">
                         <option *ngFor="let value of statisticsDropdownValues">{{ value }}</option>
                     </select>
                 </div>
@@ -210,7 +213,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Total_runs:</td>
+                        <td>Total runs:</td>
                         <td>{{ survrunStatistics.total_runs }}</td>
                     </tr>
                     <tr>
@@ -224,7 +227,7 @@
                         <td>{{ survrunStatistics.total_time_played }} minutes</td>
                     </tr>
                     <tr>
-                        <td>R count</td>
+                        <td>Total R count</td>
                         <td>{{ survrunStatistics.total_r_count }}</td>
                     </tr>
                 </tbody>
