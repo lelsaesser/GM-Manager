@@ -54,14 +54,13 @@
         <button (click)="querySurvrunTableGetAllRuns()" type="button" class="btn btn-dark btn-sm">Query Postgre</button>
 
         <!--display query results in table-->
-        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" *ngIf="show_queryResultSurvrunData">
+        <table mdbTable #tableEl="mdbTable" hover="true" *ngIf="show_queryResultSurvrunData">
             <thead class="sticky-top">
-                <th *ngFor="let value of survrunTableHeaders, let i = index" [mdbTableSort]="elements"
-                    [sortBy]="survrunTableHeaders[i]" scope="col">{{ value }}<mdb-icon fas icon="sort"></mdb-icon>
+                <th *ngFor="let value of survrunTableHeaders" scope="col">{{ value }}
                 </th>
             </thead>
             <tbody #row>
-                <tr mdbTableCol *ngFor="let row of queryResultSurvrunData.queryResult, let i = index">
+                <tr mdbTableCol *ngFor="let row of queryResultSurvrunData.queryResult">
                     <td>{{ row.id }}</td>
                     <td>{{ row.completed }}</td>
                     <td>{{ row.player_class }}</td>
@@ -73,14 +72,6 @@
                     <td>{{ row.difficulty }}</td>
                 </tr>
             </tbody>
-            <tfoot class="grey lighten-5 w-100">
-                <tr>
-                    <td colspan="4">
-                        <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements">
-                        </mdb-table-pagination>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
 
         <!--delete run submit button-->

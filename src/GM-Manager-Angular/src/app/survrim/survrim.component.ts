@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { NotificationService } from '../../utils/notification.service'
-import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md'
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../../utils/notification.service';
+import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION,
   API_SURVRIM_GET_CLASS_DATA,
