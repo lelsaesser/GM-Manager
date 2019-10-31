@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../utils/notification.service';
-import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {
   API_URL, API_SURVRUN_GET_TARGET_LOCATION,
   API_SURVRIM_GET_CLASS_DATA,
@@ -19,9 +20,8 @@ import {
   styleUrls: ['./survrim.component.css']
 })
 export class SurvrimComponent implements OnInit, AfterViewInit {
-  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
-  @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
-  @ViewChild('row', { static: true }) row: ElementRef;
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   show_targets: boolean = false;
   show_class: boolean = false;
@@ -43,7 +43,6 @@ export class SurvrimComponent implements OnInit, AfterViewInit {
 
   formSubmitRunData: any;
   formSubmitDeleteId: any;
-  elements: any = [];
 
   maxVisibleItems: number = 8;
 
@@ -59,6 +58,8 @@ export class SurvrimComponent implements OnInit, AfterViewInit {
     "R count",
     "Difficulty"
   ];
+
+  survrunTableDataSource = [];
 
   formSubmitRun = new FormGroup({
     formTimebox: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
@@ -79,7 +80,7 @@ export class SurvrimComponent implements OnInit, AfterViewInit {
   })
 
 
-  constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
+  constructor(private httpClient: HttpClient, private notifyService: NotificationService) {  }
 
   fetchSurvrunData() {
     this.httpClient.get(API_URL + API_SURVRUN_GET_TARGET_LOCATION).subscribe(data => {
@@ -108,6 +109,8 @@ export class SurvrimComponent implements OnInit, AfterViewInit {
       this.queryResultSurvrunData = data as JSON;
       this.show_queryResultSurvrunData = true;
       console.log("GET call querySurvrunTableGetAllRuns() successfull. Value returned in body: ", data)
+
+      this.survrunTableDataSource = this.queryResultSurvrunData["queryResult"];
     },
       response => {
         this.notifyService.showFailure("Backend is not reachable.", "Error")
