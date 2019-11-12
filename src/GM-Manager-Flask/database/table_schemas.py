@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from database import constants as db_constants
 
-_db_string = "postgres://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
+_db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
              db_constants.POSTGRE_HOST + ":" + db_constants.POSTGRE_PORT + "/" + db_constants.POSTGRE_DB
 _db = create_engine(_db_string)
 _base = declarative_base()

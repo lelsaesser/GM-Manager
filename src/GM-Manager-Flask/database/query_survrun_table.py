@@ -12,7 +12,7 @@ from modes.survrim import constants as survrim_constants
 class QuerySurvrunTable:
 
     def __init__(self):
-        self._db_string = "postgres://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
+        self._db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
                           db_constants.POSTGRE_HOST + ":" + db_constants.POSTGRE_PORT + "/" + db_constants.POSTGRE_DB
 
         self._db = _db = create_engine(self._db_string)
