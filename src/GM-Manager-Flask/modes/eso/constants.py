@@ -120,7 +120,7 @@ LIST_ESO_DUNGEONS = [
     DUNGEON_LAIR_OF_MAARSELOK
 ]
 
-# 16-man Raids/Trials (with all DLC)
+# 12-man Raids/Trials (with all DLC)
 RAID_AETHERIAN_ARCHIVE = "Aetherian Archive"
 RAID_HEL_RA_CITADEL = "Hel Ra Citadel"
 RAID_SANCTUM_OPHIDIA = "Sanctum Ophidia"
@@ -130,7 +130,7 @@ RAID_ASYLUM_SANCTORIUM = "Asylum Sanctorium"
 RAID_CLOUDREST = "Cloudrest"
 RAID_SUNSPIRE = "Sunspire"
 
-# full 16-man raid list (with all DLC)
+# full 12-man raid list (with all DLC)
 LIST_ESO_RAIDS = [
     RAID_AETHERIAN_ARCHIVE,
     RAID_HEL_RA_CITADEL,
