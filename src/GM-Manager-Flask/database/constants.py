@@ -8,6 +8,8 @@ POSTGRE_PW = 'root'
 
 # Postgre table names
 TABLE_SURVRUN_RUNS = "survrun_runs"
+TABLE_ESO_DUNGEON_RUNS = "eso_dungeon_runs"
+TABLE_ESO_RAID_RUNS = "eso_raid_runs"
 
 # Error messages
 BAD_REQUEST_INVALID_CLASS_NAME = "Bad request: not a valid class name"

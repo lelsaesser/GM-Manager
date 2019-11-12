@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy import create_engine, Column, String, Integer, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
 from database import constants as db_constants
@@ -21,6 +21,49 @@ class SurvrunTable(_base):
     time_needed = Column(Integer)
     r_count = Column(Integer)
     difficulty = Column(String)
+
+
+class EsoDungeonRunsTable(_base):
+    __tablename__ = db_constants.TABLE_ESO_DUNGEON_RUNS
+
+    id = Column(Integer, primary_key=True)
+    dungeon_name = Column(String)
+    player_count = Column(Integer)
+    time_needed = Column(Integer)
+    hardmode = Column(Boolean)
+    flawless = Column(Boolean)
+    wipes = Column(Integer)
+    class_one = Column(String)
+    class_two = Column(String)
+    class_three = Column(String)
+    class_four = Column(String)
+
+
+class EsoRaidRunsTable(_base):
+    __tablename__ = db_constants.TABLE_ESO_RAID_RUNS
+
+    id = Column(Integer, primary_key=True)
+    raid_name = Column(String)
+    player_count = Column(Integer)
+    time_needed = Column(Integer)
+    hardmode = Column(Boolean)
+    flawless = Column(Boolean)
+    wipes = Column(Integer)
+    class_one = Column(String)
+    class_two = Column(String)
+    class_three = Column(String)
+    class_four = Column(String)
+    class_five = Column(String)
+    class_six = Column(String)
+    class_seven = Column(String)
+    class_eight = Column(String)
+    class_nine = Column(String)
+    class_ten = Column(String)
+    class_eleven = Column(String)
+    class_twelve = Column(String)
+    class_thirteen = Column(String)
+    class_fourteen = Column(String)
+    class_sixteen = Column(String)
 
 
 _base.metadata.create_all(_db)
