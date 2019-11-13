@@ -8,6 +8,7 @@ from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCa
 from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
 from modes.survrim.survrim_return_constants import SurvrimReturnConstants
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
+from modes.eso.eso_return_constants import EsoReturnConstants
 import constants
 import json
 
@@ -16,7 +17,10 @@ api = Api(app)
 CORS(app)  # required for cross origin resource sharing error (temp fix)
 
 
-class SurvrimApi(Resource):
+class SurvrunGetClassApi(Resource):
+    """
+    exposes survrun class data
+    """
     def get(self):
         player_class = SurvrimRuleGenerator.pick_class()
         player_class_skills = SurvrimRuleGenerator.get_skills_for_class(player_class)
@@ -40,12 +44,12 @@ class SurvrimApi(Resource):
         return json_model
 
 
-api.add_resource(SurvrimApi, constants.API_SURVRIM_GET_CLASS_DATA)
+api.add_resource(SurvrunGetClassApi, constants.API_SURVRIM_GET_CLASS_DATA)
 
 
 class SurvrunGetConstants(Resource):
     """
-    Expose survrim/survrun constants to frontend
+    exposes survrim/survrun constants to frontend
     """
 
     def get(self):
@@ -56,6 +60,9 @@ api.add_resource(SurvrunGetConstants, constants.API_SURVRUN_GET_CONSTANTS)
 
 
 class SurvrunQueryGetRuns(Resource):
+    """
+    exposes all recorded survruns from DB
+    """
     def get(self):
         db_query = QuerySurvrunTable()
         db_data = db_query.survrun_select_query()
@@ -92,6 +99,9 @@ api.add_resource(SurvrunQueryGetRuns, constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
 
 
 class SurvrunQueryPostRun(Resource):
+    """
+    POST endpoint to insert a survrun to the DB
+    """
     def post(self):
         run_data = json.loads(request.data)["submitRunFormData"]
         if not run_data or not run_data[0]:
@@ -125,6 +135,9 @@ api.add_resource(SurvrunQueryPostRun, constants.API_SURVRUN_POST_RUN)
 
 
 class SurvrunTargetLocationApi(Resource):
+    """
+    exposes survrun target location data
+    """
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
@@ -151,6 +164,9 @@ api.add_resource(SurvrunTargetLocationApi, constants.API_SURVRUN_GET_TARGET_LOCA
 
 
 class SurvrunDeleteRunApi(Resource):
+    """
+    endpoint to delete a recorded survrun from DB
+    """
     def post(self):
         try:
             run_id = json.loads(request.data)["delete_row_id"]
@@ -170,6 +186,9 @@ api.add_resource(SurvrunDeleteRunApi, constants.API_SURVRUN_DELETE_RUN)
 
 
 class SurvrunStatisticsApi(Resource):
+    """
+    exposes survrun statistics
+    """
     def get(self):
         stats_calc = SurvrunCalculateStatistics()
         try:
@@ -183,6 +202,9 @@ api.add_resource(SurvrunStatisticsApi, constants.API_SURVRUN_GET_STATISTICS)
 
 
 class StrongholdApi(Resource):
+    """
+    exposes shc data
+    """
     def post(self):
         ai_count = json.loads(request.data)["shc_ai_battle_player_count"]
         if not ai_count:
@@ -196,6 +218,17 @@ class StrongholdApi(Resource):
 
 
 api.add_resource(StrongholdApi, constants.API_STRONGHOLD_GET_AI_BATTLE)
+
+
+class EsoGetConstantsApi(Resource):
+    """
+    exposes eso constants
+    """
+    def get(self):
+        return EsoReturnConstants.eso_get_constants()
+
+
+api.add_resource(EsoGetConstantsApi, constants.API_ESO_GET_CONSTANTS)
 
 
 @app.route('/')

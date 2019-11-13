@@ -14,6 +14,9 @@ API_SURVRUN_GET_STATISTICS = "/api/survrun/statistics"
 # Stronghold
 API_STRONGHOLD_GET_AI_BATTLE = "/api/shc"
 
+# Eso
+API_ESO_GET_CONSTANTS = "/api/eso/constants"
+
 # Errors
 # General
 ERROR_GEN_DB_NOT_REACHABLE = "Error: could not query database"
