@@ -64,7 +64,7 @@ class QuerySurvrunTable:
     def survrun_select_query(self) -> List[List]:
         """
         Return all rows from survrun_runs table
-        :return:
+        :return: fetched DB data
         """
         sess = self._session()
         data = sess.query(SurvrunTable)
@@ -88,6 +88,11 @@ class QuerySurvrunTable:
         return 400, db_constants.BAD_REQUEST_TABLE_IS_EMPTY
 
     def survrun_delete_record_by_id_query(self, run_id):
+        """
+        Delete the record with the given run_id
+        :param run_id: id of the record to delete
+        :return: 200 if operation was successful, 400 if requested run_id does not exist
+        """
         sess = self._session()
         row = sess.query(SurvrunTable).filter(SurvrunTable.id == run_id).first()
 
