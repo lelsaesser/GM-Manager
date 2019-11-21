@@ -288,12 +288,37 @@ class EsoQueryPostDungeonRun(Resource):
     """
 
     def post(self):
-        run_data = json.loads(request.data)[""]
+        run_data = json.loads(request.data)["submitDungeonRunFormData"]
         if not run_data or not run_data[0]:
             abort(400)
 
+        dungeon_name = run_data[0]["dungeon_name"]
+        player_count = run_data[0]["player_count"]
+        time_needed = run_data[0]["time_needed"]
+        hardmode = run_data[0]["hardmode"]
+        flawless = run_data[0]["flawless"]
+        wipes = run_data[0]["wipes"]
+        class_one = run_data[0]["class_one"]
+        class_two = run_data[0]["class_two"]
+        class_three = run_data[0]["class_three"]
+        class_four = run_data[0]["class_four"]
+
+        if not dungeon_name or not player_count or not time_needed or not hardmode or not flawless or not wipes \
+                or not class_one or not class_two or not class_three or not class_four:
+            abort(400)
+
         db_query = QueryEsoTable()
-        db_data = db_query.eso_insert_dungeon_run_query()
+        status = db_query.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
+                                                       time_needed=time_needed, hardmode=hardmode, flawless=flawless,
+                                                       wipes=wipes, class_one=class_one, class_two=class_two,
+                                                       class_three=class_three, class_four=class_four)
+
+        if status is not 200:
+            abort(status)
+        return make_response(jsonify({'status': status}))
+
+
+api.add_resource(EsoQueryPostDungeonRun, constants.API_ESO_POST_DUNGEON_RUN)
 
 
 @app.route('/')
