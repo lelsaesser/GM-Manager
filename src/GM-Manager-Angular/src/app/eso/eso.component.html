@@ -1,0 +1,42 @@
+<!--ESO dungeon panel-->
+<div class="card card-primary">
+    <div class="card-header">Dungeon runs</div>
+    <div class="card-body">
+
+        <!--query flask backend button-->
+        <button (click)="fetchRecordedDungeonRuns()" type="button" class="btn btn-dark btn-sm">Query Postgre</button>
+
+        <!--display query results in table-->
+        <table class="table table-hover" *ngIf="esoDungeonDataSet">
+            <thead>
+                <th scope="col">Id</th>
+                <th scope="col">Dungeon</th>
+                <th scope="col">Player count</th>
+                <th scope="col">Time</th>
+                <th scope="col">Hardmode</th>
+                <th scope="col">Flawless</th>
+                <th scope="col">Wipes</th>
+                <th scope="col">Class 1</th>
+                <th scope="col">Class 2</th>
+                <th scope="col">Class 3</th>
+                <th scope="col">Class 4</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of esoDungeonData.queryResult">
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.dungeon_name }}</td>
+                    <td>{{ row.player_count }}</td>
+                    <td>{{ row.time_needed }}</td>
+                    <td>{{ row.hardmode }}</td>
+                    <td>{{ row.flawless }}</td>
+                    <td>{{ row.wipes }}</td>
+                    <td>{{ row.class_one }}</td>
+                    <td>{{ row.class_two }}</td>
+                    <td>{{ row.class_three }}</td>
+                    <td>{{ row.class_four }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

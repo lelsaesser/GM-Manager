@@ -9,11 +9,13 @@ import { ErrorPageNotFoundComponent } from './error-page-not-found/error-page-no
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { EsoComponent } from './eso/eso.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/survrim', pathMatch: 'full' },
   { path: 'survrim', component: SurvrimComponent },
   { path: 'stronghold', component: StrongholdComponent },
+  { path: 'eso', component: EsoComponent },
   { path: '**', component: ErrorPageNotFoundComponent }
 ];
 
@@ -22,7 +24,8 @@ const appRoutes: Routes = [
     AppComponent,
     SurvrimComponent,
     StrongholdComponent,
-    ErrorPageNotFoundComponent
+    ErrorPageNotFoundComponent,
+    EsoComponent
   ],
   imports: [
     BrowserModule,

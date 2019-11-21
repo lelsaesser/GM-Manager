@@ -13,3 +13,7 @@ export const API_SURVRUN_GET_STATISTICS = "/api/survrun/statistics";
 
 // Stronghold
 export const SHC_API = '/api/shc';
+
+// ESO
+export const API_ESO_GET_CONSTANTS = "/api/eso/constants";
+export const API_ESO_GET_DUNGEON_RUNS = "/api/eso/dungeons";
