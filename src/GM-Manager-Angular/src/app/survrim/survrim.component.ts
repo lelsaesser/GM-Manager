@@ -171,7 +171,7 @@ export class SurvrimComponent {
       return;
     }
     this.formSubmitDeleteId = this.formDeleteRun.value as JSON;
-    this.deleteSurvruninDatabase()
+    this.deleteSurvruninDatabase();
   }
 
   onSubmit() {
@@ -202,7 +202,7 @@ export class SurvrimComponent {
       return;
     }
     this.targetLocationsMatch = false;
-    this.postSurvrunToDatabase()
+    this.postSurvrunToDatabase();
   }
 
   statisticsDropdownChanged(dropdownValue: string) {

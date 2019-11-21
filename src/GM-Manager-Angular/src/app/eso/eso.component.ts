@@ -5,8 +5,10 @@ import { NotificationService } from '../../utils/notification.service'
 import {
   API_URL,
   API_ESO_GET_CONSTANTS,
-  API_ESO_GET_DUNGEON_RUNS
+  API_ESO_GET_DUNGEON_RUNS,
+  API_ESO_POST_DUNGEON_RUN
 } from './../env'
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-eso',
@@ -17,9 +19,27 @@ export class EsoComponent implements OnInit {
 
   esoConstantsSet: boolean = false;
   esoDungeonDataSet: boolean = false;
+  formSubmitDungeonRunSubmitted: boolean = false;
 
   esoConstants: JSON;
   esoDungeonData: JSON;
+
+  formSubmitDungeonRunData: any;
+
+  booleanDropdownValues = ["no", "yes"];
+
+  formSubmitDungeonRun = new FormGroup({
+    formPlayerCount: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(4)])),
+    formDungeonName: new FormControl(''),
+    formTimeNeeded: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(999)])),
+    formHardmode: new FormControl(''),
+    formFlawless: new FormControl(''),
+    formWipes: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(999)])),
+    formClassOne: new FormControl(''),
+    formClassTwo: new FormControl(''),
+    formClassThree: new FormControl(''),
+    formClassFour: new FormControl('')
+  })
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
 
@@ -41,6 +61,72 @@ export class EsoComponent implements OnInit {
       response => {
         this.notifyService.showFailure("Backend is not reachable.", "Error")
       })
+  }
+
+  postDungeonRunToDatabase() {
+    this.httpClient.post(API_URL + API_ESO_POST_DUNGEON_RUN,
+      {
+        'submitDungeonRunFormData': [
+          {
+            'dungeon_name': this.formSubmitDungeonRunData.formDungeonName,
+            'player_count': this.formSubmitDungeonRunData.formPlayerCount,
+            'time_needed': this.formSubmitDungeonRunData.formTimeNeeded,
+            'hardmode': this.formSubmitDungeonRunData.hardmode,
+            'flawless': this.formSubmitDungeonRunData.flawless,
+            'wipes': this.formSubmitDungeonRunData.wipes,
+            'class_one': this.formSubmitDungeonRunData.class_one,
+            'class_two': this.formSubmitDungeonRunData.class_two,
+            'class_three': this.formSubmitDungeonRunData.class_three,
+            'class_four': this.formSubmitDungeonRunData.class_four,
+          }
+        ]
+      }).subscribe(data => {
+        console.log("POST call successful value returned in body", data);
+      },
+      response => {
+        console.log("POST call in error", response);
+        this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
+      },
+      () => {
+        console.log("The POST observable is now completed.");
+        this.notifyService.showSuccess("Run submitted!", "Success")
+        this.fetchRecordedDungeonRuns();
+      });
+  }
+
+  onSubmit() {
+    this.formSubmitDungeonRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formSubmitDungeonRun.invalid) {
+      return;
+    }
+    this.formSubmitDungeonRunData = this.formSubmitDungeonRun.value as JSON;
+
+    //set default values for selectors, like they are displayed in ui
+    if (this.formSubmitDungeonRunData.formDungeonName == "") {
+      this.formSubmitDungeonRunData.formDungeonName = this.esoConstants["eso_constants"][0]["LIST_ESO_DUNGEONS"][0]
+    }
+    if (this.formSubmitDungeonRunData.formHardmode == "") {
+      this.formSubmitDungeonRunData.formHardmode = this.booleanDropdownValues[0]
+    }
+    if (this.formSubmitDungeonRunData.formFlawless == "") {
+      this.formSubmitDungeonRunData.formFlawless = this.booleanDropdownValues[0]
+    }
+    if (this.formSubmitDungeonRunData.formClassOne == "") {
+      this.formSubmitDungeonRunData.formClassOne = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassTwo == "") {
+      this.formSubmitDungeonRunData.formClassTwo = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassThree == "") {
+      this.formSubmitDungeonRunData.formClassThree = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassFour == "") {
+      this.formSubmitDungeonRunData.formClassFour = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+
+    this.postDungeonRunToDatabase();
+
   }
 
   ngOnInit() {

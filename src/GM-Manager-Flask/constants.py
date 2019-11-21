@@ -17,6 +17,7 @@ API_STRONGHOLD_GET_AI_BATTLE = "/api/shc"
 # Eso
 API_ESO_GET_CONSTANTS = "/api/eso/constants"
 API_ESO_GET_DUNGEON_RUNS = "/api/eso/dungeons"
+API_ESO_POST_DUNGEON_RUN = "/api/eso/submit-run"
 
 # Errors
 # General
