@@ -39,7 +39,7 @@ export class EsoComponent implements OnInit {
     formClassTwo: new FormControl(''),
     formClassThree: new FormControl(''),
     formClassFour: new FormControl('')
-  })
+  });
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
 
@@ -77,7 +77,7 @@ export class EsoComponent implements OnInit {
             'class_one': this.formSubmitDungeonRunData.class_one,
             'class_two': this.formSubmitDungeonRunData.class_two,
             'class_three': this.formSubmitDungeonRunData.class_three,
-            'class_four': this.formSubmitDungeonRunData.class_four,
+            'class_four': this.formSubmitDungeonRunData.class_four
           }
         ]
       }).subscribe(data => {
@@ -101,6 +101,7 @@ export class EsoComponent implements OnInit {
       return;
     }
     this.formSubmitDungeonRunData = this.formSubmitDungeonRun.value as JSON;
+    console.log("form data:", this.formSubmitDungeonRunData)
 
     //set default values for selectors, like they are displayed in ui
     if (this.formSubmitDungeonRunData.formDungeonName == "") {
