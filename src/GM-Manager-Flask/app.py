@@ -289,21 +289,21 @@ class EsoQueryPostDungeonRun(Resource):
 
     def post(self):
         run_data = json.loads(request.data)["submitDungeonRunFormData"]
-        if not run_data or not run_data[0]:
+        if not run_data:
             abort(400)
 
-        dungeon_name = run_data[0]["dungeon_name"]
-        player_count = run_data[0]["player_count"]
-        time_needed = run_data[0]["time_needed"]
-        hardmode = run_data[0]["hardmode"]
-        flawless = run_data[0]["flawless"]
-        wipes = run_data[0]["wipes"]
-        class_one = run_data[0]["class_one"]
-        class_two = run_data[0]["class_two"]
-        class_three = run_data[0]["class_three"]
-        class_four = run_data[0]["class_four"]
+        dungeon_name = run_data["formDungeonName"]
+        player_count = run_data["formPlayerCount"]
+        time_needed = run_data["formTimeNeeded"]
+        hardmode = run_data["formHardmode"]
+        flawless = run_data["formFlawless"]
+        wipes = run_data["formWipes"]
+        class_one = run_data["formClassOne"]
+        class_two = run_data["formClassTwo"]
+        class_three = run_data["formClassThree"]
+        class_four = run_data["formClassFour"]
 
-        if not dungeon_name or not player_count or not time_needed or not hardmode or not flawless or not wipes \
+        if not dungeon_name or not player_count or not time_needed or not hardmode or not flawless \
                 or not class_one or not class_two or not class_three or not class_four:
             abort(400)
 

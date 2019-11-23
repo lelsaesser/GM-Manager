@@ -43,10 +43,18 @@ class QueryEsoTable:
             return 400
         if time_needed < 1 or time_needed > 999:
             return 400
-        if hardmode is None:
+        if hardmode is None or hardmode == 'no':
             hardmode = False
-        if flawless is None:
+        elif hardmode == 'yes':
+            hardmode = True
+        else:
+            return 400
+        if flawless is None or flawless == 'no':
             flawless = False
+        elif flawless == 'yes':
+            flawless = True
+        else:
+            return 400
         if wipes < 0 or wipes > 999:
             return 400
         if class_one not in eso_constants.LIST_ESO_CLASSES:

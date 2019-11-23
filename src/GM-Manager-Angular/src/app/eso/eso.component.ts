@@ -66,20 +66,7 @@ export class EsoComponent implements OnInit {
   postDungeonRunToDatabase() {
     this.httpClient.post(API_URL + API_ESO_POST_DUNGEON_RUN,
       {
-        'submitDungeonRunFormData': [
-          {
-            'dungeon_name': this.formSubmitDungeonRunData.formDungeonName,
-            'player_count': this.formSubmitDungeonRunData.formPlayerCount,
-            'time_needed': this.formSubmitDungeonRunData.formTimeNeeded,
-            'hardmode': this.formSubmitDungeonRunData.hardmode,
-            'flawless': this.formSubmitDungeonRunData.flawless,
-            'wipes': this.formSubmitDungeonRunData.wipes,
-            'class_one': this.formSubmitDungeonRunData.class_one,
-            'class_two': this.formSubmitDungeonRunData.class_two,
-            'class_three': this.formSubmitDungeonRunData.class_three,
-            'class_four': this.formSubmitDungeonRunData.class_four
-          }
-        ]
+        'submitDungeonRunFormData': this.formSubmitDungeonRunData
       }).subscribe(data => {
         console.log("POST call successful value returned in body", data);
       },
