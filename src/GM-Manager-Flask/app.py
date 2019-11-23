@@ -2,6 +2,7 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 
+from database.query_eso_table import QueryEsoTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
@@ -21,6 +22,7 @@ class SurvrunGetClassApi(Resource):
     """
     exposes survrun class data
     """
+
     def get(self):
         player_class = SurvrimRuleGenerator.pick_class()
         player_class_skills = SurvrimRuleGenerator.get_skills_for_class(player_class)
@@ -63,6 +65,7 @@ class SurvrunQueryGetRuns(Resource):
     """
     exposes all recorded survruns from DB
     """
+
     def get(self):
         db_query = QuerySurvrunTable()
         db_data = db_query.survrun_select_query()
@@ -102,6 +105,7 @@ class SurvrunQueryPostRun(Resource):
     """
     POST endpoint to insert a survrun to the DB
     """
+
     def post(self):
         run_data = json.loads(request.data)["submitRunFormData"]
         if not run_data or not run_data[0]:
@@ -138,6 +142,7 @@ class SurvrunTargetLocationApi(Resource):
     """
     exposes survrun target location data
     """
+
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
@@ -167,7 +172,9 @@ class SurvrunDeleteRunApi(Resource):
     """
     endpoint to delete a recorded survrun from DB
     """
+
     def post(self):
+        run_id = None
         try:
             run_id = json.loads(request.data)["delete_row_id"]
         except KeyError:
@@ -189,6 +196,7 @@ class SurvrunStatisticsApi(Resource):
     """
     exposes survrun statistics
     """
+
     def get(self):
         stats_calc = SurvrunCalculateStatistics()
         try:
@@ -205,6 +213,7 @@ class StrongholdApi(Resource):
     """
     exposes shc data
     """
+
     def post(self):
         ai_count = json.loads(request.data)["shc_ai_battle_player_count"]
         if not ai_count:
@@ -224,11 +233,117 @@ class EsoGetConstantsApi(Resource):
     """
     exposes eso constants
     """
+
     def get(self):
         return EsoReturnConstants.eso_get_constants()
 
 
 api.add_resource(EsoGetConstantsApi, constants.API_ESO_GET_CONSTANTS)
+
+
+class EsoQueryGetDungeonRuns(Resource):
+    """
+    exposes recorded eso dungeon runs from DB
+    """
+
+    def get(self):
+        db_query = QueryEsoTable()
+        db_data = db_query.eso_select_dungeon_runs_query()
+        if not db_data:
+            abort(400)
+
+        json_components = []
+        for row in db_data:
+            try:
+                json_components.append(
+                    {
+                        'id': row.id,
+                        'dungeon_name': row.dungeon_name,
+                        'player_count': row.player_count,
+                        'time_needed': row.time_needed,
+                        'hardmode': row.hardmode,
+                        'flawless': row.flawless,
+                        'wipes': row.wipes,
+                        'class_one': row.class_one,
+                        'class_two': row.class_two,
+                        'class_three': row.class_three,
+                        'class_four': row.class_four
+                    }
+                )
+            except AttributeError:
+                abort(500)
+        if not json_components[0]:
+            return jsonify({'Info': 'No data to fetch, table is empty'})
+
+        return jsonify({
+            'queryResult': json_components
+        })
+
+
+api.add_resource(EsoQueryGetDungeonRuns, constants.API_ESO_GET_DUNGEON_RUNS)
+
+
+class EsoQueryPostDungeonRun(Resource):
+    """
+    POST endpoint to insert a eso dungeon run to the DB
+    """
+
+    def post(self):
+        run_data = json.loads(request.data)["submitDungeonRunFormData"]
+        if not run_data:
+            abort(400)
+
+        dungeon_name = run_data["formDungeonName"]
+        player_count = run_data["formPlayerCount"]
+        time_needed = run_data["formTimeNeeded"]
+        hardmode = run_data["formHardmode"]
+        flawless = run_data["formFlawless"]
+        wipes = run_data["formWipes"]
+        class_one = run_data["formClassOne"]
+        class_two = run_data["formClassTwo"]
+        class_three = run_data["formClassThree"]
+        class_four = run_data["formClassFour"]
+
+        if not dungeon_name or not player_count or not time_needed or not hardmode or not flawless \
+                or not class_one or not class_two or not class_three or not class_four:
+            abort(400)
+
+        db_query = QueryEsoTable()
+        status = db_query.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
+                                                       time_needed=time_needed, hardmode=hardmode, flawless=flawless,
+                                                       wipes=wipes, class_one=class_one, class_two=class_two,
+                                                       class_three=class_three, class_four=class_four)
+
+        if status is not 200:
+            abort(status)
+        return make_response(jsonify({'status': status}))
+
+
+api.add_resource(EsoQueryPostDungeonRun, constants.API_ESO_POST_DUNGEON_RUN)
+
+
+class EsoDeleteDungeonRunById(Resource):
+    """
+    Delete a recorded ESO dungeon run from the DB
+    """
+
+    def post(self):
+        run_id = None
+        try:
+            run_id = json.loads(request.data)["delete_row_id"]
+        except KeyError:
+            abort(400)
+        if not run_id:
+            abort(400)
+
+        db_query = QueryEsoTable()
+        status = db_query.eso_delete_dungeon_run_by_id(run_id)
+        if status is not 200:
+            abort(status)
+        return jsonify({'status': status})
+
+
+api.add_resource(EsoDeleteDungeonRunById, constants.API_ESO_DELETE_DUNGEON_RUN)
 
 
 @app.route('/')

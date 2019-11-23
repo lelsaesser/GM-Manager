@@ -1,0 +1,180 @@
+<!--ESO dungeon panel-->
+<div class="card card-primary">
+    <div class="card-header">Dungeon runs</div>
+    <div class="card-body">
+
+        <!--query flask backend button-->
+        <button (click)="fetchRecordedDungeonRuns()" type="button" class="btn btn-dark btn-sm">Query Postgre</button>
+
+        <!--display query results in table-->
+        <table class="table table-hover" *ngIf="esoDungeonDataSet">
+            <thead>
+                <th scope="col">Id</th>
+                <th scope="col">Dungeon</th>
+                <th scope="col">Player count</th>
+                <th scope="col">Time</th>
+                <th scope="col">Hardmode</th>
+                <th scope="col">Flawless</th>
+                <th scope="col">Wipes</th>
+                <th scope="col">Class 1</th>
+                <th scope="col">Class 2</th>
+                <th scope="col">Class 3</th>
+                <th scope="col">Class 4</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of esoDungeonData.queryResult">
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.dungeon_name }}</td>
+                    <td>{{ row.player_count }}</td>
+                    <td>{{ row.time_needed }}</td>
+                    <td>{{ row.hardmode }}</td>
+                    <td>{{ row.flawless }}</td>
+                    <td>{{ row.wipes }}</td>
+                    <td>{{ row.class_one }}</td>
+                    <td>{{ row.class_two }}</td>
+                    <td>{{ row.class_three }}</td>
+                    <td>{{ row.class_four }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--delete run submit button-->
+        <form *ngIf="esoDungeonDataSet" [formGroup]="formDeleteDungeonRun" (ngSubmit)="onSubmitDelete()">
+            <div class="form-row">
+                <div class="form-group col-md-1">
+                    <button type="submit" class="btn btn-dark">Delete</button>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="1" placeholder="id" formControlName="formIdToDelete"
+                        [ngClass]="{ 'is-invalid': formDeleteDungeonRunSubmitted && formDeleteDungeonRun.controls.formIdToDelete.errors }">
+                    <div *ngIf="formDeleteDungeonRunSubmitted && formDeleteDungeonRun.controls.formIdToDelete.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formDeleteDungeonRun.controls.formIdToDelete.errors.required">Please enter a valid id</div>
+                        <div *ngIf="formDeleteDungeonRun.controls.formIdToDelete.errors.min">Must be a positive number</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>
+
+<!--Submit new dungeon run panel-->
+<div class="card card-primary">
+    <div class="card-header">Submit new dungeon run</div>
+    <div class="card-body">
+        <form *ngIf="esoConstantsSet" [formGroup]="formSubmitDungeonRun" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="1" max="4" placeholder="Player count"
+                        formControlName="formPlayerCount"
+                        [ngClass]="{ 'is-invalid': formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formPlayerCount.errors }">
+                    <div *ngIf="formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formPlayerCount.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitDungeonRun.controls.formPlayerCount.errors.required">Please enter player
+                            count
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formPlayerCount.errors.min">Minimum player count is 1
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formPlayerCount.errors.max">Maximum player count is 4
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="1" max="999" placeholder="Time needed"
+                        formControlName="formTimeNeeded"
+                        [ngClass]="{ 'is-invalid': formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formTimeNeeded.errors }">
+                    <div *ngIf="formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formTimeNeeded.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitDungeonRun.controls.formTimeNeeded.errors.required">Please enter time
+                            needed
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formTimeNeeded.errors.min">Minimum time is 1 minutes
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formTimeNeeded.errors.max">Maximum time is 999 minutes
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" min="0" max="999" placeholder="Team wipes"
+                        formControlName="formWipes"
+                        [ngClass]="{ 'is-invalid': formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formWipes.errors }">
+                    <div *ngIf="formSubmitDungeonRunSubmitted && formSubmitDungeonRun.controls.formWipes.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="formSubmitDungeonRun.controls.formWipes.errors.required">Please enter team wipes
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formWipes.errors.min">Minimum is 0
+                        </div>
+                        <div *ngIf="formSubmitDungeonRun.controls.formWipes.errors.max">Maximum is 999
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formDungeonName">
+                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_DUNGEONS">
+                            {{ dungeon_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formHardmode">
+                        <option *ngFor="let value of booleanDropdownValues">{{ value }}</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formFlawless">
+                        <option *ngFor="let value of booleanDropdownValues">{{ value }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formClassOne">
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formClassTwo">
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formClassThree">
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formClassFour">
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
+                    </select>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>

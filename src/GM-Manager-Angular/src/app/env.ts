@@ -13,3 +13,9 @@ export const API_SURVRUN_GET_STATISTICS = "/api/survrun/statistics";
 
 // Stronghold
 export const SHC_API = '/api/shc';
+
+// ESO
+export const API_ESO_GET_CONSTANTS = "/api/eso/constants";
+export const API_ESO_GET_DUNGEON_RUNS = "/api/eso/dungeons";
+export const API_ESO_POST_DUNGEON_RUN = "/api/eso/submit-run";
+export const API_ESO_DELETE_DUNGEON_RUN = "/api/eso/delete/dungeon-run";
