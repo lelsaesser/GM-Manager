@@ -174,6 +174,7 @@ class SurvrunDeleteRunApi(Resource):
     """
 
     def post(self):
+        run_id = None
         try:
             run_id = json.loads(request.data)["delete_row_id"]
         except KeyError:
@@ -319,6 +320,30 @@ class EsoQueryPostDungeonRun(Resource):
 
 
 api.add_resource(EsoQueryPostDungeonRun, constants.API_ESO_POST_DUNGEON_RUN)
+
+
+class EsoDeleteDungeonRunById(Resource):
+    """
+    Delete a recorded ESO dungeon run from the DB
+    """
+
+    def post(self):
+        run_id = None
+        try:
+            run_id = json.loads(request.data)["delete_row_id"]
+        except KeyError:
+            abort(400)
+        if not run_id:
+            abort(400)
+
+        db_query = QueryEsoTable()
+        status = db_query.eso_delete_dungeon_run_by_id(run_id)
+        if status is not 200:
+            abort(status)
+        return jsonify({'status': status})
+
+
+api.add_resource(EsoDeleteDungeonRunById, constants.API_ESO_DELETE_DUNGEON_RUN)
 
 
 @app.route('/')

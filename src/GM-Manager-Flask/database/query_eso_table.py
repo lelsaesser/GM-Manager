@@ -21,7 +21,7 @@ class QueryEsoTable:
 
     def eso_insert_dungeon_run_query(self, dungeon_name: str, player_count: int, time_needed: int, hardmode: bool,
                                      flawless: bool, wipes: int, class_one: str, class_two: str, class_three: str,
-                                     class_four: str):
+                                     class_four: str) -> int:
         """
         Insert a dungeon run to the database
         :param dungeon_name: valid eso dungeon name
@@ -86,3 +86,19 @@ class QueryEsoTable:
         data = sess.query(EsoDungeonRunsTable)
 
         return data
+
+    def eso_delete_dungeon_run_by_id(self, run_id) -> int:
+        """
+        Delete the record with the given run_id
+        :param run_id: id of the record to delete
+        :return: 200 if operation was successful, 400 if requested run_id does not exist
+        """
+        sess = self._session()
+        row = sess.query(EsoDungeonRunsTable).filter(EsoDungeonRunsTable.id == run_id).first()
+
+        if not row:
+            return 400
+
+        sess.delete(row)
+        sess.commit()
+        return 200

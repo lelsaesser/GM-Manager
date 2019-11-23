@@ -6,7 +6,8 @@ import {
   API_URL,
   API_ESO_GET_CONSTANTS,
   API_ESO_GET_DUNGEON_RUNS,
-  API_ESO_POST_DUNGEON_RUN
+  API_ESO_POST_DUNGEON_RUN,
+  API_ESO_DELETE_DUNGEON_RUN
 } from './../env'
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -20,11 +21,13 @@ export class EsoComponent implements OnInit {
   esoConstantsSet: boolean = false;
   esoDungeonDataSet: boolean = false;
   formSubmitDungeonRunSubmitted: boolean = false;
+  formDeleteDungeonRunSubmitted: boolean = false;
 
   esoConstants: JSON;
   esoDungeonData: JSON;
 
   formSubmitDungeonRunData: any;
+  formSubmitDeleteDungeonRunById: any;
 
   booleanDropdownValues = ["no", "yes"];
 
@@ -39,6 +42,10 @@ export class EsoComponent implements OnInit {
     formClassTwo: new FormControl(''),
     formClassThree: new FormControl(''),
     formClassFour: new FormControl('')
+  });
+
+  formDeleteDungeonRun = new FormGroup({
+    formIdToDelete: new FormControl('', Validators.compose([Validators.required, Validators.min(1)]))
   });
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
@@ -70,15 +77,33 @@ export class EsoComponent implements OnInit {
       }).subscribe(data => {
         console.log("POST call successful value returned in body", data);
       },
-      response => {
-        console.log("POST call in error", response);
-        this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
+        response => {
+          console.log("POST call in error", response);
+          this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run submitted!", "Success")
+          this.fetchRecordedDungeonRuns();
+        });
+  }
+
+  deleteDungeonRunById() {
+    this.httpClient.post(API_URL + API_ESO_DELETE_DUNGEON_RUN,
+      {
+        'delete_row_id': this.formSubmitDeleteDungeonRunById.formIdToDelete
+      }).subscribe(data => {
+        console.log("POST call successful value returned in body", data);
       },
-      () => {
-        console.log("The POST observable is now completed.");
-        this.notifyService.showSuccess("Run submitted!", "Success")
-        this.fetchRecordedDungeonRuns();
-      });
+        response => {
+          console.log("POST call in error", response);
+          this.notifyService.showFailure("Given Id does not exist.", "Failure")
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run deleted!", "Success")
+          this.fetchRecordedDungeonRuns();
+        });
   }
 
   onSubmit() {
@@ -115,6 +140,16 @@ export class EsoComponent implements OnInit {
 
     this.postDungeonRunToDatabase();
 
+  }
+
+  onSubmitDelete() {
+    this.formDeleteDungeonRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formDeleteDungeonRun.invalid) {
+      return;
+    }
+    this.formSubmitDeleteDungeonRunById = this.formDeleteDungeonRun.value as JSON;
+    this.deleteDungeonRunById();
   }
 
   ngOnInit() {
