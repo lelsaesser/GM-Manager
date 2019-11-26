@@ -67,8 +67,8 @@ class SurvrunQueryGetRuns(Resource):
     """
 
     def get(self):
-        db_query = QuerySurvrunTable()
-        db_data = db_query.survrun_select_query()
+        db_cursor = QuerySurvrunTable()
+        db_data = db_cursor.survrun_select_query()
         if not db_data:
             abort(400)
 
@@ -126,8 +126,8 @@ class SurvrunQueryPostRun(Resource):
         if not player_class or not target_a or not target_b or not timebox or not time_needed or not difficulty:
             abort(400)
 
-        db_query = QuerySurvrunTable()
-        status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
+        db_cursor = QuerySurvrunTable()
+        status, msg = db_cursor.survrun_insert_query(player_class=player_class, target_a=target_a,
                                                     target_b=target_b, timebox=timebox, time_needed=time_needed,
                                                     r_count=r_count, completed=completed, difficulty=difficulty)
         if status is not 200:
@@ -182,8 +182,8 @@ class SurvrunDeleteRunApi(Resource):
         if not run_id:
             abort(400)
 
-        db_query = QuerySurvrunTable()
-        status, msg = db_query.survrun_delete_record_by_id_query(run_id)
+        db_cursor = QuerySurvrunTable()
+        status, msg = db_cursor.survrun_delete_record_by_id_query(run_id)
         if status is not 200:
             abort(status)
         return jsonify({'status': status, 'message': msg})
@@ -247,8 +247,8 @@ class EsoQueryGetDungeonRuns(Resource):
     """
 
     def get(self):
-        db_query = QueryEsoTable()
-        db_data = db_query.eso_select_dungeon_runs_query()
+        db_cursor = QueryEsoTable()
+        db_data = db_cursor.eso_select_dungeon_runs_query()
         if not db_data:
             abort(400)
 
@@ -287,7 +287,6 @@ class EsoQueryPostDungeonRun(Resource):
     """
     POST endpoint to insert a eso dungeon run to the DB
     """
-
     def post(self):
         run_data = json.loads(request.data)["submitDungeonRunFormData"]
         if not run_data:
@@ -308,8 +307,8 @@ class EsoQueryPostDungeonRun(Resource):
                 or not class_one or not class_two or not class_three or not class_four:
             abort(400)
 
-        db_query = QueryEsoTable()
-        status = db_query.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
+        db_cursor = QueryEsoTable()
+        status = db_cursor.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
                                                        time_needed=time_needed, hardmode=hardmode, flawless=flawless,
                                                        wipes=wipes, class_one=class_one, class_two=class_two,
                                                        class_three=class_three, class_four=class_four)
@@ -336,14 +335,82 @@ class EsoDeleteDungeonRunById(Resource):
         if not run_id:
             abort(400)
 
-        db_query = QueryEsoTable()
-        status = db_query.eso_delete_dungeon_run_by_id(run_id)
+        db_cursor = QueryEsoTable()
+        status = db_cursor.eso_delete_dungeon_run_by_id(run_id)
         if status is not 200:
             abort(status)
         return jsonify({'status': status})
 
 
 api.add_resource(EsoDeleteDungeonRunById, constants.API_ESO_DELETE_DUNGEON_RUN)
+
+
+class EsoQueryGetRaidRuns(Resource):
+    """
+    exposes recorded eso raid runs from DB
+    """
+    def get(self):
+        db_cursor = QueryEsoTable()
+        db_data = db_cursor.eso_select_dungeon_runs_query()
+        if not db_data:
+            abort(400)
+
+        json_components = []
+        for row in db_data:
+            try:
+                json_components.append(
+                    {
+                        'id': row.id,
+                        'raid_name': row.raid_name,
+                        'player_count': row.player_count,
+                        'time_needed': row.time_needed,
+                        'hardmode': row.hardmode,
+                        'flawless': row.flawless,
+                        'wipes': row.wipes,
+                        'class_one': row.class_one,
+                        'class_two': row.class_two,
+                        'class_three': row.class_three,
+                        'class_four': row.class_four,
+                        'class_five': row.class_five,
+                        'class_six': row.class_six,
+                        'class_seven': row.class_seven,
+                        'class_eight': row.class_eight,
+                        'class_nine': row.class_nine,
+                        'class_ten': row.class_ten,
+                        'class_eleven': row.class_eleven,
+                        'class_twelve': row.class_twelve,
+                    }
+                )
+            except AttributeError:
+                abort(500)
+        if not json_components[0]:
+            return jsonify({'Info': 'No data to fetch, table is empty'})
+
+        return jsonify({
+            'queryResult': json_components
+        })
+
+
+api.add_resource(EsoQueryGetRaidRuns, constants.API_ESO_GET_RAID_RUNS)
+
+
+class EsoQueryPostRaidRun(Resource):
+    """
+    POST endpoint to insert a eso raid run to the DB
+    """
+    def post(self):
+        run_data = json.loads(request.data)["submitRaidRunFormData"]
+
+        if not run_data:
+            abort(400)
+
+        raid_name = run_data["formRaidName"]
+        player_count = run_data["formPlayerCount"]
+        time_needed = run_data["formTimeNeeded"]
+        hardmode = run_data["formHardmode"]
+        # todo: finish this
+
+        pass
 
 
 @app.route('/')
