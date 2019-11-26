@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
@@ -19,8 +19,8 @@ class QueryEsoTable:
         self._db = _db = create_engine(self._db_string)
         self._session = sessionmaker(self._db)
 
-    def eso_insert_dungeon_run_query(self, dungeon_name: str, player_count: int, time_needed: int, hardmode: bool,
-                                     flawless: bool, wipes: int, class_one: str, class_two: str, class_three: str,
+    def eso_insert_dungeon_run_query(self, dungeon_name: str, player_count: int, time_needed: int, hardmode: str,
+                                     flawless: str, wipes: int, class_one: str, class_two: str, class_three: str,
                                      class_four: str) -> int:
         """
         Insert a dungeon run to the database
@@ -74,6 +74,7 @@ class QueryEsoTable:
         try:
             sess.add(run_query)
             sess.commit()
+            return 200
         except IntegrityError:
             return 500
 
@@ -102,3 +103,32 @@ class QueryEsoTable:
         sess.delete(row)
         sess.commit()
         return 200
+
+    def eso_delete_last_added_record_query(self):
+        """
+        Delete the last added table record. This is handy for unit/integration tests that create a record to test
+        the insert functionality or for undo/revert functionality in frontend.
+        Important: this is id based. The record with the highest id is interpreted as last added record. Only works
+        with autoincrement.
+        """
+        sess = self._session()
+        data = sess.query(EsoDungeonRunsTable).order_by(desc(EsoDungeonRunsTable.id)).limit(1)
+
+        for row in data:
+            sess.delete(row)
+            sess.commit()
+            return 200
+        return 400
+
+    def eso_get_id_of_last_added_record(self):
+        """
+        Returns the id (int) of the last added eso dungeon run
+        Important: expects auto increment of id in database. This just returns the highest id of all rows.
+        :return: id of last added record or -1 on failure
+        """
+        sess = self._session()
+        data = sess.query(EsoDungeonRunsTable).order_by(desc(EsoDungeonRunsTable.id)).limit(1)
+
+        for row in data:
+            return row.id
+        return -1

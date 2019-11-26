@@ -34,3 +34,20 @@ class TestQuerySurvrunTable:
 
         assert status == 200
         assert msg == db_constants.SUCCESS_QUERY_COMPLETED
+
+    def test_survrun_delete_query(self):
+        db_cursor = QuerySurvrunTable()
+
+        status, msg = db_cursor.survrun_insert_query(survrim_constants.CLASS_WARRIOR, survrim_constants.CITY_WINDHELM,
+                                                     survrim_constants.CITY_WHITERUN, 40, "yes", 32, 3,
+                                                     survrim_constants.DIFFICULTY_HARDCORE)
+
+        assert status == 200
+        assert msg == db_constants.SUCCESS_QUERY_COMPLETED
+
+        last_id = db_cursor.survrun_get_id_of_last_added_record()
+        assert last_id > -1
+
+        status, msg = db_cursor.survrun_delete_record_by_id_query(last_id)
+        assert status == 200
+        assert msg == db_constants.SUCCESS_QUERY_COMPLETED
