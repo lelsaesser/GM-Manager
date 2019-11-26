@@ -104,3 +104,16 @@ class QuerySurvrunTable:
         sess.delete(row)
         sess.commit()
         return 200, db_constants.SUCCESS_QUERY_COMPLETED
+
+    def survrun_get_id_of_last_added_record(self):
+        """
+        Returns the id (int) of the last added eso dungeon run
+        Important: expects auto increment of id in database. This just returns the highest id of all rows.
+        :return: id of last added record or -1 on failure
+        """
+        sess = self._session()
+        data = sess.query(SurvrunTable).order_by(desc(SurvrunTable.id)).limit(1)
+
+        for row in data:
+            return row.id
+        return -1

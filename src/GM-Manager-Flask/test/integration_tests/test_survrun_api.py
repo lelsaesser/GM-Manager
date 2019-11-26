@@ -4,7 +4,6 @@ import requests
 
 import constants
 import modes.survrim.constants as survrim_constants
-from database import constants as db_constants
 
 
 class TestSurvrunApi:
