@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 
-from database.query_eso_table import QueryEsoTable
+from database.query_eso_dungeon_table import QueryEsoTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator

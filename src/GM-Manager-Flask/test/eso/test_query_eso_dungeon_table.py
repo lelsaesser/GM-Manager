@@ -1,4 +1,4 @@
-from database.query_eso_table import QueryEsoTable
+from database.query_eso_dungeon_table import QueryEsoTable
 from modes.eso import constants as eso_constants
 from database import constants as db_constants
 
