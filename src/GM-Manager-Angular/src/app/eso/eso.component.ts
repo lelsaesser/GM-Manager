@@ -7,7 +7,10 @@ import {
   API_ESO_GET_CONSTANTS,
   API_ESO_GET_DUNGEON_RUNS,
   API_ESO_POST_DUNGEON_RUN,
-  API_ESO_DELETE_DUNGEON_RUN
+  API_ESO_DELETE_DUNGEON_RUN,
+  API_ESO_GET_RAID_RUNS,
+  API_ESO_POST_RAID_RUN,
+  API_ESO_DELETE_RAID_RUN
 } from './../env'
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -20,14 +23,20 @@ export class EsoComponent implements OnInit {
 
   esoConstantsSet: boolean = false;
   esoDungeonDataSet: boolean = false;
+  esoRaidDataSet: boolean = false;
   formSubmitDungeonRunSubmitted: boolean = false;
   formDeleteDungeonRunSubmitted: boolean = false;
+  formSubmitRaidRunSubmitted: boolean = false;
+  formDeleteRaidRunSubmitted: boolean = false;
 
   esoConstants: JSON;
   esoDungeonData: JSON;
+  esoRaidData: JSON;
 
   formSubmitDungeonRunData: any;
   formSubmitDeleteDungeonRunById: any;
+  formSubmitRaidRunData: any;
+  formSubmitDeleteRaidRunById: any;
 
   booleanDropdownValues = ["no", "yes"];
 
@@ -44,7 +53,32 @@ export class EsoComponent implements OnInit {
     formClassFour: new FormControl('')
   });
 
+  formSubmitRaidRun = new FormGroup({
+    formRaidName: new FormControl(''),
+    formPlayerCount: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(12)])),
+    formTimeNeeded: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(999)])),
+    formHardmode: new FormControl(''),
+    formFlawless: new FormControl(''),
+    formWipes: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(999)])),
+    formClassOne: new FormControl(''),
+    formClassTwo: new FormControl(''),
+    formClassThree: new FormControl(''),
+    formClassFour: new FormControl(''),
+    formClassFive: new FormControl(''),
+    formClassSix: new FormControl(''),
+    formClassSeven: new FormControl(''),
+    formClassEight: new FormControl(''),
+    formClassNine: new FormControl(''),
+    formClassTen: new FormControl(''),
+    formClassEleven: new FormControl(''),
+    formClassTwelve: new FormControl('')
+  });
+
   formDeleteDungeonRun = new FormGroup({
+    formIdToDelete: new FormControl('', Validators.compose([Validators.required, Validators.min(1)]))
+  });
+
+  formDeleteRaidRun = new FormGroup({
     formIdToDelete: new FormControl('', Validators.compose([Validators.required, Validators.min(1)]))
   });
 
@@ -57,7 +91,7 @@ export class EsoComponent implements OnInit {
     },
       response => {
         this.notifyService.showFailure("Backend is not reachable.", "Error")
-      })
+      });
   }
 
   fetchRecordedDungeonRuns() {
@@ -67,7 +101,17 @@ export class EsoComponent implements OnInit {
     },
       response => {
         this.notifyService.showFailure("Backend is not reachable.", "Error")
-      })
+      });
+  }
+
+  fetchRecordedRaidRuns() {
+    this.httpClient.get(API_URL + API_ESO_GET_RAID_RUNS).subscribe(data => {
+      this.esoRaidData = data as JSON;
+      this.esoRaidDataSet = true;
+    },
+      response => {
+        this.notifyService.showFailure("Backend is not reachable.", "Error")
+      });
   }
 
   postDungeonRunToDatabase() {
@@ -88,6 +132,24 @@ export class EsoComponent implements OnInit {
         });
   }
 
+  postRaidRunToDatabase() {
+    this.httpClient.post(API_URL + API_ESO_POST_RAID_RUN,
+      {
+        'submitRaidFormData': this.formSubmitRaidRunData
+      }).subscribe(data => {
+        console.log("POST call successful value returned in body", data);
+      },
+        response => {
+          console.log("POST call in error", response);
+          this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run submitted!", "Success")
+          this.fetchRecordedRaidRuns();
+        });
+  }
+
   deleteDungeonRunById() {
     this.httpClient.post(API_URL + API_ESO_DELETE_DUNGEON_RUN,
       {
@@ -103,6 +165,24 @@ export class EsoComponent implements OnInit {
           console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run deleted!", "Success")
           this.fetchRecordedDungeonRuns();
+        });
+  }
+
+  deleteRaidRunById() {
+    this.httpClient.post(API_URL + API_ESO_DELETE_RAID_RUN,
+      {
+        'delete_row_id': this.formSubmitDeleteRaidRunById.formIdToDelete
+      }).subscribe(data => {
+        console.log("POST call successful value returned in body", data);
+      },
+        response => {
+          console.log("POST call in error", response);
+          this.notifyService.showFailure("Given Id does not exist.", "Failure")
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+          this.notifyService.showSuccess("Run deleted!", "Success")
+          this.fetchRecordedRaidRuns();
         });
   }
 
@@ -139,7 +219,63 @@ export class EsoComponent implements OnInit {
     }
 
     this.postDungeonRunToDatabase();
+  }
 
+  onSubmitRaidRun() {
+    this.formSubmitRaidRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formSubmitRaidRun.invalid) {
+      return;
+    }
+
+    //set default values for selectors, like they are displayed in ui
+    if (this.formSubmitRaidRunData.formRaidName == "") {
+      this.formSubmitRaidRunData.formRaidName = this.esoConstants["eso_constants"][0]["LIST_ESO_RAIDS"][0]
+    }
+    if (this.formSubmitRaidRunData.formHardmode == "") {
+      this.formSubmitRaidRunData.formHardmode = this.booleanDropdownValues[0]
+    }
+    if (this.formSubmitRaidRunData.formFlawless == "") {
+      this.formSubmitRaidRunData.formFlawless = this.booleanDropdownValues[0]
+    }
+    if (this.formSubmitDungeonRunData.formClassOne == "") {
+      this.formSubmitDungeonRunData.formClassOne = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassTwo == "") {
+      this.formSubmitDungeonRunData.formClassTwo = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassThree == "") {
+      this.formSubmitDungeonRunData.formClassThree = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassFour == "") {
+      this.formSubmitDungeonRunData.formClassFour = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassFive == "") {
+      this.formSubmitDungeonRunData.formClassFive = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassSix == "") {
+      this.formSubmitDungeonRunData.formClassSix = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassSeven == "") {
+      this.formSubmitDungeonRunData.formClassSeven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassEight == "") {
+      this.formSubmitDungeonRunData.formClassEight = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassNine == "") {
+      this.formSubmitDungeonRunData.formClassNine = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassTen == "") {
+      this.formSubmitDungeonRunData.formClassTen = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassEleven == "") {
+      this.formSubmitDungeonRunData.formClassEleven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitDungeonRunData.formClassTwelve == "") {
+      this.formSubmitDungeonRunData.formClassTwelve = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+
+    this.postRaidRunToDatabase();
   }
 
   onSubmitDelete() {
