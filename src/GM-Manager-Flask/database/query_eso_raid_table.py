@@ -5,11 +5,10 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
 from database import constants as db_constants
-from database.table_schemas import EsoDungeonRunsTable
+from database.table_schemas import EsoRaidRunsTable
 from modes.eso import constants as eso_constants
 
-
-class QueryEsoDungeonTable:
+class QueryEsoRaidTable:
 
     def __init__(self):
         self._db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + \
@@ -19,27 +18,35 @@ class QueryEsoDungeonTable:
         self._db = _db = create_engine(self._db_string)
         self._session = sessionmaker(self._db)
 
-    def eso_insert_dungeon_run_query(self, dungeon_name: str, player_count: int, time_needed: int, hardmode: str,
-                                     flawless: str, wipes: int, class_one: str, class_two: str, class_three: str,
-                                     class_four: str) -> int:
+    def eso_insert_raid_run_query(self, raid_name: str, player_count: int, time_needed: int, hardmode: bool,
+                                  flawless: bool, wipes: int, class_one: str, class_two: str, class_three: str,
+                                  class_four: str, class_five: str, class_six: str, class_seven: str, class_eight: str,
+                                  class_nine: str, class_ten: str, class_eleven: str, class_twelve: str) -> int:
         """
-        Insert a dungeon run to the database
-        :param dungeon_name: valid eso dungeon name
-        :param player_count: integer 1-4
+        Insert a raid run to the database
+        :param raid_name: valid eso raid (trial) name
+        :param player_count: integer 1-12
         :param time_needed: integer representing time in minutes (1-999 allowed)
         :param hardmode: boolean, was hardmode completed?
-        :param flawless: boolean, was the dungeon completed without a single group member death?
+        :param flawless: boolean, was the raid completed without a single group member death?
         :param wipes: integer, representing wipe count (times full party faints and battle resets)
         :param class_one: valid eso classname
         :param class_two: valid eso classname
         :param class_three: valid eso classname
         :param class_four: valid eso classname
-        :return: 200 on success, 400 on bad request, 500 on insert error
+        :param class_five: valid eso classname
+        :param class_six: valid eso classname
+        :param class_seven: valid eso classname
+        :param class_eight: valid eso classname
+        :param class_nine: valid eso classname
+        :param class_ten: valid eso classname
+        :param class_eleven: valid eso classname
+        :param class_twelve: valid eso classname
         """
 
-        if dungeon_name not in eso_constants.LIST_ESO_DUNGEONS:
+        if raid_name not in eso_constants.LIST_ESO_RAIDS:
             return 400
-        if player_count < 1 or player_count > 4:
+        if player_count < 1 or player_count > 12:
             return 400
         if time_needed < 1 or time_needed > 999:
             return 400
@@ -65,10 +72,29 @@ class QueryEsoDungeonTable:
             return 400
         if class_four not in eso_constants.LIST_ESO_CLASSES:
             return 400
+        if class_five not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_six not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_seven not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_eight not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_nine not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_ten not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_eleven not in eso_constants.LIST_ESO_CLASSES:
+            return 400
+        if class_twelve not in eso_constants.LIST_ESO_CLASSES:
+            return 400
 
-        run_query = EsoDungeonRunsTable(dungeon_name=dungeon_name, player_count=player_count, time_needed=time_needed,
-                                        hardmode=hardmode, flawless=flawless, wipes=wipes, class_one=class_one,
-                                        class_two=class_two, class_three=class_three, class_four=class_four)
+        run_query = EsoRaidRunsTable(raid_name=raid_name, player_count=player_count, time_needed=time_needed,
+                                     hardmode=hardmode, flawless=flawless, wipes=wipes, class_one=class_one,
+                                     class_two=class_two, class_three=class_three, class_four=class_four,
+                                     class_five=class_five, class_six=class_six, class_seven=class_seven,
+                                     class_eight=class_eight, class_nine=class_nine, class_ten=class_ten,
+                                     class_eleven=class_eleven, class_twelve=class_twelve)
 
         sess = self._session()
         try:
@@ -78,24 +104,24 @@ class QueryEsoDungeonTable:
         except IntegrityError:
             return 500
 
-    def eso_select_dungeon_runs_query(self) -> List[List]:
+    def eso_select_raid_runs_query(self) -> List[List]:
         """
-        Return all rows from eso dungeon runs table
+        Return all rows from eso raid runs table
         :return: fetched DB data
         """
         sess = self._session()
-        data = sess.query(EsoDungeonRunsTable)
+        data = sess.query(EsoRaidRunsTable)
 
         return data
 
-    def eso_delete_dungeon_run_by_id(self, run_id) -> int:
+    def eso_delete_raid_run_by_id(self, run_id) -> int:
         """
         Delete the record with the given run_id
         :param run_id: id of the record to delete
         :return: 200 if operation was successful, 400 if requested run_id does not exist
         """
         sess = self._session()
-        row = sess.query(EsoDungeonRunsTable).filter(EsoDungeonRunsTable.id == run_id).first()
+        row = sess.query(EsoRaidRunsTable).filter(EsoRaidRunsTable.id == run_id).first()
 
         if not row:
             return 400
@@ -104,7 +130,7 @@ class QueryEsoDungeonTable:
         sess.commit()
         return 200
 
-    def eso_delete_last_added_record_query(self):
+    def eso_delete_last_added_record_query(self) -> int:
         """
         Delete the last added table record. This is handy for unit/integration tests that create a record to test
         the insert functionality or for undo/revert functionality in frontend.
@@ -112,7 +138,7 @@ class QueryEsoDungeonTable:
         with autoincrement.
         """
         sess = self._session()
-        data = sess.query(EsoDungeonRunsTable).order_by(desc(EsoDungeonRunsTable.id)).limit(1)
+        data = sess.query(EsoRaidRunsTable).order_by(desc(EsoRaidRunsTable.id)).limit(1)
 
         for row in data:
             sess.delete(row)
@@ -127,7 +153,7 @@ class QueryEsoDungeonTable:
         :return: id of last added record or -1 on failure
         """
         sess = self._session()
-        data = sess.query(EsoDungeonRunsTable).order_by(desc(EsoDungeonRunsTable.id)).limit(1)
+        data = sess.query(EsoRaidRunsTable).order_by(desc(EsoRaidRunsTable.id)).limit(1)
 
         for row in data:
             return row.id

@@ -1,7 +1,7 @@
 import requests
 import constants
 from modes.eso import constants as eso_constants
-from database.query_eso_dungeon_table import QueryEsoTable
+from database.query_eso_dungeon_table import QueryEsoDungeonTable
 
 
 class TestEsoApi:
@@ -37,7 +37,7 @@ class TestEsoApi:
         assert type(data['class_four']) == str
 
     def test_eso_query_post_dungeon_run(self):
-        db_cursor = QueryEsoTable()
+        db_cursor = QueryEsoDungeonTable()
 
         # check current highest run id:
         last_added_run_id = db_cursor.eso_get_id_of_last_added_record()
