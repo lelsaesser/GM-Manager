@@ -55,7 +55,7 @@ export class EsoComponent implements OnInit {
 
   formSubmitRaidRun = new FormGroup({
     formRaidName: new FormControl(''),
-    formPlayerCount: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(12)])),
+    formPlayerCount: new FormControl(''),
     formTimeNeeded: new FormControl('', Validators.compose([Validators.required, Validators.min(1), Validators.max(999)])),
     formHardmode: new FormControl(''),
     formFlawless: new FormControl(''),
@@ -193,7 +193,6 @@ export class EsoComponent implements OnInit {
       return;
     }
     this.formSubmitDungeonRunData = this.formSubmitDungeonRun.value as JSON;
-    console.log("form data:", this.formSubmitDungeonRunData)
 
     //set default values for selectors, like they are displayed in ui
     if (this.formSubmitDungeonRunData.formDungeonName == "") {
@@ -229,6 +228,9 @@ export class EsoComponent implements OnInit {
     }
 
     this.formSubmitRaidRunData = this.formSubmitRaidRun.value as JSON;
+
+    //temporary solution: always set raid player count to 12
+    this.formSubmitRaidRunData.formPlayerCount = 12;
 
     //set default values for selectors, like they are displayed in ui
     if (this.formSubmitRaidRunData.formRaidName == "") {

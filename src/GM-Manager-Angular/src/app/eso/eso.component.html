@@ -247,19 +247,10 @@
             <div class="form-row">
 
                 <div class="form-group col-md-2">
-                    <input type="number" class="form-control" min="1" max="4" placeholder="Player count"
-                        formControlName="formPlayerCount"
-                        [ngClass]="{ 'is-invalid': formSubmitRaidRunSubmitted && formSubmitRaidRun.controls.formPlayerCount.errors }">
-                    <div *ngIf="formSubmitRaidRunSubmitted && formSubmitRaidRun.controls.formPlayerCount.errors"
-                        class="invalid-feedback">
-                        <div *ngIf="formSubmitRaidRun.controls.formPlayerCount.errors.required">Please enter player
-                            count
-                        </div>
-                        <div *ngIf="formSubmitRaidRun.controls.formPlayerCount.errors.min">Minimum player count is 1
-                        </div>
-                        <div *ngIf="formSubmitRaidRun.controls.formPlayerCount.errors.max">Maximum player count is 12
-                        </div>
-                    </div>
+                    <select class="form-control" formControlName="formRaidName">
+                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_RAIDS">
+                            {{ dungeon_name }}</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-2">
@@ -294,21 +285,17 @@
             </div>
 
             <div class="form-row">
+                <div class="form-group col-md-1">
 
-                <div class="form-group col-md-2">
-                    <select class="form-control" formControlName="formRaidName">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_RAIDS">
-                            {{ dungeon_name }}</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-2">
+                    <label>HM:</label>
                     <select class="form-control" formControlName="formHardmode">
                         <option *ngFor="let value of booleanDropdownValues">{{ value }}</option>
                     </select>
                 </div>
 
-                <div class="form-group col-md-2">
+
+                <div class="form-group col-md-1">
+                    <label>Flawless:</label>
                     <select class="form-control" formControlName="formFlawless">
                         <option *ngFor="let value of booleanDropdownValues">{{ value }}</option>
                     </select>
@@ -319,29 +306,29 @@
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassOne">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassTwo">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassThree">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassFour">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
             </div>
@@ -350,29 +337,29 @@
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassFive">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassSix">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassSeven">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassEight">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
             </div>
@@ -381,29 +368,29 @@
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassNine">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassTen">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassEleven">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-2">
                     <select class="form-control" formControlName="formClassTwelve">
-                        <option *ngFor="let dungeon_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
-                            {{ dungeon_name }}</option>
+                        <option *ngFor="let class_name of esoConstants.eso_constants[0].LIST_ESO_CLASSES">
+                            {{ class_name }}</option>
                     </select>
                 </div>
             </div>
