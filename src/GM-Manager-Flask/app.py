@@ -443,9 +443,9 @@ class EsoQueryPostRaidRun(Resource):
         class_eleven = run_data["formClassEleven"]
         class_twelve = run_data["formClassTwelve"]
 
-        if not raid_name or player_count or time_needed or class_one or class_two or class_three or class_four or \
-                class_five or class_six or class_seven or class_eight or class_nine or class_ten or class_eleven or \
-                class_twelve:
+        if not raid_name or not player_count or not time_needed or not class_one or not class_two or not class_three \
+                or not class_four or not class_five or not class_six or not class_seven or not class_eight or not \
+                class_nine or not class_ten or not class_eleven or not class_twelve:
             abort(400)
 
         if hardmode is None or flawless is None or wipes is None:

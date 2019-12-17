@@ -135,7 +135,7 @@ export class EsoComponent implements OnInit {
   postRaidRunToDatabase() {
     this.httpClient.post(API_URL + API_ESO_POST_RAID_RUN,
       {
-        'submitRaidFormData': this.formSubmitRaidRunData
+        'submitRaidRunFormData': this.formSubmitRaidRunData
       }).subscribe(data => {
         console.log("POST call successful value returned in body", data);
       },
@@ -228,6 +228,8 @@ export class EsoComponent implements OnInit {
       return;
     }
 
+    this.formSubmitRaidRunData = this.formSubmitRaidRun.value as JSON;
+
     //set default values for selectors, like they are displayed in ui
     if (this.formSubmitRaidRunData.formRaidName == "") {
       this.formSubmitRaidRunData.formRaidName = this.esoConstants["eso_constants"][0]["LIST_ESO_RAIDS"][0]
@@ -238,41 +240,41 @@ export class EsoComponent implements OnInit {
     if (this.formSubmitRaidRunData.formFlawless == "") {
       this.formSubmitRaidRunData.formFlawless = this.booleanDropdownValues[0]
     }
-    if (this.formSubmitDungeonRunData.formClassOne == "") {
-      this.formSubmitDungeonRunData.formClassOne = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassOne == "") {
+      this.formSubmitRaidRunData.formClassOne = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassTwo == "") {
-      this.formSubmitDungeonRunData.formClassTwo = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassTwo == "") {
+      this.formSubmitRaidRunData.formClassTwo = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassThree == "") {
-      this.formSubmitDungeonRunData.formClassThree = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassThree == "") {
+      this.formSubmitRaidRunData.formClassThree = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassFour == "") {
-      this.formSubmitDungeonRunData.formClassFour = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassFour == "") {
+      this.formSubmitRaidRunData.formClassFour = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassFive == "") {
-      this.formSubmitDungeonRunData.formClassFive = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassFive == "") {
+      this.formSubmitRaidRunData.formClassFive = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassSix == "") {
-      this.formSubmitDungeonRunData.formClassSix = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassSix == "") {
+      this.formSubmitRaidRunData.formClassSix = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassSeven == "") {
-      this.formSubmitDungeonRunData.formClassSeven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassSeven == "") {
+      this.formSubmitRaidRunData.formClassSeven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassEight == "") {
-      this.formSubmitDungeonRunData.formClassEight = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassEight == "") {
+      this.formSubmitRaidRunData.formClassEight = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassNine == "") {
-      this.formSubmitDungeonRunData.formClassNine = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassNine == "") {
+      this.formSubmitRaidRunData.formClassNine = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassTen == "") {
-      this.formSubmitDungeonRunData.formClassTen = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassTen == "") {
+      this.formSubmitRaidRunData.formClassTen = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassEleven == "") {
-      this.formSubmitDungeonRunData.formClassEleven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassEleven == "") {
+      this.formSubmitRaidRunData.formClassEleven = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
-    if (this.formSubmitDungeonRunData.formClassTwelve == "") {
-      this.formSubmitDungeonRunData.formClassTwelve = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    if (this.formSubmitRaidRunData.formClassTwelve == "") {
+      this.formSubmitRaidRunData.formClassTwelve = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
     }
 
     this.postRaidRunToDatabase();
