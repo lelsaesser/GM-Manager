@@ -292,8 +292,17 @@ export class EsoComponent implements OnInit {
     this.deleteDungeonRunById();
   }
 
+  onSubmitDeleteRaid() {
+    this.formDeleteRaidRunSubmitted = true;
+    // input validation: stop here if form is missing required fields
+    if (this.formDeleteRaidRun.invalid) {
+      return;
+    }
+    this.formSubmitDeleteRaidRunById = this.formDeleteRaidRun.value as JSON;
+    this.deleteRaidRunById();
+  }
+
   ngOnInit() {
     this.fetchEsoConstants();
   }
-
 }
