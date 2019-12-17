@@ -1,4 +1,4 @@
-from database.query_eso_dungeon_table import QueryEsoTable
+from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from modes.eso import constants as eso_constants
 from database import constants as db_constants
 
@@ -6,7 +6,7 @@ from database import constants as db_constants
 class TestQueryEsoTable:
 
     def test_eso_insert_query(self):
-        db_cursor = QueryEsoTable()
+        db_cursor = QueryEsoDungeonTable()
         status = db_cursor.eso_insert_dungeon_run_query(dungeon_name=eso_constants.DUNGEON_SPINDLECLUTCH_I,
                                                         player_count=4, time_needed=30, hardmode="yes", flawless="no",
                                                         wipes=1, class_one=eso_constants.CLASS_DRAGONKNIGHT,
@@ -21,13 +21,13 @@ class TestQueryEsoTable:
         assert status == 200
 
     def test_eso_select_query(self):
-        db_cursor = QueryEsoTable()
+        db_cursor = QueryEsoDungeonTable()
         data = db_cursor.eso_select_dungeon_runs_query()
 
         assert data is not None
 
     def test_eso_delete_query(self):
-        db_cursor = QueryEsoTable()
+        db_cursor = QueryEsoDungeonTable()
         status = db_cursor.eso_insert_dungeon_run_query(dungeon_name=eso_constants.DUNGEON_SPINDLECLUTCH_I,
                                                         player_count=4, time_needed=30, hardmode="yes", flawless="no",
                                                         wipes=1, class_one=eso_constants.CLASS_DRAGONKNIGHT,

@@ -17,5 +17,9 @@ export const SHC_API = '/api/shc';
 // ESO
 export const API_ESO_GET_CONSTANTS = "/api/eso/constants";
 export const API_ESO_GET_DUNGEON_RUNS = "/api/eso/dungeons";
-export const API_ESO_POST_DUNGEON_RUN = "/api/eso/submit-run";
-export const API_ESO_DELETE_DUNGEON_RUN = "/api/eso/delete/dungeon-run";
+export const API_ESO_POST_DUNGEON_RUN = "/api/eso/submit/dungeon";
+export const API_ESO_DELETE_DUNGEON_RUN = "/api/eso/delete/dungeon";
+
+export const API_ESO_GET_RAID_RUNS = "/api/eso/raids"
+export const API_ESO_POST_RAID_RUN = "/api/eso/submit/raid"
+export const API_ESO_DELETE_RAID_RUN = "/api/eso/delete/raid"

@@ -2,7 +2,8 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 
-from database.query_eso_dungeon_table import QueryEsoTable
+from database.query_eso_dungeon_table import QueryEsoDungeonTable
+from database.query_eso_raid_table import QueryEsoRaidTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
@@ -17,6 +18,10 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)  # required for cross origin resource sharing error (temp fix)
 
+
+# # # # # # # # # # # # # # # # # # #
+# # # # Survrun Api Endpoints # # # #
+# # # # # # # # # # # # # # # # # # #
 
 class SurvrunGetClassApi(Resource):
     """
@@ -67,8 +72,8 @@ class SurvrunQueryGetRuns(Resource):
     """
 
     def get(self):
-        db_query = QuerySurvrunTable()
-        db_data = db_query.survrun_select_query()
+        db_cursor = QuerySurvrunTable()
+        db_data = db_cursor.survrun_select_query()
         if not db_data:
             abort(400)
 
@@ -126,10 +131,10 @@ class SurvrunQueryPostRun(Resource):
         if not player_class or not target_a or not target_b or not timebox or not time_needed or not difficulty:
             abort(400)
 
-        db_query = QuerySurvrunTable()
-        status, msg = db_query.survrun_insert_query(player_class=player_class, target_a=target_a,
-                                                    target_b=target_b, timebox=timebox, time_needed=time_needed,
-                                                    r_count=r_count, completed=completed, difficulty=difficulty)
+        db_cursor = QuerySurvrunTable()
+        status, msg = db_cursor.survrun_insert_query(player_class=player_class, target_a=target_a,
+                                                     target_b=target_b, timebox=timebox, time_needed=time_needed,
+                                                     r_count=r_count, completed=completed, difficulty=difficulty)
         if status is not 200:
             abort(status)
         return make_response(jsonify({'status': status, 'message': msg}))
@@ -182,8 +187,8 @@ class SurvrunDeleteRunApi(Resource):
         if not run_id:
             abort(400)
 
-        db_query = QuerySurvrunTable()
-        status, msg = db_query.survrun_delete_record_by_id_query(run_id)
+        db_cursor = QuerySurvrunTable()
+        status, msg = db_cursor.survrun_delete_record_by_id_query(run_id)
         if status is not 200:
             abort(status)
         return jsonify({'status': status, 'message': msg})
@@ -209,6 +214,10 @@ class SurvrunStatisticsApi(Resource):
 api.add_resource(SurvrunStatisticsApi, constants.API_SURVRUN_GET_STATISTICS)
 
 
+# # # # # # # # # # # # # # # # # # #
+# # # Stronghold Api Endpoints  # # #
+# # # # # # # # # # # # # # # # # # #
+
 class StrongholdApi(Resource):
     """
     exposes shc data
@@ -229,6 +238,10 @@ class StrongholdApi(Resource):
 api.add_resource(StrongholdApi, constants.API_STRONGHOLD_GET_AI_BATTLE)
 
 
+# # # # # # # # # # # # # # # # # # #
+# # # # ESO Dungeon Endpoints # # # #
+# # # # # # # # # # # # # # # # # # #
+
 class EsoGetConstantsApi(Resource):
     """
     exposes eso constants
@@ -247,8 +260,8 @@ class EsoQueryGetDungeonRuns(Resource):
     """
 
     def get(self):
-        db_query = QueryEsoTable()
-        db_data = db_query.eso_select_dungeon_runs_query()
+        db_cursor = QueryEsoDungeonTable()
+        db_data = db_cursor.eso_select_dungeon_runs_query()
         if not db_data:
             abort(400)
 
@@ -308,11 +321,11 @@ class EsoQueryPostDungeonRun(Resource):
                 or not class_one or not class_two or not class_three or not class_four:
             abort(400)
 
-        db_query = QueryEsoTable()
-        status = db_query.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
-                                                       time_needed=time_needed, hardmode=hardmode, flawless=flawless,
-                                                       wipes=wipes, class_one=class_one, class_two=class_two,
-                                                       class_three=class_three, class_four=class_four)
+        db_cursor = QueryEsoDungeonTable()
+        status = db_cursor.eso_insert_dungeon_run_query(dungeon_name=dungeon_name, player_count=player_count,
+                                                        time_needed=time_needed, hardmode=hardmode, flawless=flawless,
+                                                        wipes=wipes, class_one=class_one, class_two=class_two,
+                                                        class_three=class_three, class_four=class_four)
 
         if status is not 200:
             abort(status)
@@ -336,8 +349,8 @@ class EsoDeleteDungeonRunById(Resource):
         if not run_id:
             abort(400)
 
-        db_query = QueryEsoTable()
-        status = db_query.eso_delete_dungeon_run_by_id(run_id)
+        db_cursor = QueryEsoDungeonTable()
+        status = db_cursor.eso_delete_dungeon_run_by_id(run_id)
         if status is not 200:
             abort(status)
         return jsonify({'status': status})
@@ -345,6 +358,147 @@ class EsoDeleteDungeonRunById(Resource):
 
 api.add_resource(EsoDeleteDungeonRunById, constants.API_ESO_DELETE_DUNGEON_RUN)
 
+
+# # # # # # # # # # # # # # # # # # #
+# # # # # ESO Raid Endpoints  # # # #
+# # # # # # # # # # # # # # # # # # #
+
+class EsoQueryGetRaidRuns(Resource):
+    """
+    exposes recorded eso raid runs from DB
+    """
+
+    def get(self):
+        db_cursor = QueryEsoRaidTable()
+        db_data = db_cursor.eso_select_raid_runs_query()
+        if not db_data:
+            abort(400)
+
+        json_components = []
+        for row in db_data:
+            try:
+                json_components.append(
+                    {
+                        'id': row.id,
+                        'raid_name': row.raid_name,
+                        'player_count': row.player_count,
+                        'time_needed': row.time_needed,
+                        'hardmode': row.hardmode,
+                        'flawless': row.flawless,
+                        'wipes': row.wipes,
+                        'class_one': row.class_one,
+                        'class_two': row.class_two,
+                        'class_three': row.class_three,
+                        'class_four': row.class_four,
+                        'class_five': row.class_five,
+                        'class_six': row.class_six,
+                        'class_seven': row.class_seven,
+                        'class_eight': row.class_eight,
+                        'class_nine': row.class_nine,
+                        'class_ten': row.class_ten,
+                        'class_eleven': row.class_eleven,
+                        'class_twelve': row.class_twelve,
+                    }
+                )
+            except AttributeError:
+                abort(500)
+        if not json_components[0]:
+            return jsonify({'Info': 'No data to fetch, table is empty'})
+
+        return jsonify({
+            'queryResult': json_components
+        })
+
+
+api.add_resource(EsoQueryGetRaidRuns, constants.API_ESO_GET_RAID_RUNS)
+
+
+class EsoQueryPostRaidRun(Resource):
+    """
+    POST endpoint to insert a eso raid run to the DB
+    """
+
+    def post(self):
+        run_data = json.loads(request.data)["submitRaidRunFormData"]
+
+        if not run_data:
+            abort(400)
+
+        raid_name = run_data["formRaidName"]
+        player_count = run_data["formPlayerCount"]
+        time_needed = run_data["formTimeNeeded"]
+        hardmode = run_data["formHardmode"]
+        flawless = run_data["formFlawless"]
+        wipes = run_data["formWipes"]
+        class_one = run_data["formClassOne"]
+        class_two = run_data["formClassTwo"]
+        class_three = run_data["formClassThree"]
+        class_four = run_data["formClassFour"]
+        class_five = run_data["formClassFive"]
+        class_six = run_data["formClassSix"]
+        class_seven = run_data["formClassSeven"]
+        class_eight = run_data["formClassEight"]
+        class_nine = run_data["formClassNine"]
+        class_ten = run_data["formClassTen"]
+        class_eleven = run_data["formClassEleven"]
+        class_twelve = run_data["formClassTwelve"]
+
+        if not raid_name or not player_count or not time_needed or not class_one or not class_two or not class_three \
+                or not class_four or not class_five or not class_six or not class_seven or not class_eight or not \
+                class_nine or not class_ten or not class_eleven or not class_twelve:
+            abort(400)
+
+        if hardmode is None or flawless is None or wipes is None:
+            abort(400)
+
+        db_cursor = QueryEsoRaidTable()
+        status = db_cursor.eso_insert_raid_run_query(raid_name=raid_name, player_count=player_count,
+                                                     time_needed=time_needed,
+                                                     hardmode=hardmode, flawless=flawless, wipes=wipes,
+                                                     class_one=class_one,
+                                                     class_two=class_two, class_three=class_three,
+                                                     class_four=class_four,
+                                                     class_five=class_five, class_six=class_six,
+                                                     class_seven=class_seven,
+                                                     class_eight=class_eight, class_nine=class_nine,
+                                                     class_ten=class_ten,
+                                                     class_eleven=class_eleven, class_twelve=class_twelve)
+
+        if status is not 200:
+            abort(status)
+        return make_response(jsonify({'status': status}))
+
+
+api.add_resource(EsoQueryPostRaidRun, constants.API_ESO_POST_RAID_RUN)
+
+
+class EsoDeleteRaidRunById(Resource):
+    """
+    Delete a recorded ESO raid run from the DB
+    """
+
+    def post(self):
+        run_id = None
+        try:
+            run_id = json.loads(request.data)["delete_row_id"]
+        except KeyError:
+            abort(400)
+        if not run_id:
+            abort(400)
+
+        db_cursor = QueryEsoRaidTable()
+        status = db_cursor.eso_delete_raid_run_by_id(run_id)
+        if status is not 200:
+            abort(status)
+        return jsonify({'status': status})
+
+
+api.add_resource(EsoDeleteRaidRunById, constants.API_ESO_DELETE_RAID_RUN)
+
+
+# # # # # # # # # # # # # # # # # # #
+# # # # # Flask app routes  # # # # #
+# # # # # # # # # # # # # # # # # # #
 
 @app.route('/')
 def landing_page():
