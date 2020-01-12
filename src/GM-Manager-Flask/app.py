@@ -5,6 +5,7 @@ from flask_restful import Resource, Api
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from database.query_eso_raid_table import QueryEsoRaidTable
 from database.query_survrun_table import QuerySurvrunTable
+from modes.misc.brainstorm import MiscBrainstorm
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
@@ -494,6 +495,38 @@ class EsoDeleteRaidRunById(Resource):
 
 
 api.add_resource(EsoDeleteRaidRunById, constants.API_ESO_DELETE_RAID_RUN)
+
+
+# # # # # # # # # # # # # # # # # # #
+# # # # # Misc Endpoints  # # # # # #
+# # # # # # # # # # # # # # # # # # #
+
+class MiscBrainstormApi(Resource):
+    """
+    Returns math exercises for the brainstorm game
+    """
+
+    def post(self):
+        difficulty = None
+        length = None
+        try:
+            difficulty = json.loads(request.data)["data"][0]["difficulty"]
+            length = json.loads(request.data)["data"][0]["length"]
+        except KeyError:
+            abort(400)
+        if not difficulty or not length:
+            abort(400)
+
+        calc = MiscBrainstorm()
+        exercises = calc.get_exercise_list(difficulty, length)
+
+        if exercises:
+            return jsonify({'exercises': exercises})
+        else:
+            abort(500)
+
+
+api.add_resource(MiscBrainstormApi, constants.MISC_BRAINSTORM_GET_EXERCISE_LIST)
 
 
 # # # # # # # # # # # # # # # # # # #

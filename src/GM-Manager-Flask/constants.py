@@ -24,6 +24,9 @@ API_ESO_GET_RAID_RUNS = "/api/eso/raids"
 API_ESO_POST_RAID_RUN = "/api/eso/submit/raid"
 API_ESO_DELETE_RAID_RUN = "/api/eso/delete/raid"
 
+# Misc
+MISC_BRAINSTORM_GET_EXERCISE_LIST = "/api/misc/brainstorm/exercise"
+
 # Errors
 # General
 ERROR_GEN_DB_NOT_REACHABLE = "Error: could not query database"
