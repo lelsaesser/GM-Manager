@@ -4,7 +4,7 @@ from modes.eso import constants as eso_constants
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
 
 
-class TestEsoApi:
+class TestEsoDungeonApi:
 
     def test_eso_get_constants(self):
         response = requests.get(constants.FLASK_BACKEND_URL + constants.API_ESO_GET_CONSTANTS)
@@ -25,16 +25,16 @@ class TestEsoApi:
 
         data = response.json()['queryResult'][0]
         assert type(data['id']) == int
-        assert type(data['dungeon_name']) == str
+        assert data['dungeon_name'] in eso_constants.LIST_ESO_DUNGEONS
         assert type(data['player_count']) == int
         assert type(data['time_needed']) == int
         assert type(data['hardmode']) == bool
         assert type(data['flawless']) == bool
         assert type(data['wipes']) == int
-        assert type(data['class_one']) == str
-        assert type(data['class_two']) == str
-        assert type(data['class_three']) == str
-        assert type(data['class_four']) == str
+        assert data['class_one'] in eso_constants.LIST_ESO_CLASSES
+        assert data['class_two'] in eso_constants.LIST_ESO_CLASSES
+        assert data['class_three'] in eso_constants.LIST_ESO_CLASSES
+        assert data['class_four'] in eso_constants.LIST_ESO_CLASSES
 
     def test_eso_query_post_dungeon_run(self):
         db_cursor = QueryEsoDungeonTable()
