@@ -1,0 +1,24 @@
+<!--misc panel-->
+<div class="card card-primary">
+    <div class="card-header">Brainstorm</div>
+    <div class="card-body">
+
+        <form [formGroup]="formRequestExercise" (ngSubmit)="onSubmitExercise()">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <select class="form-control" formControlName="formBrainstormDifficulty">
+                        <option *ngFor="let difficulty of miscConstants.misc_constants[0].LIST_DIFFICULTIES">
+                            {{ difficulty }}</option>
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+
+<!--Space bar between cards-->
+<div class="blank-space-default"></div>

@@ -6,6 +6,7 @@ from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from database.query_eso_raid_table import QueryEsoRaidTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.misc.brainstorm import MiscBrainstorm
+from modes.misc.misc_return_constants import MiscReturnConstants
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
@@ -501,11 +502,22 @@ api.add_resource(EsoDeleteRaidRunById, constants.API_ESO_DELETE_RAID_RUN)
 # # # # # Misc Endpoints  # # # # # #
 # # # # # # # # # # # # # # # # # # #
 
+
+class MiscGetConstantsApi(Resource):
+    """
+    exposes misc constants
+    """
+    def get(self):
+        return MiscReturnConstants.misc_get_constants()
+
+
+api.add_resource(MiscGetConstantsApi, constants.API_MISC_GET_CONSTANTS)
+
+
 class MiscBrainstormApi(Resource):
     """
     Returns math exercises for the brainstorm game
     """
-
     def post(self):
         difficulty = None
         length = None
@@ -526,7 +538,7 @@ class MiscBrainstormApi(Resource):
             abort(500)
 
 
-api.add_resource(MiscBrainstormApi, constants.MISC_BRAINSTORM_GET_EXERCISE_LIST)
+api.add_resource(MiscBrainstormApi, constants.API_MISC_BRAINSTORM_GET_EXERCISE_LIST)
 
 
 # # # # # # # # # # # # # # # # # # #
