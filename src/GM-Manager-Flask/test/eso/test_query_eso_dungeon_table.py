@@ -3,7 +3,7 @@ from modes.eso import constants as eso_constants
 from database import constants as db_constants
 
 
-class TestQueryEsoTable:
+class TestQueryEsoDungeonTable:
 
     def test_eso_insert_query(self):
         db_cursor = QueryEsoDungeonTable()
@@ -34,6 +34,8 @@ class TestQueryEsoTable:
                                                         class_two=eso_constants.CLASS_NIGHTBLADE,
                                                         class_three=eso_constants.CLASS_SORCERER,
                                                         class_four=eso_constants.CLASS_TEMPLAR)
+
+        assert status == 200
 
         last_id = db_cursor.eso_get_id_of_last_added_record()
         assert last_id > -1
