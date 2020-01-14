@@ -522,8 +522,8 @@ class MiscBrainstormApi(Resource):
         difficulty = None
         length = None
         try:
-            difficulty = json.loads(request.data)["data"][0]["difficulty"]
-            length = json.loads(request.data)["data"][0]["length"]
+            difficulty = json.loads(request.data)["data"]["formBrainstormDifficulty"]
+            length = 10  # hardcoded for now, for better user experience in UI
         except KeyError:
             abort(400)
         if not difficulty or not length:

@@ -28,15 +28,15 @@ class MiscBrainstorm:
 
         return str(self.num_a) + misc_constants.LIST_MATH_SYMBOLS[self.math_symbol] + str(self.num_b)
 
-    def get_exercise_list(self, difficulty: int, length: int) -> list:
+    def get_exercise_list(self, difficulty: str, length: int) -> list:
         exercises = []
-        if difficulty == 0:
+        if difficulty == misc_constants.LIST_DIFFICULTIES[0]:
             for i in range(length):
                 exercises.append(self.get_easy_exercise())
-        elif difficulty == 1:
+        elif difficulty == misc_constants.LIST_DIFFICULTIES[1]:
             for i in range(length):
                 exercises.append(self.get_medium_exercise())
-        elif difficulty == 2:
+        elif difficulty == misc_constants.LIST_DIFFICULTIES[2]:
             for i in range(length):
                 exercises.append(self.get_hard_exercise())
         else:
