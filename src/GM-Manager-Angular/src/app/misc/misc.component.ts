@@ -19,11 +19,17 @@ export class MiscComponent implements OnInit {
   miscConstantsSet: boolean = false;
   formRequestExerciseSubmitted: boolean = false;
   brainstormExercisesSet: boolean = false;
+  brainstormExercisesFormatted: boolean = false;
 
   miscConstants: JSON;
 
   formRequestExerciseData: any;
   brainstormExercises: any;
+  brainstormCorrectInput: any;
+  brainstormUserInput: any;
+
+  formattedBrainstormExercises = [];
+
 
   formRequestExercise = new FormGroup({
     formBrainstormDifficulty: new FormControl('')
@@ -49,18 +55,61 @@ export class MiscComponent implements OnInit {
       }).subscribe(data => {
         console.log("POST call successful value returned in body", data);
         this.brainstormExercises = data;
+        this.brainstormExercisesSet = true;
       },
         response => {
           console.log("POST call in error", response);
           this.notifyService.showFailure("Backend is not reachable.", "Error")
         },
         () => {
+          if (this.decodeBrainstormExercises()) {
+            this.brainstormExercisesFormatted = true;
+          }
           console.log("The POST observable is now completed.");
         });
-    this.brainstormExercisesSet = true;
+  }
+
+  decodeBrainstormExercises() {
+    if (this.brainstormExercisesSet) {
+      var len = 0;
+      for (let element of this.brainstormExercises['exercises']['exercise']) {
+        console.log("EEEEEEEEE:", element)
+        var exercise_string = element[0]
+
+        if (element[1] == 0) {
+          exercise_string += " + ";
+        }
+        else if (element[1] == 1) {
+          exercise_string += " * ";
+        }
+        else if (element[1] == 2) {
+          exercise_string += " - ";
+        }
+        else if (element[1] == 3) {
+          exercise_string += " / ";
+        }
+        else {
+          exercise_string += " <ERROR> ";
+        }
+
+        exercise_string += element[2];
+        len = this.formattedBrainstormExercises.push(exercise_string)
+      }
+      if (len > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   onSubmitExercise() {
+    //at the moment, every time the user clicks the button the list will be cleared - otherwise all exercises just get appended
+    if (this.formattedBrainstormExercises) {
+      this.formattedBrainstormExercises = [];
+    }
     this.formRequestExerciseSubmitted = true;
     this.formRequestExerciseData = this.formRequestExercise.value as JSON;
 

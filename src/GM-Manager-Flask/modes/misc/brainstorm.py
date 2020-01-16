@@ -6,41 +6,72 @@ from modes.misc import constants as misc_constants
 class MiscBrainstorm:
 
     def __init__(self):
-        self.num_a = None
-        self.num_b = None
+        self.num_a = 0
+        self.num_b = 0
         self.math_symbol = None
 
-    def get_easy_exercise(self) -> str:
-        self.num_a, self.num_b = random.randint(0, 10), random.randint(0, 10)
-        self.math_symbol = random.randint(0, 3)
+    def calc_exercise(self, difficulty: str):
+        self.math_symbol = random.randint(0, 1)  # TODO: fix this, enable - and / exercises
 
-        return str(self.num_a) + misc_constants.LIST_MATH_SYMBOLS[self.math_symbol] + str(self.num_b)
+        # + or * exercise
+        if -1 < self.math_symbol < 2:
+            if difficulty == misc_constants.LIST_DIFFICULTIES[0]:
+                self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 10)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[1]:
+                self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 100)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[2]:
+                self.num_a, self.num_b = random.randint(10, 100), random.randint(10, 100)
+            else:
+                print("Error: difficulty must be 0, 1, 2 or 3")
+                raise ValueError
+            if self.math_symbol == 0:
+                return [self.num_a, self.math_symbol, self.num_b], self.num_a + self.num_b
+            else:
+                return [self.num_a, self.math_symbol, self.num_b], self.num_a * self.num_b
 
-    def get_medium_exercise(self) -> str:
-        self.num_a, self.num_b = random.randint(0, 10), random.randint(0, 100)
-        self.math_symbol = random.randint(0, 3)
+        # - exercise
+        elif self.math_symbol == 2:
+            if difficulty == misc_constants.LIST_DIFFICULTIES[0]:
+                while self.num_a == self.num_b or self.num_a < self.num_b:
+                    self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 10)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[1]:
+                while self.num_a == self.num_b or self.num_a < self.num_b:
+                    self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 100)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[2]:
+                while self.num_a == self.num_b or self.num_a < self.num_b:
+                    self.num_a, self.num_b = random.randint(10, 100), random.randint(10, 100)
+            else:
+                print("Error: difficulty must be 0, 1, 2 or 3")
+                raise ValueError
+            return [self.num_a, self.math_symbol, self.num_b], self.num_a - self.num_b
 
-        return str(self.num_a) + misc_constants.LIST_MATH_SYMBOLS[self.math_symbol] + str(self.num_b)
-
-    def get_hard_exercise(self) -> str:
-        self.num_a, self.num_b = random.randint(10, 100), random.randint(10, 100)
-        self.math_symbol = random.randint(0, 3)
-
-        return str(self.num_a) + misc_constants.LIST_MATH_SYMBOLS[self.math_symbol] + str(self.num_b)
+        # / exercise
+        elif self.math_symbol == 3:
+            if difficulty == misc_constants.LIST_DIFFICULTIES[0]:
+                while self.num_a == self.num_b or self.num_a < self.num_b or isinstance(self.num_a / self.num_b, float):
+                    self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 10)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[1]:
+                while self.num_a == self.num_b or self.num_a < self.num_b or self.num_a / self.num_b % 1 != 0:
+                    self.num_a, self.num_b = random.randint(2, 10), random.randint(2, 100)
+            elif difficulty == misc_constants.LIST_DIFFICULTIES[2]:
+                while self.num_a == self.num_b or self.num_a < self.num_b or self.num_a / self.num_b % 1 != 0:
+                    self.num_a, self.num_b = random.randint(10, 100), random.randint(10, 100)
+            else:
+                print("Error: difficulty must be 0, 1, 2 or 3")
+                raise ValueError
+            return [self.num_a, self.math_symbol, self.num_b], self.num_a / self.num_b
 
     def get_exercise_list(self, difficulty: str, length: int) -> list:
         exercises = []
-        if difficulty == misc_constants.LIST_DIFFICULTIES[0]:
-            for i in range(length):
-                exercises.append(self.get_easy_exercise())
-        elif difficulty == misc_constants.LIST_DIFFICULTIES[1]:
-            for i in range(length):
-                exercises.append(self.get_medium_exercise())
-        elif difficulty == misc_constants.LIST_DIFFICULTIES[2]:
-            for i in range(length):
-                exercises.append(self.get_hard_exercise())
-        else:
-            print("Error: difficulty must be 0, 1 or 2")
-            raise ValueError
 
-        return exercises
+        while len(exercises) != length:
+            exercise, solution = self.calc_exercise(difficulty)
+            if exercise not in exercises:
+                exercises.append(
+                    {
+                        'exercise': exercise,
+                        'solution': solution
+                    }
+                )
+            return exercises
+
