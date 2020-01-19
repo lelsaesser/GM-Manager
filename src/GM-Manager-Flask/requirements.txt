@@ -5,4 +5,5 @@ flask_cors
 flask_restful
 pytest
 requests
+psycopg2
 sqlalchemy
