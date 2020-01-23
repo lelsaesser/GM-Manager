@@ -157,8 +157,11 @@ export class MiscComponent implements OnInit {
       this.notifyService.showFailure("No :(", "Solution is " + String(exercise_solution));
     }
 
-    // instantly request a new exercise
+    //instantly request a new exercise
     this.requestBrainstormExercises();
+
+    //clear user input field for convinience
+    this.formSendSolution.reset();
   }
 
   ngOnInit() {

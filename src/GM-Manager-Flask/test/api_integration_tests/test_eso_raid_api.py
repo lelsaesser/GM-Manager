@@ -8,6 +8,10 @@ from modes.eso import constants as eso_constants
 class TestEsoRaidApi:
 
     def test_eso_query_get_raid_runs(self):
+        """
+        Test eso get raid runs endpoint
+        Note that this test will always fail if the database is empty!
+        """
         response = requests.get(constants.FLASK_BACKEND_URL + constants.API_ESO_GET_RAID_RUNS)
 
         assert response is not None
