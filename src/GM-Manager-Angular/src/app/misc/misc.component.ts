@@ -8,7 +8,6 @@ import {
   API_MISC_BRAINSTORM_GET_EXERCISE_LIST,
   API_URL
 } from './../env'
-import { type } from 'os';
 
 @Component({
   selector: 'app-misc',
@@ -21,6 +20,7 @@ export class MiscComponent implements OnInit {
   formRequestExerciseSubmitted: boolean = false;
   brainstormExercisesSet: boolean = false;
   brainstormExercisesFormatted: boolean = false;
+  formSendSolutionSubmitted: boolean = false;
 
   miscConstants: JSON;
 
@@ -30,9 +30,12 @@ export class MiscComponent implements OnInit {
   brainstormUserInput: any;
   formattedBrainstormExercises: any;
 
-
   formRequestExercise = new FormGroup({
     formBrainstormDifficulty: new FormControl('')
+  });
+
+  formSendSolution = new FormGroup({
+    formBrainstormSolution: new FormControl('', Validators.required)
   });
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
@@ -102,15 +105,28 @@ export class MiscComponent implements OnInit {
     }
   }
 
+  checkExerciseSolution() {
+    /*
+    Check if the user solution is correct
+    returns: true if solution is correct, otherwise false
+    */
+    var exercise_solution = this.brainstormExercises['exercises'][0]['solution'];
+    var user_solution = this.formSendSolution.value.formBrainstormSolution;
+
+    console.log(user_solution)
+
+    if (Number(exercise_solution) == Number(user_solution)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   onSubmitExercise() {
     /*
     Submit function for brainstorm panel
     Triggered if the user requests a exercise
     */
-    //at the moment, every time the user clicks the button the list will be cleared - otherwise all exercises just get appended
-    if (this.formattedBrainstormExercises) {
-      this.formattedBrainstormExercises = [];
-    }
     this.formRequestExerciseSubmitted = true;
     this.formRequestExerciseData = this.formRequestExercise.value as JSON;
 
@@ -119,6 +135,29 @@ export class MiscComponent implements OnInit {
       this.formRequestExerciseData.formBrainstormDifficulty = this.miscConstants["misc_constants"][0]["LIST_DIFFICULTIES"][0]
     }
 
+    this.requestBrainstormExercises();
+  }
+
+  onSubmitSolution() {
+    /*
+    Submit function for brainstorm panel
+    Triggered if the user sends his exercise solution
+    */
+    this.formSendSolutionSubmitted = true;
+
+    //check if solution form is filled
+    if (this.formSendSolution.invalid) {
+      return;
+    }
+
+    if (this.checkExerciseSolution()) {
+      this.notifyService.showSuccess("Yes!", "Correct solution");
+    } else {
+      var exercise_solution = this.brainstormExercises['exercises'][0]['solution'];
+      this.notifyService.showFailure("No :(", "Solution is " + String(exercise_solution));
+    }
+
+    // instantly request a new exercise
     this.requestBrainstormExercises();
   }
 
