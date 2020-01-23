@@ -8,6 +8,7 @@ import {
   API_MISC_BRAINSTORM_GET_EXERCISE_LIST,
   API_URL
 } from './../env'
+import { type } from 'os';
 
 @Component({
   selector: 'app-misc',
@@ -27,8 +28,7 @@ export class MiscComponent implements OnInit {
   brainstormExercises: any;
   brainstormCorrectInput: any;
   brainstormUserInput: any;
-
-  formattedBrainstormExercises = [];
+  formattedBrainstormExercises: any;
 
 
   formRequestExercise = new FormGroup({
@@ -70,36 +70,26 @@ export class MiscComponent implements OnInit {
   }
 
   decodeBrainstormExercises() {
+    /*
+    Take a number array containing a encoded brainstom exercise and format it to a string array for display in UI
+    returns: true on success, false if backend exercise request failed
+    */
     if (this.brainstormExercisesSet) {
       var len = 0;
-      for (let element of this.brainstormExercises['exercises']['exercise']) {
-        console.log("EEEEEEEEE:", element)
-        var exercise_string = element[0]
+      var exercise_data = this.brainstormExercises['exercises'][0]['exercise'];
+      var formatted_string = String(exercise_data[0]);
 
-        if (element[1] == 0) {
-          exercise_string += " + ";
-        }
-        else if (element[1] == 1) {
-          exercise_string += " * ";
-        }
-        else if (element[1] == 2) {
-          exercise_string += " - ";
-        }
-        else if (element[1] == 3) {
-          exercise_string += " / ";
-        }
-        else {
-          exercise_string += " <ERROR> ";
-        }
+      if (exercise_data[1] == 0) {
+        formatted_string += " + ";
+      }
+      else if (exercise_data[1] == 1) {
+        formatted_string += " * ";
+      }
 
-        exercise_string += element[2];
-        len = this.formattedBrainstormExercises.push(exercise_string)
-      }
-      if (len > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      formatted_string += String(exercise_data[2]);
+      this.formattedBrainstormExercises = formatted_string;
+
+      return true;
     } else {
       return false;
     }
