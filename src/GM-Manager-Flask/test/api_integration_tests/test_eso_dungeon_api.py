@@ -18,6 +18,10 @@ class TestEsoDungeonApi:
         assert data["LIST_ESO_RAIDS"] == eso_constants.LIST_ESO_RAIDS
 
     def test_eso_query_get_dungeon_runs(self):
+        """
+        Test eso get dungeon runs endpoint
+        Note that this test will always fail if the database is empty!
+        """
         response = requests.get(constants.FLASK_BACKEND_URL + constants.API_ESO_GET_DUNGEON_RUNS)
 
         assert response is not None

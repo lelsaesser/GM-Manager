@@ -23,3 +23,7 @@ export const API_ESO_DELETE_DUNGEON_RUN = "/api/eso/delete/dungeon";
 export const API_ESO_GET_RAID_RUNS = "/api/eso/raids"
 export const API_ESO_POST_RAID_RUN = "/api/eso/submit/raid"
 export const API_ESO_DELETE_RAID_RUN = "/api/eso/delete/raid"
+
+// Misc
+export const API_MISC_GET_CONSTANTS = "/api/misc/constants"
+export const API_MISC_BRAINSTORM_GET_EXERCISE_LIST = "/api/misc/brainstorm/exercise"

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '../../utils/notification.service'
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import {
   API_URL,
@@ -12,7 +13,6 @@ import {
   API_ESO_POST_RAID_RUN,
   API_ESO_DELETE_RAID_RUN
 } from './../env'
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-eso',
