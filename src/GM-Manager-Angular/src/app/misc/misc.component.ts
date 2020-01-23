@@ -39,6 +39,10 @@ export class MiscComponent implements OnInit {
 
 
   fetchMiscConstants() {
+    /*
+    GET request
+    Get Misc constants from backend
+    */
     this.httpClient.get(API_URL + API_MISC_GET_CONSTANTS).subscribe(data => {
       this.miscConstants = data as JSON;
       this.miscConstantsSet = true;
@@ -49,6 +53,10 @@ export class MiscComponent implements OnInit {
   }
 
   requestBrainstormExercises() {
+    /*
+    POST request
+    Get a brainstorm exercise from backend, required payload is user input data from brainstorm formgroup
+    */
     this.httpClient.post(API_URL + API_MISC_BRAINSTORM_GET_EXERCISE_LIST,
       {
         'data': this.formRequestExerciseData
@@ -65,7 +73,6 @@ export class MiscComponent implements OnInit {
           if (this.decodeBrainstormExercises()) {
             this.brainstormExercisesFormatted = true;
           }
-          console.log("The POST observable is now completed.");
         });
   }
 
@@ -96,6 +103,10 @@ export class MiscComponent implements OnInit {
   }
 
   onSubmitExercise() {
+    /*
+    Submit function for brainstorm panel
+    Triggered if the user requests a exercise
+    */
     //at the moment, every time the user clicks the button the list will be cleared - otherwise all exercises just get appended
     if (this.formattedBrainstormExercises) {
       this.formattedBrainstormExercises = [];
@@ -112,7 +123,9 @@ export class MiscComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*
+    Executed automatically at page load
+    */
     this.fetchMiscConstants();
   }
-
 }
