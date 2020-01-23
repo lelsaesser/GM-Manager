@@ -1,9 +1,10 @@
 # pip install -r requirements.txt
 
-flask==1.1.1
-flask_cors==3.0.8
-flask_restful==0.3.7
-pytest==5.2.1
+flask
+flask_cors
+flask_restful
+pytest
+pytest-cov
 requests
 psycopg2
 sqlalchemy
