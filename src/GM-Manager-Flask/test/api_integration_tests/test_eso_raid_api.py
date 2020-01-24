@@ -1,8 +1,7 @@
-import requests
-
 import constants
 from database.query_eso_raid_table import QueryEsoRaidTable
 from modes.eso import constants as eso_constants
+from utils.api_helper import GmManagerApiHelper as h
 
 
 class TestEsoRaidApi:
@@ -12,7 +11,7 @@ class TestEsoRaidApi:
         Test eso get raid runs endpoint
         Note that this test will always fail if the database is empty!
         """
-        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_ESO_GET_RAID_RUNS)
+        response = h.api_get_request(constants.FLASK_BACKEND_URL + constants.API_ESO_GET_RAID_RUNS)
 
         assert response is not None
         assert response.status_code == 200
@@ -67,7 +66,7 @@ class TestEsoRaidApi:
                     'formClassTwelve': eso_constants.CLASS_TEMPLAR
                 }
         }
-        response = requests.post(constants.FLASK_BACKEND_URL + constants.API_ESO_POST_RAID_RUN, json=payload)
+        response = h.api_post_request(constants.FLASK_BACKEND_URL + constants.API_ESO_POST_RAID_RUN, payload)
 
         assert response is not None
         assert response.status_code == 200

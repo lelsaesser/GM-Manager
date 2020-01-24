@@ -1,15 +1,14 @@
 import json
 
-import requests
-
 import constants
 import modes.survrim.constants as survrim_constants
+from utils.api_helper import GmManagerApiHelper as h
 
 
 class TestSurvrunApi:
 
     def test_get_target_location_data(self):
-        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_TARGET_LOCATION)
+        response = h.api_get_request(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_TARGET_LOCATION)
 
         assert response is not None
         assert response.status_code == 200
@@ -32,7 +31,7 @@ class TestSurvrunApi:
         """
         Test survrun get all data query. This tests fails if the survrun_runs table is empty.
         """
-        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
+        response = h.api_get_request(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_ALL_DB_RUN_DATA)
         data = json.loads(response.content)["queryResult"][0]
 
         assert response is not None
@@ -47,7 +46,7 @@ class TestSurvrunApi:
         assert type(data["r_count"]) == int
 
     def test_survrun_get_constants(self):
-        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_CONSTANTS)
+        response = h.api_get_request(constants.FLASK_BACKEND_URL + constants.API_SURVRUN_GET_CONSTANTS)
         data = json.loads(response.content)["survrim_constants"][0]
 
         assert response.status_code == 200
