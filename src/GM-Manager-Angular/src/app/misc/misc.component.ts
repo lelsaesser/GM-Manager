@@ -30,6 +30,10 @@ export class MiscComponent implements OnInit {
   brainstormUserInput: any;
   formattedBrainstormExercises: any;
 
+  currentWinStreak: number = 0;
+  totalSolved: number = 0;
+  totalSolvedCorrectly: number = 0;
+
   formRequestExercise = new FormGroup({
     formBrainstormDifficulty: new FormControl('')
   });
@@ -113,12 +117,54 @@ export class MiscComponent implements OnInit {
     var exercise_solution = this.brainstormExercises['exercises'][0]['solution'];
     var user_solution = this.formSendSolution.value.formBrainstormSolution;
 
-    console.log(user_solution)
-
     if (Number(exercise_solution) == Number(user_solution)) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  checkWinStreak() {
+    /*
+    Keeps track of the exercises the user solves correctly in a row and displays MOBA like alert messages
+    */
+    this.currentWinStreak += 1;
+    
+    if (this.currentWinStreak == 5) {
+      this.notifyService.showInfo("5 solved in a row", "Killing Spree!");
+    }
+    else if (this.currentWinStreak == 10) {
+      this.notifyService.showInfo("10 solved in a row","Elegant!");
+    }
+    else if (this.currentWinStreak == 20) {
+      this.notifyService.showInfo("20 solved in a row", "Dominating!");
+    }
+    else if (this.currentWinStreak == 30) {
+      this.notifyService.showInfo("30 solved in a row", "Impressive!");
+    }
+    else if (this.currentWinStreak == 50) {
+      this.notifyService.showInfo("50 solved in a row", "Genius!");
+    }
+    else if (this.currentWinStreak == 75) {
+      this.notifyService.showInfo("75 solved in a row", "Unbelievable!");
+    }
+    else if (this.currentWinStreak == 100) {
+      this.notifyService.showInfo("100 solved in a row", "Godlike!");
+    }
+    else if (this.currentWinStreak == 150) {
+      this.notifyService.showInfo("150 solved in a row", "Legendary!");
+    }
+    else if (this.currentWinStreak == 200) {
+      this.notifyService.showInfo("200 solved in a row", "Way beyond Godlike!");
+    }
+    else if (this.currentWinStreak == 250) {
+      this.notifyService.showInfo("250 solved in a row", "Math Overlord!");
+    }
+    else if (this.currentWinStreak == 300) {
+      this.notifyService.showInfo("300 solved in a row", "Grand Shining Five Star!");
+    }
+    else if (this.currentWinStreak == 350) {
+      this.notifyService.showInfo("350 solved in a row", "Grandmaster MVP!");
     }
   }
 
@@ -152,7 +198,12 @@ export class MiscComponent implements OnInit {
 
     if (this.checkExerciseSolution()) {
       this.notifyService.showSuccess("Yes!", "Correct solution");
+      this.checkWinStreak();
+      this.totalSolved += 1;
+      this.totalSolvedCorrectly += 1;
     } else {
+      this.currentWinStreak = 0;
+      this.totalSolved += 1;
       var exercise_solution = this.brainstormExercises['exercises'][0]['solution'];
       this.notifyService.showFailure("No :(", "Solution is " + String(exercise_solution));
     }

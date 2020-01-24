@@ -21,7 +21,7 @@
         </form>
 
         <!--exercise display string-->
-        <p *ngIf="brainstormExercisesFormatted">{{ formattedBrainstormExercises }}</p>
+        <p *ngIf="brainstormExercisesFormatted" class="display-3">{{ formattedBrainstormExercises }}</p>
 
         <!--submit exercise input field and button-->
         <form *ngIf="brainstormExercisesFormatted" [formGroup]="formSendSolution" (ngSubmit)="onSubmitSolution()">
@@ -41,6 +41,8 @@
                 </div>
 
             </div>
+
+            <p class="lead">Total exercises: {{ totalSolved }} | Correct: {{ totalSolvedCorrectly }}</p>
         </form>
     </div>
 </div>
