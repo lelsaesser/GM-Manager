@@ -1,7 +1,6 @@
 from modes.survrim import constants as survrim_constants
 
 
-# todo add unit test
 class SurvrimReturnConstants:
 
     @staticmethod
