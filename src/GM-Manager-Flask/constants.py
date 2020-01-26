@@ -2,6 +2,9 @@
 FLASK_BACKEND_URL = "http://localhost:5000"
 
 # Api endpoints
+# Health check
+API_HEALTH_CHECK = "/api/healthcheck"
+
 # Survrim/Survrun
 API_SURVRIM_GET_CLASS_DATA = "/api/survrim/class"
 API_SURVRUN_GET_ALL_DB_RUN_DATA = "/api/survrun/getalldata"
@@ -35,3 +38,8 @@ ERROR_GEN_DB_TABLE_EMPTY = "Error: could not fetch data from DB - table empty?"
 
 # Survrim
 ERROR_SURVRIM_LOCATION_MISSING = "Error: invalid location name."
+
+# Messages
+# Health check success
+MSG_HEALTH_CHECK_SUCCESS = "Api is healthy and running!"
+MSG_HEALTH_CHECK_FAILURE = "Health check failed - bad payload"

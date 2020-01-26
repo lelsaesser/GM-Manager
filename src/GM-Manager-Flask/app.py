@@ -21,6 +21,41 @@ api = Api(app)
 CORS(app)  # required for cross origin resource sharing error (temp fix)
 
 
+class ApiHealthCheck(Resource):
+    """
+    test endpoint for unit tests and pings
+    """
+    def get(self):
+        return {
+            'health_check_response': {
+                'status': 200,
+                'message': constants.MSG_HEALTH_CHECK_SUCCESS
+            }
+        }
+
+    def post(self):
+        try:
+            payload = json.loads(request.data)
+            return {
+                'health_check_response': {
+                    'status': 200,
+                    'message': constants.MSG_HEALTH_CHECK_SUCCESS,
+                    'received_payload': payload
+                }
+            }
+        except Exception:
+            return {
+                'health_check_response': {
+                    'status': 404,
+                    'message': constants.MSG_HEALTH_CHECK_FAILURE,
+                    'received_payload': None
+                }
+            }
+
+
+api.add_resource(ApiHealthCheck, constants.API_HEALTH_CHECK)
+
+
 # # # # # # # # # # # # # # # # # # #
 # # # # Survrun Api Endpoints # # # #
 # # # # # # # # # # # # # # # # # # #
@@ -29,7 +64,6 @@ class SurvrunGetClassApi(Resource):
     """
     exposes survrun class data
     """
-
     def get(self):
         player_class = SurvrimRuleGenerator.pick_class()
         player_class_skills = SurvrimRuleGenerator.get_skills_for_class(player_class)
@@ -60,7 +94,6 @@ class SurvrunGetConstants(Resource):
     """
     exposes survrim/survrun constants to frontend
     """
-
     def get(self):
         return SurvrimReturnConstants.survrim_get_constants()
 
@@ -72,7 +105,6 @@ class SurvrunQueryGetRuns(Resource):
     """
     exposes all recorded survruns from DB
     """
-
     def get(self):
         db_cursor = QuerySurvrunTable()
         db_data = db_cursor.survrun_select_query()
@@ -112,7 +144,6 @@ class SurvrunQueryPostRun(Resource):
     """
     POST endpoint to insert a survrun to the DB
     """
-
     def post(self):
         run_data = json.loads(request.data)["submitRunFormData"]
         if not run_data or not run_data[0]:
@@ -149,7 +180,6 @@ class SurvrunTargetLocationApi(Resource):
     """
     exposes survrun target location data
     """
-
     def get(self):
         survrun = SurvrunGoalLocationCalculator()
         target_a, target_b = survrun.calc_goal_locations()
@@ -179,7 +209,6 @@ class SurvrunDeleteRunApi(Resource):
     """
     endpoint to delete a recorded survrun from DB
     """
-
     def post(self):
         run_id = None
         try:
@@ -203,7 +232,6 @@ class SurvrunStatisticsApi(Resource):
     """
     exposes survrun statistics
     """
-
     def get(self):
         stats_calc = SurvrunCalculateStatistics()
         try:
@@ -224,7 +252,6 @@ class StrongholdApi(Resource):
     """
     exposes shc data
     """
-
     def post(self):
         ai_count = json.loads(request.data)["shc_ai_battle_player_count"]
         if not ai_count:
@@ -248,7 +275,6 @@ class EsoGetConstantsApi(Resource):
     """
     exposes eso constants
     """
-
     def get(self):
         return EsoReturnConstants.eso_get_constants()
 
@@ -260,7 +286,6 @@ class EsoQueryGetDungeonRuns(Resource):
     """
     exposes recorded eso dungeon runs from DB
     """
-
     def get(self):
         db_cursor = QueryEsoDungeonTable()
         db_data = db_cursor.eso_select_dungeon_runs_query()
@@ -302,7 +327,6 @@ class EsoQueryPostDungeonRun(Resource):
     """
     POST endpoint to insert a eso dungeon run to the DB
     """
-
     def post(self):
         run_data = json.loads(request.data)["submitDungeonRunFormData"]
         if not run_data:
@@ -341,7 +365,6 @@ class EsoDeleteDungeonRunById(Resource):
     """
     Delete a recorded ESO dungeon run from the DB
     """
-
     def post(self):
         run_id = None
         try:
@@ -369,7 +392,6 @@ class EsoQueryGetRaidRuns(Resource):
     """
     exposes recorded eso raid runs from DB
     """
-
     def get(self):
         db_cursor = QueryEsoRaidTable()
         db_data = db_cursor.eso_select_raid_runs_query()
@@ -419,7 +441,6 @@ class EsoQueryPostRaidRun(Resource):
     """
     POST endpoint to insert a eso raid run to the DB
     """
-
     def post(self):
         run_data = json.loads(request.data)["submitRaidRunFormData"]
 
@@ -478,7 +499,6 @@ class EsoDeleteRaidRunById(Resource):
     """
     Delete a recorded ESO raid run from the DB
     """
-
     def post(self):
         run_id = None
         try:
