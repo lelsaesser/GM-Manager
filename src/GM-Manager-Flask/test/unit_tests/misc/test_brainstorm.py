@@ -8,20 +8,14 @@ class TestMiscBrainstorm:
         mock = MiscBrainstorm()
         test_returns = []
 
-        for difficulty in misc_constants.LIST_DIFFICULTIES:
-            test_returns.append(mock.calc_exercise(difficulty))
+        for math_symbol in misc_constants.LIST_MATH_SYMBOLS:
+            test_returns.append(mock.calc_exercise(misc_constants.LIST_DIFFICULTIES[0], math_symbol))
 
         for exercise in test_returns:
-            for i in range(3):
-                assert isinstance(exercise[0][i], int)
-            if exercise[0][1] == 0:
+            if exercise[0][1] == "+":
                 assert exercise[0][0] + exercise[0][2] == exercise[1]
-            elif exercise[0][1] == 1:
+            elif exercise[0][1] == "*":
                 assert exercise[0][0] * exercise[0][2] == exercise[1]
-            elif exercise[0][1] == 2:
-                assert exercise[0][0] - exercise[0][2] == exercise[1]
-            elif exercise[0][1] == 3:
-                assert exercise[0][0] / exercise[0][2] == exercise[1]
 
     def test_get_exercise_list(self):
         mock = MiscBrainstorm()

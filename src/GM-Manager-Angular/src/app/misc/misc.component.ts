@@ -91,18 +91,8 @@ export class MiscComponent implements OnInit {
     if (this.brainstormExercisesSet) {
       var len = 0;
       var exercise_data = this.brainstormExercises['exercises'][0]['exercise'];
-      var formatted_string = String(exercise_data[0]);
-
-      if (exercise_data[1] == 0) {
-        formatted_string += " + ";
-      }
-      else if (exercise_data[1] == 1) {
-        formatted_string += " * ";
-      }
-
-      formatted_string += String(exercise_data[2]);
-      this.formattedBrainstormExercises = formatted_string;
-
+      this.formattedBrainstormExercises = String(exercise_data[0]) + " " + exercise_data[1] + " " + String(exercise_data[2]);
+      
       return true;
     } else {
       return false;

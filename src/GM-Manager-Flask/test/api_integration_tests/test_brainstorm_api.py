@@ -1,12 +1,12 @@
 import constants
-import requests
 from modes.misc import constants as misc_constants
+from utils.api_helper import GmManagerApiHelper as h
 
 
 class TestBrainstormApi:
 
     def test_misc_get_constants(self):
-        response = requests.get(constants.FLASK_BACKEND_URL + constants.API_MISC_GET_CONSTANTS)
+        response = h.api_get_request(constants.FLASK_BACKEND_URL + constants.API_MISC_GET_CONSTANTS)
 
         assert response is not None
         assert response.status_code == 200
@@ -21,8 +21,8 @@ class TestBrainstormApi:
                 'formBrainstormDifficulty': misc_constants.LIST_DIFFICULTIES[0]
             }
         }
-        response = requests.post(constants.FLASK_BACKEND_URL + constants.API_MISC_BRAINSTORM_GET_EXERCISE_LIST,
-                                 json=payload)
+        response = h.api_post_request(constants.FLASK_BACKEND_URL + constants.API_MISC_BRAINSTORM_GET_EXERCISE_LIST,
+                                      payload)
 
         assert response is not None
         assert response.status_code == 200
