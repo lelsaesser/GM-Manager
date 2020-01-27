@@ -29,4 +29,4 @@ class TestBrainstormApi:
 
         data = response.json()['exercises'][0]
         assert len(data['exercise']) == 3
-        assert isinstance(data['solution'], int)
+        assert data['solution'] is not None
