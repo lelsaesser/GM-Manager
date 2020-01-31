@@ -71,7 +71,12 @@ export class EsoComponent implements OnInit {
     formClassNine: new FormControl(''),
     formClassTen: new FormControl(''),
     formClassEleven: new FormControl(''),
-    formClassTwelve: new FormControl('')
+    formClassTwelve: new FormControl(''),
+    formNumTanks: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(12)])),
+    formNumDps: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(12)])),
+    formNumHeals: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(12)])),
+    formTotalPartyDps: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(9999999)])),
+    formTotalPartyHps: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.max(9999999)]))
   });
 
   formDeleteDungeonRun = new FormGroup({
@@ -126,7 +131,6 @@ export class EsoComponent implements OnInit {
           this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
         },
         () => {
-          console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run submitted!", "Success")
           this.fetchRecordedDungeonRuns();
         });
@@ -144,7 +148,6 @@ export class EsoComponent implements OnInit {
           this.notifyService.showFailure("Error: Backend or Database not reachable.", "Failure")
         },
         () => {
-          console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run submitted!", "Success")
           this.fetchRecordedRaidRuns();
         });
@@ -162,7 +165,6 @@ export class EsoComponent implements OnInit {
           this.notifyService.showFailure("Given Id does not exist.", "Failure")
         },
         () => {
-          console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run deleted!", "Success")
           this.fetchRecordedDungeonRuns();
         });
@@ -180,7 +182,6 @@ export class EsoComponent implements OnInit {
           this.notifyService.showFailure("Given Id does not exist.", "Failure")
         },
         () => {
-          console.log("The POST observable is now completed.");
           this.notifyService.showSuccess("Run deleted!", "Success")
           this.fetchRecordedRaidRuns();
         });
@@ -277,6 +278,10 @@ export class EsoComponent implements OnInit {
     }
     if (this.formSubmitRaidRunData.formClassTwelve == "") {
       this.formSubmitRaidRunData.formClassTwelve = this.esoConstants["eso_constants"][0]["LIST_ESO_CLASSES"][0]
+    }
+    if (this.formSubmitRaidRunData.formNumTanks + this.formSubmitRaidRunData.formNumDps + this.formSubmitRaidRunData.formNumHeals != this.formSubmitRaidRunData.formPlayerCount) {
+      this.notifyService.showInfo("Number of roles must equal total player count", "Failed");
+      return;
     }
 
     this.postRaidRunToDatabase();

@@ -19,7 +19,12 @@ class TestQueryEsoRaidTable:
                                                      class_nine=eso_constants.CLASS_NIGHTBLADE,
                                                      class_ten=eso_constants.CLASS_TEMPLAR,
                                                      class_eleven=eso_constants.CLASS_TEMPLAR,
-                                                     class_twelve=eso_constants.CLASS_TEMPLAR)
+                                                     class_twelve=eso_constants.CLASS_TEMPLAR,
+                                                     num_tanks=2,
+                                                     num_dps=7,
+                                                     num_heals=3,
+                                                     total_party_dps=750000,
+                                                     total_party_hps=120000)
 
         assert status == 200
 
@@ -48,7 +53,12 @@ class TestQueryEsoRaidTable:
                                                      class_nine=eso_constants.CLASS_NIGHTBLADE,
                                                      class_ten=eso_constants.CLASS_TEMPLAR,
                                                      class_eleven=eso_constants.CLASS_TEMPLAR,
-                                                     class_twelve=eso_constants.CLASS_TEMPLAR)
+                                                     class_twelve=eso_constants.CLASS_TEMPLAR,
+                                                     num_tanks=2,
+                                                     num_dps=7,
+                                                     num_heals=3,
+                                                     total_party_dps=750000,
+                                                     total_party_hps=120000)
 
         assert status == 200
 
