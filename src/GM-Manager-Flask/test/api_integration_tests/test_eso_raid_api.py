@@ -36,6 +36,11 @@ class TestEsoRaidApi:
         assert data['class_ten'] in eso_constants.LIST_ESO_CLASSES
         assert data['class_eleven'] in eso_constants.LIST_ESO_CLASSES
         assert data['class_twelve'] in eso_constants.LIST_ESO_CLASSES
+        assert type(data['num_tanks']) == int
+        assert type(data['num_dps']) == int
+        assert type(data['num_heals']) == int
+        assert type(data['total_party_dps']) == int
+        assert type(data['total_party_hps']) == int
 
     def test_eso_query_post_raid_run(self):
         db_cursor = QueryEsoRaidTable()
@@ -63,7 +68,12 @@ class TestEsoRaidApi:
                     'formClassNine': eso_constants.CLASS_NIGHTBLADE,
                     'formClassTen': eso_constants.CLASS_TEMPLAR,
                     'formClassEleven': eso_constants.CLASS_TEMPLAR,
-                    'formClassTwelve': eso_constants.CLASS_TEMPLAR
+                    'formClassTwelve': eso_constants.CLASS_TEMPLAR,
+                    'formNumTanks': 2,
+                    'formNumDps': 7,
+                    'formNumHeals': 3,
+                    'formTotalPartyDps': 750000,
+                    'formTotalPartyHps': 120000
                 }
         }
         response = h.api_post_request(constants.FLASK_BACKEND_URL + constants.API_ESO_POST_RAID_RUN, payload)

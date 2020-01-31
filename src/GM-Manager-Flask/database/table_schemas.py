@@ -61,6 +61,11 @@ class EsoRaidRunsTable(_base):
     class_ten = Column(String)
     class_eleven = Column(String)
     class_twelve = Column(String)
+    num_tanks = Column(Integer)
+    num_dps = Column(Integer)
+    num_heals = Column(Integer)
+    total_party_dps = Column(Integer)
+    total_party_hps = Column(Integer)
 
 
 _base.metadata.create_all(_db)

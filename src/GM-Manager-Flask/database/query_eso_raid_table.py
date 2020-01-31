@@ -8,6 +8,7 @@ from database import constants as db_constants
 from database.table_schemas import EsoRaidRunsTable
 from modes.eso import constants as eso_constants
 
+
 class QueryEsoRaidTable:
 
     def __init__(self):
@@ -21,9 +22,16 @@ class QueryEsoRaidTable:
     def eso_insert_raid_run_query(self, raid_name: str, player_count: int, time_needed: int, hardmode: bool,
                                   flawless: bool, wipes: int, class_one: str, class_two: str, class_three: str,
                                   class_four: str, class_five: str, class_six: str, class_seven: str, class_eight: str,
-                                  class_nine: str, class_ten: str, class_eleven: str, class_twelve: str) -> int:
+                                  class_nine: str, class_ten: str, class_eleven: str, class_twelve: str,
+                                  num_tanks: int, num_dps: int, num_heals: int, total_party_dps: int,
+                                  total_party_hps: int) -> int:
         """
         Insert a raid run to the database
+        :param total_party_hps: total average party heals per second
+        :param total_party_dps: total average party damage per second
+        :param num_heals: int, number of healers in party
+        :param num_dps: int, number of dps roles in party
+        :param num_tanks: int, number of tanks in party
         :param raid_name: valid eso raid (trial) name
         :param player_count: integer 1-12
         :param time_needed: integer representing time in minutes (1-999 allowed)
@@ -88,13 +96,29 @@ class QueryEsoRaidTable:
             return 400
         if class_twelve not in eso_constants.LIST_ESO_CLASSES:
             return 400
+        if num_tanks < 0 or num_tanks > 12:
+            return 400
+        if num_dps < 0 or num_dps > 12:
+            return 400
+        if num_heals < 0 or num_heals > 12:
+            return 400
+        if total_party_dps < 0 or total_party_dps > 9999999:
+            return 400
+        if total_party_hps < 0 or total_party_hps > 9999999:
+            return 400
+        if num_tanks + num_dps + num_heals == 0:
+            return 400
+        if num_tanks + num_dps + num_heals > 12:
+            return 400
 
         run_query = EsoRaidRunsTable(raid_name=raid_name, player_count=player_count, time_needed=time_needed,
                                      hardmode=hardmode, flawless=flawless, wipes=wipes, class_one=class_one,
                                      class_two=class_two, class_three=class_three, class_four=class_four,
                                      class_five=class_five, class_six=class_six, class_seven=class_seven,
                                      class_eight=class_eight, class_nine=class_nine, class_ten=class_ten,
-                                     class_eleven=class_eleven, class_twelve=class_twelve)
+                                     class_eleven=class_eleven, class_twelve=class_twelve, num_tanks=num_tanks,
+                                     num_dps=num_dps, num_heals=num_heals, total_party_dps=total_party_dps,
+                                     total_party_hps=total_party_hps)
 
         sess = self._session()
         try:

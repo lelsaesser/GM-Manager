@@ -422,6 +422,11 @@ class EsoQueryGetRaidRuns(Resource):
                         'class_ten': row.class_ten,
                         'class_eleven': row.class_eleven,
                         'class_twelve': row.class_twelve,
+                        'num_tanks': row.num_tanks,
+                        'num_dps': row.num_dps,
+                        'num_heals': row.num_heals,
+                        'total_party_dps': row.total_party_dps,
+                        'total_party_hps': row.total_party_hps
                     }
                 )
             except AttributeError:
@@ -465,6 +470,11 @@ class EsoQueryPostRaidRun(Resource):
         class_ten = run_data["formClassTen"]
         class_eleven = run_data["formClassEleven"]
         class_twelve = run_data["formClassTwelve"]
+        num_tanks = run_data["formNumTanks"]
+        num_dps = run_data["formNumDps"]
+        num_heals = run_data["formNumHeals"]
+        total_party_dps = run_data["formTotalPartyDps"]
+        total_party_hps = run_data["formTotalPartyHps"]
 
         if not raid_name or not player_count or not time_needed or not class_one or not class_two or not class_three \
                 or not class_four or not class_five or not class_six or not class_seven or not class_eight or not \
@@ -485,7 +495,9 @@ class EsoQueryPostRaidRun(Resource):
                                                      class_seven=class_seven,
                                                      class_eight=class_eight, class_nine=class_nine,
                                                      class_ten=class_ten,
-                                                     class_eleven=class_eleven, class_twelve=class_twelve)
+                                                     class_eleven=class_eleven, class_twelve=class_twelve,
+                                                     num_tanks=num_tanks, num_dps=num_dps, num_heals=num_heals,
+                                                     total_party_dps=total_party_dps, total_party_hps=total_party_hps)
 
         if status is not 200:
             abort(status)
