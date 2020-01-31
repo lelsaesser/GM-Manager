@@ -1,4 +1,4 @@
-from modes.eso import constants
+from modes.eso import constants as c
 
 
 class EsoReturnConstants:
@@ -10,11 +10,11 @@ class EsoReturnConstants:
         :return: Json structure containing constants
         """
         json_model = {
-            'eso_constants': [
+            c.ESO_KEY_ESO_CONSTANTS: [
                 {
-                    'LIST_ESO_CLASSES': constants.LIST_ESO_CLASSES,
-                    'LIST_ESO_DUNGEONS': constants.LIST_ESO_DUNGEONS,
-                    'LIST_ESO_RAIDS': constants.LIST_ESO_RAIDS
+                    c.ESO_KEY_LIST_ESO_CLASSES: c.LIST_ESO_CLASSES,
+                    c.ESO_KEY_LIST_ESO_DUNGEONS: c.LIST_ESO_DUNGEONS,
+                    c.ESO_KEY_LIST_ESO_RAIDS: c.LIST_ESO_RAIDS
                 }
             ]
         }

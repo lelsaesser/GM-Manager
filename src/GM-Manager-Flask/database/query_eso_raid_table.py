@@ -4,18 +4,15 @@ from sqlalchemy import create_engine, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
-from database import constants as db_constants
+from database import constants as c_db
 from database.table_schemas import EsoRaidRunsTable
-from modes.eso import constants as eso_constants
+from modes.eso import constants as c_eso
 
 
 class QueryEsoRaidTable:
 
     def __init__(self):
-        self._db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + \
-                          db_constants.POSTGRE_PW + "@" + \
-                          db_constants.POSTGRE_HOST + ":" + db_constants.POSTGRE_PORT + "/" + db_constants.POSTGRE_DB
-
+        self._db_string = c_db.POSTGRE_FULL_DB_STRING
         self._db = _db = create_engine(self._db_string)
         self._session = sessionmaker(self._db)
 
@@ -51,50 +48,49 @@ class QueryEsoRaidTable:
         :param class_eleven: valid eso classname
         :param class_twelve: valid eso classname
         """
-
-        if raid_name not in eso_constants.LIST_ESO_RAIDS:
+        if raid_name not in c_eso.LIST_ESO_RAIDS:
             return 400
         if player_count < 1 or player_count > 12:
             return 400
         if time_needed < 1 or time_needed > 999:
             return 400
-        if hardmode is None or hardmode == 'no':
+        if hardmode is None or hardmode == c_eso.ESO_NO:
             hardmode = False
-        elif hardmode == 'yes':
+        elif hardmode == c_eso.ESO_YES:
             hardmode = True
         else:
             return 400
-        if flawless is None or flawless == 'no':
+        if flawless is None or flawless == c_eso.ESO_NO:
             flawless = False
-        elif flawless == 'yes':
+        elif flawless == c_eso.ESO_YES:
             flawless = True
         else:
             return 400
         if wipes < 0 or wipes > 999:
             return 400
-        if class_one not in eso_constants.LIST_ESO_CLASSES:
+        if class_one not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_two not in eso_constants.LIST_ESO_CLASSES:
+        if class_two not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_three not in eso_constants.LIST_ESO_CLASSES:
+        if class_three not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_four not in eso_constants.LIST_ESO_CLASSES:
+        if class_four not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_five not in eso_constants.LIST_ESO_CLASSES:
+        if class_five not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_six not in eso_constants.LIST_ESO_CLASSES:
+        if class_six not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_seven not in eso_constants.LIST_ESO_CLASSES:
+        if class_seven not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_eight not in eso_constants.LIST_ESO_CLASSES:
+        if class_eight not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_nine not in eso_constants.LIST_ESO_CLASSES:
+        if class_nine not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_ten not in eso_constants.LIST_ESO_CLASSES:
+        if class_ten not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_eleven not in eso_constants.LIST_ESO_CLASSES:
+        if class_eleven not in c_eso.LIST_ESO_CLASSES:
             return 400
-        if class_twelve not in eso_constants.LIST_ESO_CLASSES:
+        if class_twelve not in c_eso.LIST_ESO_CLASSES:
             return 400
         if num_tanks < 0 or num_tanks > 12:
             return 400

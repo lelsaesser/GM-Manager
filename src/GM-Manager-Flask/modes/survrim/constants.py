@@ -1,6 +1,17 @@
-# Survrun times
+# General
 TIME_SURVRUN_MIN_TIMEBOX = 30
 TIME_SURVRUN_MAX_TIMEBOX = 70
+SURVRIM_YES = "yes"
+SURVRIM_NO = "no"
+
+# Errors
+SR_ERROR_INVALID_SECTOR_LENGTH = 'len(sectors) is expected to be 1 or 2. Actual: '
+SR_ERROR_INVALID_TIME_FACTOR = 'time_factor is expected to be in range(0, 5). Actual: '
+SR_ERROR_INVALID_TIME_MOD = 'Error: time_mod is expected to be in range(-15, 26). Actual: '
+SR_ERROR_INVALID_PICK_PERCENTAGE_SUM = 'Error: Class pick percentage must add up to 100.0'
+SR_ERROR_PICK_CLASS_EXCEPTION = '"Error in pick_class()"'
+SR_ERROR_INVALID_CLASS_NAME = 'Error: requested class name not in LIST_SURVRIM_CLASSES'
+SR_ERROR_RANDOMANCER_SKILL_LIST_NOT_CREATED = 'Error: randomancer skill list was not created'
 
 # City names
 CITY_WINDHELM = "Windhelm"
@@ -235,3 +246,21 @@ LIST_SURVRUN_DIFFICULTIES = [
     DIFFICULTY_EXTREME,
     DIFFICULTY_HARDCORE
 ]
+
+# dict keys
+SR_KEY_SURVRIM_CONSTANTS = 'survrim_constants'
+SR_KEY_LIST_SURVRUN_TARGET_LOCATIONS = 'LIST_SURVRUN_TARGET_LOCATIONS'
+SR_KEY_LIST_SURVRIM_SKILLS = 'LIST_SURVRIM_SKILLS'
+SR_KEY_LIST_SURVRIM_CLASSES = 'LIST_SURVRIM_CLASSES'
+SR_KEY_LIST_SURVRUN_DIFFICULTIES = 'LIST_SURVRUN_DIFFICULTIES'
+SR_KEY_TOTAL_RUNS = 'total_runs'
+SR_KEY_TOTAL_RUNS_COMPLETED = 'total_runs_completed'
+SR_KEY_TOTAL_TIME_PLAYED = 'total_time_played'
+SR_KEY_TOTAL_R_COUNT = 'total_r_count'
+SR_KEY_TOTAL_CLASS_USES = 'total_class_uses'
+SR_KEY_TOTAL_RUNS_WITH_DIFFICULTY = 'total_runs_with_difficulty'
+SR_KEY_SECTOR_A = 'sector_a'
+SR_KEY_SECTOR_B = 'sector_b'
+SR_KEY_SECTOR_C = 'sector_c'
+SR_KEY_SECTOR_D = 'sector_d'
+SR_KEY_SECTOR_E = 'sector_e'

@@ -4,18 +4,15 @@ from sqlalchemy import create_engine, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
-from database import constants as db_constants
+from database import constants as c_db
 from database.table_schemas import SurvrunTable
-from modes.survrim import constants as survrim_constants
+from modes.survrim import constants as c_sr
 
 
 class QuerySurvrunTable:
 
     def __init__(self):
-        self._db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + \
-                          db_constants.POSTGRE_PW + "@" + \
-                          db_constants.POSTGRE_HOST + ":" + db_constants.POSTGRE_PORT + "/" + db_constants.POSTGRE_DB
-
+        self._db_string = c_db.POSTGRE_FULL_DB_STRING
         self._db = _db = create_engine(self._db_string)
         self._session = sessionmaker(self._db)
 
@@ -33,21 +30,21 @@ class QuerySurvrunTable:
         :param r_count: integer, r_count
         :return: HTTP request status code (int) and string containing detailed explanation
         """
-        if player_class not in survrim_constants.LIST_SURVRIM_CLASSES:
-            msg = db_constants.BAD_REQUEST_INVALID_CLASS_NAME
+        if player_class not in c_sr.LIST_SURVRIM_CLASSES:
+            msg = c_db.BAD_REQUEST_INVALID_CLASS_NAME
             return 400, msg
-        if target_a not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS \
-                or target_b not in survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS:
-            msg = db_constants.BAD_REQUEST_INVALID_LOCATION_NAME
+        if target_a not in c_sr.LIST_SURVRUN_TARGET_LOCATIONS \
+                or target_b not in c_sr.LIST_SURVRUN_TARGET_LOCATIONS:
+            msg = c_db.BAD_REQUEST_INVALID_LOCATION_NAME
             return 400, msg
-        if completed is not "yes" and completed is not "no":
-            msg = db_constants.BAD_REQUEST_INVALID_ATTRIBUTE_COMPLETED
+        if completed is not c_sr.SURVRIM_YES and completed is not c_sr.SURVRIM_NO:
+            msg = c_db.BAD_REQUEST_INVALID_ATTRIBUTE_COMPLETED
             return 400, msg
         if target_a == target_b:
-            msg = db_constants.BAD_REQUEST_TARGET_LOCATIONS_EQUAL
+            msg = c_db.BAD_REQUEST_TARGET_LOCATIONS_EQUAL
             return 400, msg
-        if difficulty not in survrim_constants.LIST_SURVRUN_DIFFICULTIES:
-            msg = db_constants.BAD_REQUEST_INVALID_DIFFICULTY
+        if difficulty not in c_sr.LIST_SURVRUN_DIFFICULTIES:
+            msg = c_db.BAD_REQUEST_INVALID_DIFFICULTY
             return 400, msg
 
         run_query = SurvrunTable(player_class=player_class, target_a=target_a, target_b=target_b, timebox=timebox,
@@ -57,10 +54,10 @@ class QuerySurvrunTable:
         try:
             sess.add(run_query)
             sess.commit()
-            msg = db_constants.SUCCESS_QUERY_COMPLETED
+            msg = c_db.SUCCESS_QUERY_COMPLETED
             return 200, msg
         except IntegrityError:  # thrown if duplicate PK (id)
-            msg = db_constants.BAD_REQUEST_DUPLICATE_PRIMARY_KEY
+            msg = c_db.BAD_REQUEST_DUPLICATE_PRIMARY_KEY
             return 400, msg
 
     def survrun_select_query(self) -> List[List]:
@@ -86,8 +83,8 @@ class QuerySurvrunTable:
         for row in data:
             sess.delete(row)
             sess.commit()
-            return 200, db_constants.SUCCESS_QUERY_COMPLETED
-        return 400, db_constants.BAD_REQUEST_TABLE_IS_EMPTY
+            return 200, c_db.SUCCESS_QUERY_COMPLETED
+        return 400, c_db.BAD_REQUEST_TABLE_IS_EMPTY
 
     def survrun_delete_record_by_id_query(self, run_id):
         """
@@ -99,11 +96,11 @@ class QuerySurvrunTable:
         row = sess.query(SurvrunTable).filter(SurvrunTable.id == run_id).first()
 
         if not row:
-            return 400, db_constants.BAD_REQUEST_ID_NOT_FOUND
+            return 400, c_db.BAD_REQUEST_ID_NOT_FOUND
 
         sess.delete(row)
         sess.commit()
-        return 200, db_constants.SUCCESS_QUERY_COMPLETED
+        return 200, c_db.SUCCESS_QUERY_COMPLETED
 
     def survrun_get_id_of_last_added_record(self):
         """
