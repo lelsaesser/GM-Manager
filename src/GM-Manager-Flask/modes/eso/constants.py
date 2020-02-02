@@ -147,7 +147,7 @@ LIST_ESO_RAIDS = [
 ]
 
 # API Keys
-# eso raid BE keys
+# eso BE keys
 ESO_KEY_QUERY_RESULT = 'queryResult'
 ESO_KEY_ID = 'id'
 ESO_KEY_RAID_NAME = 'raid_name'
@@ -173,8 +173,9 @@ ESO_KEY_NUM_DPS = 'num_dps'
 ESO_KEY_NUM_HEALS = 'num_heals'
 ESO_KEY_TOTAL_PARTY_DPS = 'total_party_dps'
 ESO_KEY_TOTAL_PARTY_HPS = 'total_party_hps'
+ESO_KEY_DUNGEON_NAME = 'dungeon_name'
 
-# eso raid FE form keys
+# eso FE form keys
 ESO_FORM_KEY_RAID_RUN_FORM_DATA = 'submitRaidRunFormData'
 ESO_FORM_KEY_RAID_NAME = 'formRaidName'
 ESO_FORM_KEY_PLAYER_COUNT = 'formPlayerCount'
@@ -199,6 +200,8 @@ ESO_FORM_KEY_NUM_DPS = 'formNumDps'
 ESO_FORM_KEY_NUM_HEALS = 'formNumHeals'
 ESO_FORM_KEY_TOTAL_PARTY_DPS = 'formTotalPartyDps'
 ESO_FORM_KEY_TOTAL_PARTY_HPS = 'formTotalPartyHps'
+ESO_FORM_KEY_SUBMIT_DUNGEON_RUN_DATA = 'submitDungeonRunFormData'
+ESO_FORM_KEY_DUNGEON_NAME = 'formDungeonName'
 
 # return constants keys
 ESO_KEY_ESO_CONSTANTS = 'eso_constants'

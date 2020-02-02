@@ -16,8 +16,8 @@ class QueryEsoRaidTable:
         self._db = _db = create_engine(self._db_string)
         self._session = sessionmaker(self._db)
 
-    def eso_insert_raid_run_query(self, raid_name: str, player_count: int, time_needed: int, hardmode: bool,
-                                  flawless: bool, wipes: int, class_one: str, class_two: str, class_three: str,
+    def eso_insert_raid_run_query(self, raid_name: str, player_count: int, time_needed: int, hardmode: str,
+                                  flawless: str, wipes: int, class_one: str, class_two: str, class_three: str,
                                   class_four: str, class_five: str, class_six: str, class_seven: str, class_eight: str,
                                   class_nine: str, class_ten: str, class_eleven: str, class_twelve: str,
                                   num_tanks: int, num_dps: int, num_heals: int, total_party_dps: int,

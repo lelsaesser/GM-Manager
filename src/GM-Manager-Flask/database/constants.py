@@ -25,3 +25,6 @@ BAD_REQUEST_INVALID_DIFFICULTY = "Bad request: difficulty not in difficulty cons
 
 # Success messages
 SUCCESS_QUERY_COMPLETED = "query completed"
+
+# Dict keys
+DB_KEY_DELETE_ROW_ID = 'delete_row_id'

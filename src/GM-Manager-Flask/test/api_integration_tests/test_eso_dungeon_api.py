@@ -1,6 +1,6 @@
 import constants
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
-from modes.eso import constants as eso_constants
+from modes.eso import constants as c
 from utils.api_helper import GmManagerApiHelper as h
 
 
@@ -12,10 +12,10 @@ class TestEsoDungeonApi:
         assert response is not None
         assert response.status_code == 200
 
-        data = response.json()['eso_constants'][0]
-        assert data["LIST_ESO_CLASSES"] == eso_constants.LIST_ESO_CLASSES
-        assert data["LIST_ESO_DUNGEONS"] == eso_constants.LIST_ESO_DUNGEONS
-        assert data["LIST_ESO_RAIDS"] == eso_constants.LIST_ESO_RAIDS
+        data = response.json()[c.ESO_KEY_ESO_CONSTANTS][0]
+        assert data[c.ESO_KEY_LIST_ESO_CLASSES] == c.LIST_ESO_CLASSES
+        assert data[c.ESO_KEY_LIST_ESO_DUNGEONS] == c.LIST_ESO_DUNGEONS
+        assert data[c.ESO_KEY_LIST_ESO_RAIDS] == c.LIST_ESO_RAIDS
 
     def test_eso_query_get_dungeon_runs(self):
         """
@@ -27,18 +27,18 @@ class TestEsoDungeonApi:
         assert response is not None
         assert response.status_code == 200
 
-        data = response.json()['queryResult'][0]
-        assert type(data['id']) == int
-        assert data['dungeon_name'] in eso_constants.LIST_ESO_DUNGEONS
-        assert type(data['player_count']) == int
-        assert type(data['time_needed']) == int
-        assert type(data['hardmode']) == bool
-        assert type(data['flawless']) == bool
-        assert type(data['wipes']) == int
-        assert data['class_one'] in eso_constants.LIST_ESO_CLASSES
-        assert data['class_two'] in eso_constants.LIST_ESO_CLASSES
-        assert data['class_three'] in eso_constants.LIST_ESO_CLASSES
-        assert data['class_four'] in eso_constants.LIST_ESO_CLASSES
+        data = response.json()[c.ESO_KEY_QUERY_RESULT][0]
+        assert type(data[c.ESO_KEY_ID]) == int
+        assert data[c.ESO_KEY_DUNGEON_NAME] in c.LIST_ESO_DUNGEONS
+        assert type(data[c.ESO_KEY_PLAYER_COUNT]) == int
+        assert type(data[c.ESO_KEY_TIME_NEEDED]) == int
+        assert type(data[c.ESO_KEY_HARDMODE]) == bool
+        assert type(data[c.ESO_KEY_FLAWLESS]) == bool
+        assert type(data[c.ESO_KEY_WIPES]) == int
+        assert data[c.ESO_KEY_CLASS_ONE] in c.LIST_ESO_CLASSES
+        assert data[c.ESO_KEY_CLASS_TWO] in c.LIST_ESO_CLASSES
+        assert data[c.ESO_KEY_CLASS_THREE] in c.LIST_ESO_CLASSES
+        assert data[c.ESO_KEY_CLASS_FOUR] in c.LIST_ESO_CLASSES
 
     def test_eso_query_post_dungeon_run(self):
         db_cursor = QueryEsoDungeonTable()
@@ -47,18 +47,18 @@ class TestEsoDungeonApi:
         last_added_run_id = db_cursor.eso_get_id_of_last_added_record()
 
         payload = {
-            'submitDungeonRunFormData':
+            c.ESO_FORM_KEY_SUBMIT_DUNGEON_RUN_DATA:
                 {
-                    'formClassFour': eso_constants.CLASS_DRAGONKNIGHT,
-                    'formClassOne': eso_constants.CLASS_NECRO,
-                    'formClassThree': eso_constants.CLASS_WARDEN,
-                    'formClassTwo': eso_constants.CLASS_SORCERER,
-                    'formDungeonName': eso_constants.DUNGEON_ARX_CORINIUM,
-                    'formFlawless': "no",
-                    'formHardmode': "no",
-                    'formPlayerCount': 4,
-                    'formTimeNeeded': 20,
-                    'formWipes': 0
+                    c.ESO_FORM_KEY_CLASS_FOUR: c.CLASS_DRAGONKNIGHT,
+                    c.ESO_FORM_KEY_CLASS_ONE: c.CLASS_NECRO,
+                    c.ESO_FORM_KEY_CLASS_THREE: c.CLASS_WARDEN,
+                    c.ESO_FORM_KEY_CLASS_TWO: c.CLASS_SORCERER,
+                    c.ESO_FORM_KEY_DUNGEON_NAME: c.DUNGEON_ARX_CORINIUM,
+                    c.ESO_FORM_KEY_FLAWLESS: c.ESO_NO,
+                    c.ESO_FORM_KEY_HARDMODE: c.ESO_NO,
+                    c.ESO_FORM_KEY_PLAYER_COUNT: 4,
+                    c.ESO_FORM_KEY_TIME_NEEDED: 20,
+                    c.ESO_FORM_KEY_WIPES: 0
                 }
         }
         response = h.api_post_request(constants.FLASK_BACKEND_URL + constants.API_ESO_POST_DUNGEON_RUN, payload)

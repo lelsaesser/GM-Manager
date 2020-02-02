@@ -43,3 +43,21 @@ ERROR_SURVRIM_LOCATION_MISSING = "Error: invalid location name."
 # Health check success
 MSG_HEALTH_CHECK_SUCCESS = "Api is healthy and running!"
 MSG_HEALTH_CHECK_FAILURE = "Health check failed - bad payload"
+MSG_QUERY_EMPTY_TABLE = 'No data to fetch, table is empty'
+
+# Dict keys
+KEY_HEALTH_CHECK_RESPONSE = 'health_check_response'
+KEY_HEALTH_CHECK_PAYLOAD = 'health_check_payload'
+KEY_RECEIVED_PAYLOAD = 'received_payload'
+KEY_STATUS = 'status'
+KEY_MESSAGE = 'message'
+KEY_INFO = 'info'
+KEY_QUERY_RESULT = 'queryResult'
+
+# Response codes
+RESP_OK = 200
+RESP_BAD_REQUEST = 400
+RESP_INTERNAL_SERVER_ERROR = 500
+RESP_RESOURCE_NOT_FOUND = 404
+
+
