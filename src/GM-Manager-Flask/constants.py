@@ -1,5 +1,6 @@
 # Flask backend server
 FLASK_BACKEND_URL = "http://localhost:5000"
+APP_NAME = 'GM-Manager'
 
 # Api endpoints
 # Health check
@@ -59,5 +60,10 @@ RESP_OK = 200
 RESP_BAD_REQUEST = 400
 RESP_INTERNAL_SERVER_ERROR = 500
 RESP_RESOURCE_NOT_FOUND = 404
+
+SUCCESS = 'Success'
+BAD_REQUEST = 'Bad request'
+ERROR = 'Error'
+BACKEND_ERROR = 'Backend error'
 
 

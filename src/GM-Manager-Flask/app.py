@@ -1,25 +1,26 @@
+import json
+
 from flask import Flask, jsonify, make_response, abort, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
 
+import constants as c
+from database import constants as c_db
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from database.query_eso_raid_table import QueryEsoRaidTable
 from database.query_survrun_table import QuerySurvrunTable
+from modes.eso import constants as c_eso
+from modes.eso.eso_return_constants import EsoReturnConstants
+from modes.misc import constants as c_m
 from modes.misc.brainstorm import MiscBrainstorm
 from modes.misc.misc_return_constants import MiscReturnConstants
+from modes.stronghold import constants as c_shc
+from modes.stronghold.shc_ai_picker import StrongholdAiPicker
+from modes.survrim import constants as c_sr
+from modes.survrim.survrim_return_constants import SurvrimReturnConstants
 from modes.survrim.survrun_calculate_statistics import SurvrunCalculateStatistics
 from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
-from modes.survrim.survrim_return_constants import SurvrimReturnConstants
-from modes.stronghold.shc_ai_picker import StrongholdAiPicker
-from modes.eso.eso_return_constants import EsoReturnConstants
-import constants as c
-from modes.eso import constants as c_eso
-from modes.stronghold import constants as c_shc
-from modes.survrim import constants as c_sr
-from modes.misc import constants as c_m
-from database import constants as c_db
-import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -373,7 +374,7 @@ class EsoDeleteDungeonRunById(Resource):
     def post(self):
         run_id = None
         try:
-            run_id = json.loads(request.data)["delete_row_id"]
+            run_id = json.loads(request.data)[c_db.DB_KEY_DELETE_ROW_ID]
         except KeyError:
             abort(c.RESP_BAD_REQUEST)
         if not run_id:
@@ -383,7 +384,7 @@ class EsoDeleteDungeonRunById(Resource):
         status = db_cursor.eso_delete_dungeon_run_by_id(run_id)
         if status is not c.RESP_OK:
             abort(status)
-        return jsonify({'status': status})
+        return jsonify({c.KEY_STATUS: status})
 
 
 api.add_resource(EsoDeleteDungeonRunById, c.API_ESO_DELETE_DUNGEON_RUN)
@@ -408,39 +409,39 @@ class EsoQueryGetRaidRuns(Resource):
             try:
                 json_components.append(
                     {
-                        'id': row.id,
-                        'raid_name': row.raid_name,
-                        'player_count': row.player_count,
-                        'time_needed': row.time_needed,
-                        'hardmode': row.hardmode,
-                        'flawless': row.flawless,
-                        'wipes': row.wipes,
-                        'class_one': row.class_one,
-                        'class_two': row.class_two,
-                        'class_three': row.class_three,
-                        'class_four': row.class_four,
-                        'class_five': row.class_five,
-                        'class_six': row.class_six,
-                        'class_seven': row.class_seven,
-                        'class_eight': row.class_eight,
-                        'class_nine': row.class_nine,
-                        'class_ten': row.class_ten,
-                        'class_eleven': row.class_eleven,
-                        'class_twelve': row.class_twelve,
-                        'num_tanks': row.num_tanks,
-                        'num_dps': row.num_dps,
-                        'num_heals': row.num_heals,
-                        'total_party_dps': row.total_party_dps,
-                        'total_party_hps': row.total_party_hps
+                        c_eso.ESO_KEY_ID: row.id,
+                        c_eso.ESO_KEY_RAID_NAME: row.raid_name,
+                        c_eso.ESO_KEY_PLAYER_COUNT: row.player_count,
+                        c_eso.ESO_KEY_TIME_NEEDED: row.time_needed,
+                        c_eso.ESO_KEY_HARDMODE: row.hardmode,
+                        c_eso.ESO_KEY_FLAWLESS: row.flawless,
+                        c_eso.ESO_KEY_WIPES: row.wipes,
+                        c_eso.ESO_KEY_CLASS_ONE: row.class_one,
+                        c_eso.ESO_KEY_CLASS_TWO: row.class_two,
+                        c_eso.ESO_KEY_CLASS_THREE: row.class_three,
+                        c_eso.ESO_KEY_CLASS_FOUR: row.class_four,
+                        c_eso.ESO_KEY_CLASS_FIVE: row.class_five,
+                        c_eso.ESO_KEY_CLASS_SIX: row.class_six,
+                        c_eso.ESO_KEY_CLASS_SEVEN: row.class_seven,
+                        c_eso.ESO_KEY_CLASS_EIGHT: row.class_eight,
+                        c_eso.ESO_KEY_CLASS_NINE: row.class_nine,
+                        c_eso.ESO_KEY_CLASS_TEN: row.class_ten,
+                        c_eso.ESO_KEY_CLASS_ELEVEN: row.class_eleven,
+                        c_eso.ESO_KEY_CLASS_TWELVE: row.class_twelve,
+                        c_eso.ESO_KEY_NUM_TANKS: row.num_tanks,
+                        c_eso.ESO_KEY_NUM_DPS: row.num_dps,
+                        c_eso.ESO_KEY_NUM_HEALS: row.num_heals,
+                        c_eso.ESO_KEY_TOTAL_PARTY_DPS: row.total_party_dps,
+                        c_eso.ESO_KEY_TOTAL_PARTY_HPS: row.total_party_hps
                     }
                 )
             except AttributeError:
                 abort(c.RESP_INTERNAL_SERVER_ERROR)
         if not json_components[0]:
-            return jsonify({'Info': 'No data to fetch, table is empty'})
+            return jsonify({c.KEY_INFO: c.MSG_QUERY_EMPTY_TABLE})
 
         return jsonify({
-            'queryResult': json_components
+            c.KEY_QUERY_RESULT: json_components
         })
 
 
@@ -452,34 +453,34 @@ class EsoQueryPostRaidRun(Resource):
     POST endpoint to insert a eso raid run to the DB
     """
     def post(self):
-        run_data = json.loads(request.data)["submitRaidRunFormData"]
+        run_data = json.loads(request.data)[c_eso.ESO_FORM_KEY_RAID_RUN_FORM_DATA]
 
         if not run_data:
             abort(c.RESP_BAD_REQUEST)
 
-        raid_name = run_data["formRaidName"]
-        player_count = run_data["formPlayerCount"]
-        time_needed = run_data["formTimeNeeded"]
-        hardmode = run_data["formHardmode"]
-        flawless = run_data["formFlawless"]
-        wipes = run_data["formWipes"]
-        class_one = run_data["formClassOne"]
-        class_two = run_data["formClassTwo"]
-        class_three = run_data["formClassThree"]
-        class_four = run_data["formClassFour"]
-        class_five = run_data["formClassFive"]
-        class_six = run_data["formClassSix"]
-        class_seven = run_data["formClassSeven"]
-        class_eight = run_data["formClassEight"]
-        class_nine = run_data["formClassNine"]
-        class_ten = run_data["formClassTen"]
-        class_eleven = run_data["formClassEleven"]
-        class_twelve = run_data["formClassTwelve"]
-        num_tanks = run_data["formNumTanks"]
-        num_dps = run_data["formNumDps"]
-        num_heals = run_data["formNumHeals"]
-        total_party_dps = run_data["formTotalPartyDps"]
-        total_party_hps = run_data["formTotalPartyHps"]
+        raid_name = run_data[c_eso.ESO_FORM_KEY_RAID_NAME]
+        player_count = run_data[c_eso.ESO_FORM_KEY_PLAYER_COUNT]
+        time_needed = run_data[c_eso.ESO_FORM_KEY_TIME_NEEDED]
+        hardmode = run_data[c_eso.ESO_FORM_KEY_HARDMODE]
+        flawless = run_data[c_eso.ESO_FORM_KEY_FLAWLESS]
+        wipes = run_data[c_eso.ESO_FORM_KEY_WIPES]
+        class_one = run_data[c_eso.ESO_FORM_KEY_CLASS_ONE]
+        class_two = run_data[c_eso.ESO_FORM_KEY_CLASS_TWO]
+        class_three = run_data[c_eso.ESO_FORM_KEY_CLASS_THREE]
+        class_four = run_data[c_eso.ESO_FORM_KEY_CLASS_FOUR]
+        class_five = run_data[c_eso.ESO_FORM_KEY_CLASS_FIVE]
+        class_six = run_data[c_eso.ESO_FORM_KEY_CLASS_SIX]
+        class_seven = run_data[c_eso.ESO_FORM_KEY_CLASS_SEVEN]
+        class_eight = run_data[c_eso.ESO_FORM_KEY_CLASS_EIGHT]
+        class_nine = run_data[c_eso.ESO_FORM_KEY_CLASS_NINE]
+        class_ten = run_data[c_eso.ESO_FORM_KEY_CLASS_TEN]
+        class_eleven = run_data[c_eso.ESO_FORM_KEY_CLASS_ELEVEN]
+        class_twelve = run_data[c_eso.ESO_FORM_KEY_CLASS_TWELVE]
+        num_tanks = run_data[c_eso.ESO_FORM_KEY_NUM_TANKS]
+        num_dps = run_data[c_eso.ESO_FORM_KEY_NUM_DPS]
+        num_heals = run_data[c_eso.ESO_FORM_KEY_NUM_HEALS]
+        total_party_dps = run_data[c_eso.ESO_FORM_KEY_TOTAL_PARTY_DPS]
+        total_party_hps = run_data[c_eso.ESO_FORM_KEY_TOTAL_PARTY_HPS]
 
         if not raid_name or not player_count or not time_needed or not class_one or not class_two or not class_three \
                 or not class_four or not class_five or not class_six or not class_seven or not class_eight or not \
@@ -506,7 +507,7 @@ class EsoQueryPostRaidRun(Resource):
 
         if status is not c.RESP_OK:
             abort(status)
-        return make_response(jsonify({'status': status}))
+        return make_response(jsonify({c.KEY_STATUS: status}))
 
 
 api.add_resource(EsoQueryPostRaidRun, c.API_ESO_POST_RAID_RUN)
@@ -519,7 +520,7 @@ class EsoDeleteRaidRunById(Resource):
     def post(self):
         run_id = None
         try:
-            run_id = json.loads(request.data)["delete_row_id"]
+            run_id = json.loads(request.data)[c_db.DB_KEY_DELETE_ROW_ID]
         except KeyError:
             abort(c.RESP_BAD_REQUEST)
         if not run_id:
@@ -529,7 +530,7 @@ class EsoDeleteRaidRunById(Resource):
         status = db_cursor.eso_delete_raid_run_by_id(run_id)
         if status is not c.RESP_OK:
             abort(status)
-        return jsonify({'status': status})
+        return jsonify({c.KEY_STATUS: status})
 
 
 api.add_resource(EsoDeleteRaidRunById, c.API_ESO_DELETE_RAID_RUN)
@@ -559,7 +560,7 @@ class MiscBrainstormApi(Resource):
         difficulty = None
         length = None
         try:
-            difficulty = json.loads(request.data)["data"]["formBrainstormDifficulty"]
+            difficulty = json.loads(request.data)[c_m.MISC_KEY_DATA][c_m.MISC_KEY_FORM_BRAINSTROM_DIFFICULTY]
             length = 1  # hardcoded for now, for better user experience in UI
         except KeyError:
             abort(c.RESP_BAD_REQUEST)
@@ -570,7 +571,7 @@ class MiscBrainstormApi(Resource):
         exercises = calc.get_exercise_list(difficulty, length)
 
         if exercises:
-            return jsonify({'exercises': exercises})
+            return jsonify({c_m.MISC_KEY_EXERCISES: exercises})
         else:
             abort(c.RESP_INTERNAL_SERVER_ERROR)
 
@@ -584,22 +585,22 @@ api.add_resource(MiscBrainstormApi, c.API_MISC_BRAINSTORM_GET_EXERCISE_LIST)
 
 @app.route('/')
 def landing_page():
-    return 'GM-Manager'
+    return c.APP_NAME
 
 
 @app.errorhandler(c.RESP_BAD_REQUEST)
 def error_not_found(error):
-    return make_response(jsonify({'Bad request': error}), c.RESP_BAD_REQUEST)
+    return make_response(jsonify({c.SUCCESS: error}), c.RESP_BAD_REQUEST)
 
 
 @app.errorhandler(c.RESP_RESOURCE_NOT_FOUND)
 def error_not_found(error):
-    return make_response(jsonify({'error': error}), c.RESP_RESOURCE_NOT_FOUND)
+    return make_response(jsonify({c.ERROR: error}), c.RESP_RESOURCE_NOT_FOUND)
 
 
 @app.errorhandler(c.RESP_INTERNAL_SERVER_ERROR)
 def error_not_found(error):
-    return make_response(jsonify({'Backend error': 'an internal error occured in backend while processing data: ' +
+    return make_response(jsonify({c.BACKEND_ERROR: 'an internal error occured in backend while processing data: ' +
                                                    error}), c.RESP_INTERNAL_SERVER_ERROR)
 
 
