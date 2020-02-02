@@ -1,5 +1,5 @@
-from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 from modes.survrim import constants as c
+from modes.survrim.survrun_goal_location_calculator import SurvrunGoalLocationCalculator
 
 
 class TestSurvrunGoalLocationCalculator:

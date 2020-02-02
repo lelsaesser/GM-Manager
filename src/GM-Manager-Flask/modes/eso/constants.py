@@ -1,5 +1,9 @@
 MODE_NAME = "Elder Scrolls Online"
 
+# general
+ESO_YES = 'yes'
+ESO_NO = 'no'
+
 # classes
 CLASS_DRAGONKNIGHT = "Dragonknight"
 CLASS_SORCERER = "Sorcerer"
@@ -141,3 +145,66 @@ LIST_ESO_RAIDS = [
     RAID_CLOUDREST,
     RAID_SUNSPIRE
 ]
+
+# API Keys
+# eso BE keys
+ESO_KEY_QUERY_RESULT = 'queryResult'
+ESO_KEY_ID = 'id'
+ESO_KEY_RAID_NAME = 'raid_name'
+ESO_KEY_PLAYER_COUNT = 'player_count'
+ESO_KEY_TIME_NEEDED = 'time_needed'
+ESO_KEY_HARDMODE = 'hardmode'
+ESO_KEY_FLAWLESS = 'flawless'
+ESO_KEY_WIPES = 'wipes'
+ESO_KEY_CLASS_ONE = 'class_one'
+ESO_KEY_CLASS_TWO = 'class_two'
+ESO_KEY_CLASS_THREE = 'class_three'
+ESO_KEY_CLASS_FOUR = 'class_four'
+ESO_KEY_CLASS_FIVE = 'class_five'
+ESO_KEY_CLASS_SIX = 'class_six'
+ESO_KEY_CLASS_SEVEN = 'class_seven'
+ESO_KEY_CLASS_EIGHT = 'class_eight'
+ESO_KEY_CLASS_NINE = 'class_nine'
+ESO_KEY_CLASS_TEN = 'class_ten'
+ESO_KEY_CLASS_ELEVEN = 'class_eleven'
+ESO_KEY_CLASS_TWELVE = 'class_twelve'
+ESO_KEY_NUM_TANKS = 'num_tanks'
+ESO_KEY_NUM_DPS = 'num_dps'
+ESO_KEY_NUM_HEALS = 'num_heals'
+ESO_KEY_TOTAL_PARTY_DPS = 'total_party_dps'
+ESO_KEY_TOTAL_PARTY_HPS = 'total_party_hps'
+ESO_KEY_DUNGEON_NAME = 'dungeon_name'
+
+# eso FE form keys
+ESO_FORM_KEY_RAID_RUN_FORM_DATA = 'submitRaidRunFormData'
+ESO_FORM_KEY_RAID_NAME = 'formRaidName'
+ESO_FORM_KEY_PLAYER_COUNT = 'formPlayerCount'
+ESO_FORM_KEY_TIME_NEEDED = 'formTimeNeeded'
+ESO_FORM_KEY_HARDMODE = 'formHardmode'
+ESO_FORM_KEY_FLAWLESS = 'formFlawless'
+ESO_FORM_KEY_WIPES = 'formWipes'
+ESO_FORM_KEY_CLASS_ONE = 'formClassOne'
+ESO_FORM_KEY_CLASS_TWO = 'formClassTwo'
+ESO_FORM_KEY_CLASS_THREE = 'formClassThree'
+ESO_FORM_KEY_CLASS_FOUR = 'formClassFour'
+ESO_FORM_KEY_CLASS_FIVE = 'formClassFive'
+ESO_FORM_KEY_CLASS_SIX = 'formClassSix'
+ESO_FORM_KEY_CLASS_SEVEN = 'formClassSeven'
+ESO_FORM_KEY_CLASS_EIGHT = 'formClassEight'
+ESO_FORM_KEY_CLASS_NINE = 'formClassNine'
+ESO_FORM_KEY_CLASS_TEN = 'formClassTen'
+ESO_FORM_KEY_CLASS_ELEVEN = 'formClassEleven'
+ESO_FORM_KEY_CLASS_TWELVE = 'formClassTwelve'
+ESO_FORM_KEY_NUM_TANKS = 'formNumTanks'
+ESO_FORM_KEY_NUM_DPS = 'formNumDps'
+ESO_FORM_KEY_NUM_HEALS = 'formNumHeals'
+ESO_FORM_KEY_TOTAL_PARTY_DPS = 'formTotalPartyDps'
+ESO_FORM_KEY_TOTAL_PARTY_HPS = 'formTotalPartyHps'
+ESO_FORM_KEY_SUBMIT_DUNGEON_RUN_DATA = 'submitDungeonRunFormData'
+ESO_FORM_KEY_DUNGEON_NAME = 'formDungeonName'
+
+# return constants keys
+ESO_KEY_ESO_CONSTANTS = 'eso_constants'
+ESO_KEY_LIST_ESO_CLASSES = 'LIST_ESO_CLASSES'
+ESO_KEY_LIST_ESO_DUNGEONS = 'LIST_ESO_DUNGEONS'
+ESO_KEY_LIST_ESO_RAIDS = 'LIST_ESO_RAIDS'

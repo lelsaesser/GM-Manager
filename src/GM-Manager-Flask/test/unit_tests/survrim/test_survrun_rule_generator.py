@@ -1,5 +1,5 @@
-from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
 from modes.survrim import constants as c
+from modes.survrim.survrun_rule_generator import SurvrimRuleGenerator
 
 
 class TestSurvrimRuleGenerator:
@@ -14,7 +14,7 @@ class TestSurvrimRuleGenerator:
             if pick not in picked_classes:
                 picked_classes.append(pick)
             if roll_count >= roll_count_limit:
-                raise Exception("Not all classes picked within 1000 tries... are the pick chances correct?")
+                raise Exception(c.SR_ERROR_TEST_PICK_CLASS_FAILED)
             roll_count += 1
 
         assert len(picked_classes) == len(c.LIST_SURVRIM_CLASSES)

@@ -1,6 +1,6 @@
 from typing import Union, Tuple, Any
 
-from modes.survrim import constants
+from modes.survrim import constants as c
 import random
 
 
@@ -8,9 +8,8 @@ class SurvrunGoalLocationCalculator:
     """
     calculate goal/target locations for survivalrun
     """
-
     def __init__(self):
-        self._locations = constants.LIST_SURVRUN_TARGET_LOCATIONS
+        self._locations = c.LIST_SURVRUN_TARGET_LOCATIONS
         self._loc_idx_a = 0
         self._loc_idx_b = 0
 
@@ -33,55 +32,55 @@ class SurvrunGoalLocationCalculator:
         :return: integer which represents the time in minutes
         :raises: ValueError, if either of the params are not a CITY constant
         """
-        if location_a not in constants.LIST_SURVRUN_TARGET_LOCATIONS:
+        if location_a not in c.LIST_SURVRUN_TARGET_LOCATIONS:
             raise ValueError
-        if location_b not in constants.LIST_SURVRUN_TARGET_LOCATIONS:
+        if location_b not in c.LIST_SURVRUN_TARGET_LOCATIONS:
             raise ValueError
 
-        sector_a = constants.LIST_SURVRUN_SECTOR_A
-        sector_b = constants.LIST_SURVRUN_SECTOR_B
-        sector_c = constants.LIST_SURVRUN_SECTOR_C
-        sector_d = constants.LIST_SURVRUN_SECTOR_D
-        sector_e = constants.LIST_SURVRUN_SECTOR_E
+        sector_a = c.LIST_SURVRUN_SECTOR_A
+        sector_b = c.LIST_SURVRUN_SECTOR_B
+        sector_c = c.LIST_SURVRUN_SECTOR_C
+        sector_d = c.LIST_SURVRUN_SECTOR_D
+        sector_e = c.LIST_SURVRUN_SECTOR_E
 
         time_factor = 0
         sectors = []
         time_factors_per_sector = {
-            "sector_a": 1,
-            "sector_b": 2,
-            "sector_c": 3,
-            "sector_d": 4,
-            "sector_e": 5,
+            c.SR_KEY_SECTOR_A: 1,
+            c.SR_KEY_SECTOR_B: 2,
+            c.SR_KEY_SECTOR_C: 3,
+            c.SR_KEY_SECTOR_D: 4,
+            c.SR_KEY_SECTOR_E: 5,
         }
 
         if location_a in sector_a or location_b in sector_a:
-            sectors.append("sector_a")
+            sectors.append(c.SR_KEY_SECTOR_A)
         if location_a in sector_b or location_b in sector_b:
-            sectors.append("sector_b")
+            sectors.append(c.SR_KEY_SECTOR_B)
         if location_a in sector_c or location_b in sector_c:
-            sectors.append("sector_c")
+            sectors.append(c.SR_KEY_SECTOR_C)
         if location_a in sector_d or location_b in sector_d:
-            sectors.append("sector_d")
+            sectors.append(c.SR_KEY_SECTOR_D)
         if location_a in sector_e or location_b in sector_e:
-            sectors.append("sector_e")
+            sectors.append(c.SR_KEY_SECTOR_E)
 
         if len(sectors) == 1:
-            return constants.TIME_SURVRUN_MIN_TIMEBOX
+            return c.TIME_SURVRUN_MIN_TIMEBOX
         elif len(sectors) == 2:
             time_factor = abs(time_factors_per_sector.get(sectors[0]) - time_factors_per_sector.get(sectors[1]))
         else:
-            raise Exception("len(sectors) is expected to be 1 or 2. Actual: ", len(sectors))
+            raise Exception(c.SR_ERROR_INVALID_SECTOR_LENGTH, len(sectors))
 
         if time_factor == 1:
-            return constants.TIME_SURVRUN_MIN_TIMEBOX + 10
+            return c.TIME_SURVRUN_MIN_TIMEBOX + 10
         elif time_factor == 2:
-            return constants.TIME_SURVRUN_MIN_TIMEBOX + 20
+            return c.TIME_SURVRUN_MIN_TIMEBOX + 20
         elif time_factor == 3:
-            return constants.TIME_SURVRUN_MIN_TIMEBOX + 30
+            return c.TIME_SURVRUN_MIN_TIMEBOX + 30
         elif time_factor == 4:
-            return constants.TIME_SURVRUN_MAX_TIMEBOX
+            return c.TIME_SURVRUN_MAX_TIMEBOX
         else:
-            raise Exception("time_factor is expected to be in range(0, 5). Actual: ", time_factor)
+            raise Exception(c.SR_ERROR_INVALID_TIME_FACTOR, time_factor)
 
     def calc_time_limit_with_randomness(self, location_a: str, location_b: str) -> Tuple[Union[int, Any], str]:
         """
@@ -92,20 +91,20 @@ class SurvrunGoalLocationCalculator:
         """
         time_mod = random.randint(-15, 25)
         if time_mod < -10:
-            difficulty_rating = "Hardcore Extreme"
+            difficulty_rating = c.DIFFICULTY_HARDCORE
         elif -10 <= time_mod < -5:
-            difficulty_rating = "Extreme"
+            difficulty_rating = c.DIFFICULTY_EXTREME
         elif -5 <= time_mod < 0:
-            difficulty_rating = "Difficult"
+            difficulty_rating = c.DIFFICULTY_DIFFICULT
         elif 0 <= time_mod < 6:
-            difficulty_rating = "Harsh"
+            difficulty_rating = c.DIFFICULTY_HARSH
         elif 6 <= time_mod < 15:
-            difficulty_rating = "Normal"
+            difficulty_rating = c.DIFFICULTY_NORMAL
         elif 15 <= time_mod < 21:
-            difficulty_rating = "Promising"
+            difficulty_rating = c.DIFFICULTY_PROMISING
         elif 21 <= time_mod <= 25:
-            difficulty_rating = "Easy"
+            difficulty_rating = c.DIFFICULTY_EASY
         else:
-            raise Exception("Error: time_mod is expected to be in range(-15, 26). Actual: ", time_mod)
+            raise Exception(c.SR_ERROR_INVALID_TIME_MOD, time_mod)
 
         return self.calc_time_limit(location_a, location_b) + time_mod, difficulty_rating

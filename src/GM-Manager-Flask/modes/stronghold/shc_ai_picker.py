@@ -1,4 +1,4 @@
-from ..stronghold import constants
+from ..stronghold import constants as c
 import random
 
 
@@ -8,7 +8,7 @@ class StrongholdAiPicker:
     def pick_random_ai(num_of_ai: int) -> list:
         """
         Calculate random AI characters.
-        :param number of AIs to choose. Must be int 2-8 (both included)
+        :param num_of_ai: number of AIs to choose. Must be int 2-8 (both included)
         :returns string list containing the full name of each chosen ai
         :raises ValueError, if the argument is not an int in range 2-8 (both included)
         """
@@ -18,9 +18,9 @@ class StrongholdAiPicker:
             raise ValueError
         ai_list = []
         while len(ai_list) < num_of_ai:
-            ai_idx = random.randint(0, len(constants.AI_CHAR_LIST) - 1)
-            if constants.AI_CHAR_LIST[ai_idx] not in ai_list:
-                ai_list.append(constants.AI_CHAR_LIST[ai_idx])
+            ai_idx = random.randint(0, len(c.AI_CHAR_LIST) - 1)
+            if c.AI_CHAR_LIST[ai_idx] not in ai_list:
+                ai_list.append(c.AI_CHAR_LIST[ai_idx])
 
         return ai_list
 

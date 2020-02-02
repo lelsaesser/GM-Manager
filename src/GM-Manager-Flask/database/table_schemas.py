@@ -1,16 +1,15 @@
 from sqlalchemy import create_engine, Column, String, Integer, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
-from database import constants as db_constants
+from database import constants as c
 
-_db_string = db_constants.POSTGRE_DIALECT_NAME + "://" + db_constants.POSTGRE_USER + ":" + db_constants.POSTGRE_PW + "@" + \
-             db_constants.POSTGRE_HOST + ":" + db_constants.POSTGRE_PORT + "/" + db_constants.POSTGRE_DB
+_db_string = c.POSTGRE_FULL_DB_STRING
 _db = create_engine(_db_string)
 _base = declarative_base()
 
 
 class SurvrunTable(_base):
-    __tablename__ = db_constants.TABLE_SURVRUN_RUNS
+    __tablename__ = c.TABLE_SURVRUN_RUNS
 
     id = Column(Integer, primary_key=True)
     player_class = Column(String)
@@ -24,7 +23,7 @@ class SurvrunTable(_base):
 
 
 class EsoDungeonRunsTable(_base):
-    __tablename__ = db_constants.TABLE_ESO_DUNGEON_RUNS
+    __tablename__ = c.TABLE_ESO_DUNGEON_RUNS
 
     id = Column(Integer, primary_key=True)
     dungeon_name = Column(String)
@@ -40,7 +39,7 @@ class EsoDungeonRunsTable(_base):
 
 
 class EsoRaidRunsTable(_base):
-    __tablename__ = db_constants.TABLE_ESO_RAID_RUNS
+    __tablename__ = c.TABLE_ESO_RAID_RUNS
 
     id = Column(Integer, primary_key=True)
     raid_name = Column(String)

@@ -1,4 +1,4 @@
-from modes.misc import constants
+from modes.misc import constants as c
 
 
 class MiscReturnConstants:
@@ -10,10 +10,10 @@ class MiscReturnConstants:
         :return: Json structure containing constants
         """
         json_model = {
-            'misc_constants': [
+            c.MISC_KEY_MISC_CONSTANTS: [
                 {
-                    'LIST_MATH_SYMBOLS': constants.LIST_MATH_SYMBOLS,
-                    'LIST_DIFFICULTIES': constants.LIST_DIFFICULTIES
+                    c.MISC_KEY_LIST_MATH_SYMBOLS: c.LIST_MATH_SYMBOLS,
+                    c.MISC_KEY_LIST_DIFFICULTIES: c.LIST_DIFFICULTIES
                 }
             ]
         }

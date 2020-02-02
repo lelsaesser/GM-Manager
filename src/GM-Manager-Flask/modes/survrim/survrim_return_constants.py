@@ -1,4 +1,4 @@
-from modes.survrim import constants as survrim_constants
+from modes.survrim import constants as c
 
 
 class SurvrimReturnConstants:
@@ -10,14 +10,14 @@ class SurvrimReturnConstants:
         Used to expose these constants to frontend and other services.
         :return: Json structure containing constants
         """
-        target_location_list_sorted = sorted(survrim_constants.LIST_SURVRUN_TARGET_LOCATIONS)
+        target_location_list_sorted = sorted(c.LIST_SURVRUN_TARGET_LOCATIONS)
         json_model = {
-            'survrim_constants': [
+            c.SR_KEY_SURVRIM_CONSTANTS: [
                 {
-                    'LIST_SURVRUN_TARGET_LOCATIONS': target_location_list_sorted,
-                    'LIST_SURVRIM_SKILLS': survrim_constants.LIST_SURVRIM_SKILLS,
-                    'LIST_SURVRIM_CLASSES': survrim_constants.LIST_SURVRIM_CLASSES,
-                    'LIST_SURVRUN_DIFFICULTIES': survrim_constants.LIST_SURVRUN_DIFFICULTIES
+                    c.SR_KEY_LIST_SURVRUN_TARGET_LOCATIONS: target_location_list_sorted,
+                    c.SR_KEY_LIST_SURVRIM_SKILLS: c.LIST_SURVRIM_SKILLS,
+                    c.SR_KEY_LIST_SURVRIM_CLASSES: c.LIST_SURVRIM_CLASSES,
+                    c.SR_KEY_LIST_SURVRUN_DIFFICULTIES: c.LIST_SURVRUN_DIFFICULTIES
                 }
             ]
         }

@@ -39,3 +39,8 @@ AI_CHAR_LIST = [
     AI_SHERIFF,
     AI_ABBOT
 ]
+
+# SHC dict keys
+SHC_KEY_AI_BATTLE_PLAYER_COUNT = 'shc_ai_battle_player_count'
+SHC_KEY_DATA = 'shcData'
+SHC_KEY_AI_BATTLE = 'ai_battle'

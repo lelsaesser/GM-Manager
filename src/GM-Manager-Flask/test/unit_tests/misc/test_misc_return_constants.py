@@ -1,5 +1,5 @@
 from modes.misc.misc_return_constants import MiscReturnConstants
-from modes.misc import constants as misc_constants
+from modes.misc import constants as c
 
 
 class TestMiscGetConstants:
@@ -8,5 +8,5 @@ class TestMiscGetConstants:
         return_value = MiscReturnConstants.misc_get_constants()
 
         assert return_value is not None
-        assert return_value['misc_constants'][0]['LIST_MATH_SYMBOLS'] == misc_constants.LIST_MATH_SYMBOLS
-        assert return_value['misc_constants'][0]['LIST_DIFFICULTIES'] == misc_constants.LIST_DIFFICULTIES
+        assert return_value[c.MISC_KEY_MISC_CONSTANTS][0][c.MISC_KEY_LIST_MATH_SYMBOLS] == c.LIST_MATH_SYMBOLS
+        assert return_value[c.MISC_KEY_MISC_CONSTANTS][0][c.MISC_KEY_LIST_DIFFICULTIES] == c.LIST_DIFFICULTIES
