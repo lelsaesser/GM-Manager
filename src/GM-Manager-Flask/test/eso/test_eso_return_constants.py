@@ -1,5 +1,5 @@
-from modes.eso.eso_return_constants import EsoReturnConstants
 from modes.eso import constants as c
+from modes.eso.eso_return_constants import EsoReturnConstants
 
 
 class TestEsoReturnConstants:

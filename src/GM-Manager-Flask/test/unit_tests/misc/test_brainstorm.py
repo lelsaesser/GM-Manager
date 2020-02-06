@@ -1,5 +1,5 @@
-from modes.misc.brainstorm import MiscBrainstorm
 from modes.misc import constants as c
+from modes.misc.brainstorm import MiscBrainstorm
 
 
 class TestMiscBrainstorm:

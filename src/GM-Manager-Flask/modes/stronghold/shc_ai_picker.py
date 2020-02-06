@@ -1,5 +1,6 @@
-from ..stronghold import constants as c
 import random
+
+from ..stronghold import constants as c
 
 
 class StrongholdAiPicker:

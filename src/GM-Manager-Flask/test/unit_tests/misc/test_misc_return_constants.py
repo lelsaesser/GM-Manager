@@ -1,5 +1,5 @@
-from modes.misc.misc_return_constants import MiscReturnConstants
 from modes.misc import constants as c
+from modes.misc.misc_return_constants import MiscReturnConstants
 
 
 class TestMiscGetConstants:

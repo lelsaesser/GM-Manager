@@ -1,7 +1,7 @@
+import random
 from typing import Union, Tuple, Any
 
 from modes.survrim import constants as c
-import random
 
 
 class SurvrunGoalLocationCalculator:

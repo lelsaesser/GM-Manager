@@ -1,5 +1,6 @@
-from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 import pytest
+
+from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 
 
 class TestShcAiPicker:
