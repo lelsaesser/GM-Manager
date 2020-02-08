@@ -264,10 +264,14 @@ class StrongholdApi(Resource):
             abort(c.RESP_BAD_REQUEST)
         ai_list = StrongholdAiPicker.pick_random_ai(ai_count)
         ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
-        if not ai_list_str:
-            abort(c.RESP_BAD_REQUEST)
+        ai_list_teams = StrongholdAiPicker.split_ai_in_teams(ai_list)
+        if not ai_list_str or not ai_list_teams:
+            abort(c.RESP_INTERNAL_SERVER_ERROR)
 
-        return {c_shc.SHC_KEY_DATA: [{c_shc.SHC_KEY_AI_BATTLE: ai_list_str}]}
+        return {c_shc.SHC_KEY_DATA: [
+            {c_shc.SHC_KEY_AI_BATTLE: ai_list_str,
+             c_shc.SHC_KEY_TEAMS: ai_list_teams}
+        ]}
 
 
 api.add_resource(StrongholdApi, c.API_STRONGHOLD_GET_AI_BATTLE)

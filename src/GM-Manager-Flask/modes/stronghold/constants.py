@@ -1,5 +1,6 @@
 # Errors
 ERROR_CHAR_NOT_FOUND = "Error: character not found."
+ERROR_NOT_ENOUGH_AIS = "Error: ai list len() equals 1, min is 2"
 
 # AI chars
 AI_RAT = "Rat"
@@ -44,3 +45,4 @@ AI_CHAR_LIST = [
 SHC_KEY_AI_BATTLE_PLAYER_COUNT = 'shc_ai_battle_player_count'
 SHC_KEY_DATA = 'shcData'
 SHC_KEY_AI_BATTLE = 'ai_battle'
+SHC_KEY_TEAMS = 'teams'

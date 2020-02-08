@@ -1,5 +1,6 @@
 import pytest
 
+from modes.stronghold import constants as c
 from modes.stronghold.shc_ai_picker import StrongholdAiPicker
 
 
@@ -27,7 +28,27 @@ class TestShcAiPicker:
 
         test_list = ['Emperor Frederick', 'Abbot of Sterling', 'Richard Lionheart', 'Nizar the Silent', 'Sultan Abdul',
                      'King Phillip', 'Sheriff of Nottingham', 'Snake, Lord Python']
-        test_result_string = "Emperor Frederick | Abbot of Sterling | Richard Lionheart | Nizar the Silent vs. " \
-                             "Sultan Abdul | King Phillip | Sheriff of Nottingham | Snake, Lord Python"
+        expected = "Emperor Frederick | Abbot of Sterling | Richard Lionheart | Nizar the Silent vs. " \
+                   "Sultan Abdul | King Phillip | Sheriff of Nottingham | Snake, Lord Python"
         assert StrongholdAiPicker.format_ai_list(test_list) is not None
-        assert StrongholdAiPicker.format_ai_list(test_list) == test_result_string
+        assert StrongholdAiPicker.format_ai_list(test_list) == expected
+
+    def test_split_ai_in_teams(self):
+        with pytest.raises(ValueError):
+            StrongholdAiPicker.split_ai_in_teams([])
+        with pytest.raises(Exception):
+            StrongholdAiPicker.split_ai_in_teams([c.AI_ABBOT])
+
+        test_list = [c.AI_ABBOT, c.AI_RAT, c.AI_SNAKE, c.AI_PIG, c.AI_WOLF, c.AI_CALIPH, c.AI_SALADIN, c.AI_SULTAN]
+        expected = [
+            [c.AI_ABBOT, c.AI_RAT, c.AI_SNAKE, c.AI_PIG],
+            [c.AI_WOLF, c.AI_CALIPH, c.AI_SALADIN, c.AI_SULTAN]
+        ]
+        assert StrongholdAiPicker.split_ai_in_teams(test_list) == expected
+
+        test_list = [c.AI_ABBOT, c.AI_RAT, c.AI_SNAKE]
+        expected = [
+            [c.AI_ABBOT],
+            [c.AI_RAT, c.AI_SNAKE]
+        ]
+        assert StrongholdAiPicker.split_ai_in_teams(test_list) == expected

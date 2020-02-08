@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL, SHC_API } from './../env';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-stronghold',
@@ -12,6 +13,10 @@ export class StrongholdComponent {
   show_ai_battle: boolean = false;
   shcJson: JSON;
   SHC_API_URL = `${API_URL}` + `${SHC_API}`;
+
+  formSubmitWinningTeam = new FormGroup({
+    formWinningTeamSelection: new FormControl('')
+  })
 
   constructor(private httpClient: HttpClient) { }
 
@@ -25,10 +30,13 @@ export class StrongholdComponent {
         console.log("POST call successful value returned in body", data);
       },
         response => {
-          console.log("POST call in error", response);
+          console.log("POST call error:", response);
         },
         () => {
-          console.log("The POST observable is now completed.");
         });
+  }
+
+  onSubmitWinningTeam() {
+    console.log("onSubmitWinningTeam triggered");
   }
 }

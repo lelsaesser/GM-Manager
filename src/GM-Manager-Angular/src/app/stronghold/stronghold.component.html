@@ -26,13 +26,25 @@
 <!--Space bar between cards-->
 <div class="blank-space-default"></div>
 
-<!--ShC map selector card-->
+<!--ShC ranking system card-->
 <div class="card card-primary">
-  <div class="card-header">Stronghold map selector</div>
+  <div class="card-header">Ranking</div>
   <div class="card-body">
 
-    <!--Map selection button-->
-    <p>Lorem ipsum...</p>
+    <!--Winning team selection-->
+    <form *ngIf="show_ai_battle" [formGroup]="formSubmitWinningTeam" (ngSubmit)="onSubmitWinningTeam()">
+      <p>Select winning Team</p>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <select class="form-control" formControlName="formWinningTeamSelection">
+            <option *ngFor="let ai_name of shcJson.shcData[0].teams">
+              {{ ai_name }}</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+    </form>
+
   </div>
 </div>
 
