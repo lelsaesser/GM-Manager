@@ -12,7 +12,8 @@ export const API_SURVRUN_DELETE_RUN = "/api/survrun/delete";
 export const API_SURVRUN_GET_STATISTICS = "/api/survrun/statistics";
 
 // Stronghold
-export const SHC_API = '/api/shc';
+export const API_STRONGHOLD_GET_AI_BATTLE = '/api/shc';
+export const API_SHC_RANKING_UPDATE = "/api/shc/ranking";
 
 // ESO
 export const API_ESO_GET_CONSTANTS = "/api/eso/constants";
@@ -20,10 +21,10 @@ export const API_ESO_GET_DUNGEON_RUNS = "/api/eso/dungeons";
 export const API_ESO_POST_DUNGEON_RUN = "/api/eso/submit/dungeon";
 export const API_ESO_DELETE_DUNGEON_RUN = "/api/eso/delete/dungeon";
 
-export const API_ESO_GET_RAID_RUNS = "/api/eso/raids"
-export const API_ESO_POST_RAID_RUN = "/api/eso/submit/raid"
-export const API_ESO_DELETE_RAID_RUN = "/api/eso/delete/raid"
+export const API_ESO_GET_RAID_RUNS = "/api/eso/raids";
+export const API_ESO_POST_RAID_RUN = "/api/eso/submit/raid";
+export const API_ESO_DELETE_RAID_RUN = "/api/eso/delete/raid";
 
 // Misc
-export const API_MISC_GET_CONSTANTS = "/api/misc/constants"
-export const API_MISC_BRAINSTORM_GET_EXERCISE_LIST = "/api/misc/brainstorm/exercise"
+export const API_MISC_GET_CONSTANTS = "/api/misc/constants";
+export const API_MISC_BRAINSTORM_GET_EXERCISE_LIST = "/api/misc/brainstorm/exercise";

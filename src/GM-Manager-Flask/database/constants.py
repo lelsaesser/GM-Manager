@@ -12,6 +12,7 @@ POSTGRE_FULL_DB_STRING = POSTGRE_DIALECT_NAME + "://" + POSTGRE_USER + ":" + POS
 TABLE_SURVRUN_RUNS = "survrun_runs"
 TABLE_ESO_DUNGEON_RUNS = "eso_dungeon_runs"
 TABLE_ESO_RAID_RUNS = "eso_raid_runs"
+TABLE_SHC_RANKING = "shc_ranking"
 
 # Error messages
 BAD_REQUEST_INVALID_CLASS_NAME = "Bad request: not a valid class name"

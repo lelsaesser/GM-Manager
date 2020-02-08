@@ -8,6 +8,7 @@ import constants as c
 from database import constants as c_db
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from database.query_eso_raid_table import QueryEsoRaidTable
+from database.query_shc_ranking_table import QueryShcRankingTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.eso import constants as c_eso
 from modes.eso.eso_return_constants import EsoReturnConstants
@@ -254,9 +255,9 @@ api.add_resource(SurvrunStatisticsApi, c.API_SURVRUN_GET_STATISTICS)
 # # # Stronghold Api Endpoints  # # #
 # # # # # # # # # # # # # # # # # # #
 
-class StrongholdApi(Resource):
+class ShcGetAiBattleApi(Resource):
     """
-    exposes shc data
+    endpoint to return shc ai battles
     """
     def post(self):
         ai_count = json.loads(request.data)[c_shc.SHC_KEY_AI_BATTLE_PLAYER_COUNT]
@@ -274,7 +275,33 @@ class StrongholdApi(Resource):
         ]}
 
 
-api.add_resource(StrongholdApi, c.API_STRONGHOLD_GET_AI_BATTLE)
+api.add_resource(ShcGetAiBattleApi, c.API_STRONGHOLD_GET_AI_BATTLE)
+
+
+class ShcRankingApi(Resource):
+    """
+    endpoint to return and update shc rankings
+    """
+    def get(self):
+        """
+        fetch and return ranking data from DB
+        """
+        pass
+
+    def post(self):
+        """
+        update shc rankings in DB
+        """
+        winning_team = json.loads(request.data)[c_shc.SHC_KEY_WINNING_TEAM_DATA][c_shc.SHC_KEY_WINNING_TEAM]
+        if not winning_team:
+            abort(c.RESP_BAD_REQUEST)
+
+        cursor = QueryShcRankingTable()
+        for ai_name in winning_team.split(','):
+            cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_WIN)
+
+
+api.add_resource(ShcRankingApi, c.API_SHC_RANKING_UPDATE)
 
 
 # # # # # # # # # # # # # # # # # # #

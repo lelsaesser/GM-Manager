@@ -1,3 +1,7 @@
+# General
+RANKING_UPDATE_ON_WIN = 1
+RANKING_UPDATE_ON_LOSE = -1
+
 # Errors
 ERROR_CHAR_NOT_FOUND = "Error: character not found."
 ERROR_NOT_ENOUGH_AIS = "Error: ai list len() equals 1, min is 2"
@@ -46,3 +50,5 @@ SHC_KEY_AI_BATTLE_PLAYER_COUNT = 'shc_ai_battle_player_count'
 SHC_KEY_DATA = 'shcData'
 SHC_KEY_AI_BATTLE = 'ai_battle'
 SHC_KEY_TEAMS = 'teams'
+SHC_KEY_WINNING_TEAM_DATA = 'winningTeamData'
+SHC_KEY_WINNING_TEAM = 'formWinningTeamSelection'
