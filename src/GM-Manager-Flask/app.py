@@ -8,6 +8,7 @@ import constants as c
 from database import constants as c_db
 from database.query_eso_dungeon_table import QueryEsoDungeonTable
 from database.query_eso_raid_table import QueryEsoRaidTable
+from database.query_shc_ranking_table import QueryShcRankingTable
 from database.query_survrun_table import QuerySurvrunTable
 from modes.eso import constants as c_eso
 from modes.eso.eso_return_constants import EsoReturnConstants
@@ -254,9 +255,9 @@ api.add_resource(SurvrunStatisticsApi, c.API_SURVRUN_GET_STATISTICS)
 # # # Stronghold Api Endpoints  # # #
 # # # # # # # # # # # # # # # # # # #
 
-class StrongholdApi(Resource):
+class ShcGetAiBattleApi(Resource):
     """
-    exposes shc data
+    endpoint to return shc ai battles
     """
     def post(self):
         ai_count = json.loads(request.data)[c_shc.SHC_KEY_AI_BATTLE_PLAYER_COUNT]
@@ -264,13 +265,50 @@ class StrongholdApi(Resource):
             abort(c.RESP_BAD_REQUEST)
         ai_list = StrongholdAiPicker.pick_random_ai(ai_count)
         ai_list_str = StrongholdAiPicker.format_ai_list(ai_list)
-        if not ai_list_str:
+        ai_list_teams = StrongholdAiPicker.split_ai_in_teams(ai_list)
+        if not ai_list_str or not ai_list_teams:
+            abort(c.RESP_INTERNAL_SERVER_ERROR)
+
+        return {c_shc.SHC_KEY_DATA: [
+            {c_shc.SHC_KEY_AI_BATTLE: ai_list_str,
+             c_shc.SHC_KEY_TEAMS: ai_list_teams}
+        ]}
+
+
+api.add_resource(ShcGetAiBattleApi, c.API_STRONGHOLD_GET_AI_BATTLE)
+
+
+class ShcRankingApi(Resource):
+    """
+    endpoint to return and update shc rankings
+    """
+    def get(self):
+        """
+        fetch and return ranking data from DB
+        """
+        cursor = QueryShcRankingTable()
+        data = cursor.fetch_all_ranking_data()
+
+        if not data:
+            return jsonify({c.KEY_INFO: c.MSG_QUERY_EMPTY_TABLE})
+        return jsonify({c.KEY_QUERY_RESULT: data})
+
+    def post(self):
+        """
+        update shc rankings in DB
+        """
+        winning_team = json.loads(request.data)[c_shc.SHC_KEY_WINNING_TEAM_DATA]
+        loosing_team = json.loads(request.data)[c_shc.SHC_KEY_LOOSING_TEAM_DATA]
+        if not winning_team or not loosing_team:
             abort(c.RESP_BAD_REQUEST)
 
-        return {c_shc.SHC_KEY_DATA: [{c_shc.SHC_KEY_AI_BATTLE: ai_list_str}]}
+        cursor = QueryShcRankingTable()
+        for ai_win, ai_loss in zip(winning_team, loosing_team):
+            cursor.insert_update_ranking(ai_win, c_shc.RANKING_UPDATE_ON_WIN)
+            cursor.insert_update_ranking(ai_loss, c_shc.RANKING_UPDATE_ON_LOSE)
 
 
-api.add_resource(StrongholdApi, c.API_STRONGHOLD_GET_AI_BATTLE)
+api.add_resource(ShcRankingApi, c.API_SHC_RANKING_UPDATE)
 
 
 # # # # # # # # # # # # # # # # # # #

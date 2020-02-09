@@ -67,6 +67,15 @@ class EsoRaidRunsTable(_base):
     total_party_hps = Column(Integer)
 
 
+class ShcRankingTable(_base):
+    __tablename__ = c.TABLE_SHC_RANKING
+
+    id = Column(Integer, primary_key=True)
+    ai_name = Column(String)
+    rating = Column(Integer)
+    played_games = Column(Integer)
+
+
 _base.metadata.create_all(_db)
 
 

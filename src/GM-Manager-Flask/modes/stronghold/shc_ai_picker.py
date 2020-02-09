@@ -55,3 +55,21 @@ class StrongholdAiPicker:
                 result_str += " | "
 
         return result_str
+
+    @staticmethod
+    def split_ai_in_teams(ai_list):
+        """
+        Split a list of ais in two teams
+        :param ai_list: list containing string names of involved ais
+        :return: list containing two string lists, representing both teams
+        """
+        if not ai_list:
+            raise ValueError
+        if len(ai_list) == 1:
+            raise Exception(c.ERROR_NOT_ENOUGH_AIS)
+
+        half = len(ai_list) // 2
+        team_a = ai_list[:half]
+        team_b = ai_list[half:]
+
+        return [team_a, team_b]

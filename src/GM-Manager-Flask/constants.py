@@ -17,6 +17,7 @@ API_SURVRUN_GET_STATISTICS = "/api/survrun/statistics"
 
 # Stronghold
 API_STRONGHOLD_GET_AI_BATTLE = "/api/shc"
+API_SHC_RANKING_UPDATE = "/api/shc/ranking"
 
 # Eso
 API_ESO_GET_CONSTANTS = "/api/eso/constants"
