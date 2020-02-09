@@ -11,7 +11,7 @@ class TestShcRankingTable:
         assert data is not None, "Fetch failed, is the SHC ranking table empty?"
         for row in data:
             assert row[c.SHC_KEY_AI_NAME] in c.AI_CHAR_LIST
-            assert row[c.SHC_KEY_RATING] >= 0
+            assert row[c.SHC_KEY_RATING] is not None
             assert row[c.SHC_KEY_PLAYED_GAMES] >= 0
 
     def test_insert_update_ranking(self):

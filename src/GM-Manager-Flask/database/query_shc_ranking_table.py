@@ -52,16 +52,12 @@ class QueryShcRankingTable:
             ai = sess.query(ShcRankingTable).filter(ShcRankingTable.ai_name == ai_name).one()
             ai.rating += rating_update
             ai.played_games += 1
-            if ai.rating < 0:
-                ai.rating = 0
             sess.commit()
             return 200
 
         except Exception:
             # create if not present
             try:
-                if rating_update < 0:
-                    rating_update = 0
                 query = ShcRankingTable(ai_name=ai_name, rating=rating_update, played_games=1)
                 sess.add(query)
                 sess.commit()
