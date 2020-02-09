@@ -17,6 +17,8 @@ export class StrongholdComponent {
   shcJson: JSON;
 
   formSubmitWinningTeamData: any;
+  loosingTeamData: any;
+  winningTeamData: any;
 
   formSubmitWinningTeam = new FormGroup({
     formWinningTeamSelection: new FormControl('')
@@ -41,13 +43,20 @@ export class StrongholdComponent {
 
   onSubmitWinningTeam() {
     this.formSubmitWinningTeamData = this.formSubmitWinningTeam.value as JSON
-    if (this.formSubmitWinningTeamData.formWinningTeamSelection == "") {
-      this.formSubmitWinningTeamData.formWinningTeamSelection = String(this.shcJson["shcData"][0].teams[0]);
+
+    if (this.formSubmitWinningTeamData.formWinningTeamSelection == String(this.shcJson["shcData"][0].teams[1])) {
+      this.winningTeamData = this.shcJson["shcData"][0].teams[1];
+      this.loosingTeamData = this.shcJson["shcData"][0].teams[0];
+    }
+    else {
+      this.winningTeamData = this.shcJson["shcData"][0].teams[0];
+      this.loosingTeamData = this.shcJson["shcData"][0].teams[1];
     }
 
     this.httpClient.post(API_URL + API_SHC_RANKING_UPDATE,
       {
-        "winningTeamData": this.formSubmitWinningTeamData
+        "winning_team": this.winningTeamData,
+        "loosing_team": this.loosingTeamData
       }).subscribe(data => {
         this.notifyService.showSuccess("Ranking updated", "Success");
         this.formSubmitWinningTeamSubmitted = true;

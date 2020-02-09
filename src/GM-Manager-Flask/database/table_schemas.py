@@ -73,6 +73,7 @@ class ShcRankingTable(_base):
     id = Column(Integer, primary_key=True)
     ai_name = Column(String)
     rating = Column(Integer)
+    played_games = Column(Integer)
 
 
 _base.metadata.create_all(_db)

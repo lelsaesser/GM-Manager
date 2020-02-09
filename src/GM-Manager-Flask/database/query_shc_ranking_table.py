@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
 from database import constants as c_db
@@ -30,11 +31,20 @@ class QueryShcRankingTable:
             # get current rating for requested ai and update it
             ai = sess.query(ShcRankingTable).filter(ShcRankingTable.ai_name == ai_name).one()
             ai.rating += rating_update
+            ai.played_games += 1
+            if ai.rating < 0:
+                ai.rating = 0
             sess.commit()
             return 200
+
         except Exception:
             # create if not present
-            query = ShcRankingTable(ai_name=ai_name, rating=rating_update)
-            sess.add(query)
-            sess.commit()
-            return 200
+            try:
+                if rating_update < 0:
+                    rating_update = 0
+                query = ShcRankingTable(ai_name=ai_name, rating=rating_update, played_games=1)
+                sess.add(query)
+                sess.commit()
+                return 200
+            except IntegrityError:
+                return 500

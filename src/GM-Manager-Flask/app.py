@@ -292,13 +292,15 @@ class ShcRankingApi(Resource):
         """
         update shc rankings in DB
         """
-        winning_team = json.loads(request.data)[c_shc.SHC_KEY_WINNING_TEAM_DATA][c_shc.SHC_KEY_WINNING_TEAM]
-        if not winning_team:
+        winning_team = json.loads(request.data)[c_shc.SHC_KEY_WINNING_TEAM_DATA]
+        loosing_team = json.loads(request.data)[c_shc.SHC_KEY_LOOSING_TEAM_DATA]
+        if not winning_team or not loosing_team:
             abort(c.RESP_BAD_REQUEST)
 
         cursor = QueryShcRankingTable()
-        for ai_name in winning_team.split(','):
-            cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_WIN)
+        for ai_win, ai_loss in zip(winning_team, loosing_team):
+            cursor.insert_update_ranking(ai_win, c_shc.RANKING_UPDATE_ON_WIN)
+            cursor.insert_update_ranking(ai_loss, c_shc.RANKING_UPDATE_ON_LOSE)
 
 
 api.add_resource(ShcRankingApi, c.API_SHC_RANKING_UPDATE)
