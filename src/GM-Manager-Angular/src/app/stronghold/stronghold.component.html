@@ -45,6 +45,22 @@
       <button type="submit" class="btn btn-dark btn-sm">Submit</button>
     </form>
 
+    <!--Ranking table-->
+    <table *ngIf="rankingDataFetched" class="table table-hover">
+      <thead>
+        <th scope="col">Name</th>
+        <th scope="col">Played games</th>
+        <th scope="col">Score</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of shcRankingJson.queryResult">
+          <td>{{ row.ai_name }}</td>
+          <td>{{ row.played_games }}</td>
+          <td>{{ row.rating }}</td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </div>
 

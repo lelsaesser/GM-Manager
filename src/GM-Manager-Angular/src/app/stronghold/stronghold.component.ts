@@ -13,8 +13,10 @@ export class StrongholdComponent {
 
   show_ai_battle: boolean = false;
   formSubmitWinningTeamSubmitted: boolean = false;
+  rankingDataFetched: boolean = false;
 
   shcJson: JSON;
+  shcRankingJson: JSON;
 
   formSubmitWinningTeamData: any;
   loosingTeamData: any;
@@ -31,8 +33,8 @@ export class StrongholdComponent {
       {
         "shc_ai_battle_player_count": ai_count
       }).subscribe(data => {
-        this.shcJson = data as JSON
-        this.show_ai_battle = true
+        this.shcJson = data as JSON;
+        this.show_ai_battle = true;
         console.log("POST call successful value returned in body", data);
       },
         response => {
@@ -41,8 +43,15 @@ export class StrongholdComponent {
       );
   }
 
+  fetchShcRanking() {
+    this.httpClient.get(API_URL + API_SHC_RANKING_UPDATE).subscribe(data => {
+      this.shcRankingJson = data as JSON;
+      this.rankingDataFetched = true;
+    });
+  }
+
   onSubmitWinningTeam() {
-    this.formSubmitWinningTeamData = this.formSubmitWinningTeam.value as JSON
+    this.formSubmitWinningTeamData = this.formSubmitWinningTeam.value as JSON;
 
     if (this.formSubmitWinningTeamData.formWinningTeamSelection == String(this.shcJson["shcData"][0].teams[1])) {
       this.winningTeamData = this.shcJson["shcData"][0].teams[1];
@@ -60,11 +69,18 @@ export class StrongholdComponent {
       }).subscribe(data => {
         this.notifyService.showSuccess("Ranking updated", "Success");
         this.formSubmitWinningTeamSubmitted = true;
-        // this.fetchRanking();
+        this.fetchShcRanking();
       },
         response => {
           console.log("POST call error:", response);
         }
       );
+  }
+
+  ngOnInit() {
+    this.fetchShcRanking();
+    if (this.shcRankingJson) {
+      this.rankingDataFetched = true;
+    }
   }
 }

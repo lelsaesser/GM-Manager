@@ -286,7 +286,12 @@ class ShcRankingApi(Resource):
         """
         fetch and return ranking data from DB
         """
-        pass
+        cursor = QueryShcRankingTable()
+        data = cursor.fetch_all_ranking_data()
+
+        if not data:
+            return jsonify({c.KEY_INFO: c.MSG_QUERY_EMPTY_TABLE})
+        return jsonify({c.KEY_QUERY_RESULT: data})
 
     def post(self):
         """
