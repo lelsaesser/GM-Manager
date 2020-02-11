@@ -21,10 +21,13 @@ export class StrongholdComponent {
   formSubmitWinningTeamData: any;
   loosingTeamData: any;
   winningTeamData: any;
+  involvedPlayers: any;
 
   formSubmitWinningTeam = new FormGroup({
-    formWinningTeamSelection: new FormControl('')
-  })
+    formWinningTeamSelection: new FormControl(''),
+    formMVPSelection: new FormControl(''),
+    formExceptionSelection: new FormControl('')
+  });
 
   constructor(private httpClient: HttpClient, private notifyService: NotificationService) { }
 
@@ -34,8 +37,9 @@ export class StrongholdComponent {
         "shc_ai_battle_player_count": ai_count
       }).subscribe(data => {
         this.shcJson = data as JSON;
+        this.involvedPlayers = this.shcJson["shcData"][0].teams[0].concat(this.shcJson["shcData"][0].teams[1]);
+        this.involvedPlayers = ["None"].concat(this.involvedPlayers);
         this.show_ai_battle = true;
-        console.log("POST call successful value returned in body", data);
       },
         response => {
           console.log("POST call error:", response);
@@ -62,16 +66,26 @@ export class StrongholdComponent {
       this.loosingTeamData = this.shcJson["shcData"][0].teams[1];
     }
 
+    if (this.formSubmitWinningTeamData.formMVPSelection == "") {
+      this.formSubmitWinningTeamData.formMVPSelection = this.involvedPlayers[0];
+    }
+    if (this.formSubmitWinningTeamData.formExceptionSelection == "") {
+      this.formSubmitWinningTeamData.formExceptionSelection = this.involvedPlayers[0];
+    }
+
     this.httpClient.post(API_URL + API_SHC_RANKING_UPDATE,
       {
         "winning_team": this.winningTeamData,
-        "loosing_team": this.loosingTeamData
+        "loosing_team": this.loosingTeamData,
+        "mvp": this.formSubmitWinningTeamData.formMVPSelection,
+        "exception": this.formSubmitWinningTeamData.formExceptionSelection
       }).subscribe(data => {
         this.notifyService.showSuccess("Ranking updated", "Success");
         this.formSubmitWinningTeamSubmitted = true;
         this.fetchShcRanking();
       },
         response => {
+          this.notifyService.showFailure("Backend not reachable", "Error");
           console.log("POST call error:", response);
         }
       );

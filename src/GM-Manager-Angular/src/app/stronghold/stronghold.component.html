@@ -33,7 +33,18 @@
 
     <!--Winning team selection-->
     <form *ngIf="show_ai_battle" [formGroup]="formSubmitWinningTeam" (ngSubmit)="onSubmitWinningTeam()">
-      <p>Select winning Team</p>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <p>Select winning Team</p>
+        </div>
+        <div class="form-group col-md-2">
+          <p>MVP</p>
+        </div>
+        <div class="form-group col-md-2">
+          <p>Exception</p>
+        </div>
+      </div>
+      
       <div class="form-row">
         <div class="form-group col-md-2">
           <select class="form-control" formControlName="formWinningTeamSelection">
@@ -41,7 +52,21 @@
               {{ ai_name }}</option>
           </select>
         </div>
+        <div class="form-group col-md-2">
+          <select class="form-control" formControlName="formMVPSelection">
+            <option *ngFor="let ai_name of involvedPlayers">
+              {{ ai_name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2">
+          <select class="form-control" formControlName="formExceptionSelection">
+            <option *ngFor="let ai_name of involvedPlayers">
+              {{ ai_name }}</option>
+          </select>
+        </div>
       </div>
+
+      
       <button type="submit" class="btn btn-dark btn-sm">Submit</button>
     </form>
 
