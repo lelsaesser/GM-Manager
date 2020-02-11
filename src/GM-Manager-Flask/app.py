@@ -297,15 +297,30 @@ class ShcRankingApi(Resource):
         """
         update shc rankings in DB
         """
-        winning_team = json.loads(request.data)[c_shc.SHC_KEY_WINNING_TEAM_DATA]
-        loosing_team = json.loads(request.data)[c_shc.SHC_KEY_LOOSING_TEAM_DATA]
-        if not winning_team or not loosing_team:
+        payload = json.loads(request.data)
+        winning_team = payload[c_shc.SHC_KEY_WINNING_TEAM_DATA]
+        loosing_team = payload[c_shc.SHC_KEY_LOOSING_TEAM_DATA]
+        mvp = payload[c_shc.SHC_KEY_MVP]
+        exception = payload[c_shc.SHC_KEY_EXCEPTION]
+        if not winning_team or not loosing_team or not mvp or not exception:
             abort(c.RESP_BAD_REQUEST)
 
         cursor = QueryShcRankingTable()
-        for ai_win, ai_loss in zip(winning_team, loosing_team):
-            cursor.insert_update_ranking(ai_win, c_shc.RANKING_UPDATE_ON_WIN)
-            cursor.insert_update_ranking(ai_loss, c_shc.RANKING_UPDATE_ON_LOSE)
+        for ai_name in winning_team:
+            if ai_name == mvp:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_MVP_WIN_TEAM)
+            elif ai_name == exception:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_EXCEPTION)
+            else:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_WIN)
+
+        for ai_name in loosing_team:
+            if ai_name == mvp:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_MVP_LOSE_TEAM)
+            elif ai_name == exception:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_EXCEPTION)
+            else:
+                cursor.insert_update_ranking(ai_name, c_shc.RANKING_UPDATE_ON_LOSE)
 
 
 api.add_resource(ShcRankingApi, c.API_SHC_RANKING_UPDATE)
